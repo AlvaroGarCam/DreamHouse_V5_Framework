@@ -2,10 +2,10 @@
 
 // require 'autoload.php';
 
-// // $path = $_SERVER['DOCUMENT_ROOT'] . '/Ejercicios/Framework_PHP_OO_MVC/';
-// // include($path . "utils/common.inc.php");
-// // include($path . "utils/mail.inc.php");
-// // include($path . "paths.php");
+$path = $_SERVER['DOCUMENT_ROOT'] . '/DREAMHOUSE_V5_FRAMEWORK/';
+include ($path . "utils/common.inc.php");
+// include($path . "utils/mail.inc.php");
+include ($path . "paths.php");
 
 // ob_start();
 // session_start();

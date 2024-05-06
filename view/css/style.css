@@ -1,0 +1,813 @@
+﻿body {
+  font-family: 'Arial', sans-serif;
+  background-color: #e4dac4;
+  margin: 0;
+  padding: 0;
+}
+
+.cards-list {
+  text-align: center;
+  margin: 15px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+h3 {
+  border-bottom: 2px solid #333;
+}
+
+.card {
+  width: auto;
+  height: auto;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.4s;
+  float: left;
+}
+
+.card .card_image {
+  margin: 10px;
+  border-radius: 20px;
+}
+
+
+.card .card_image img {
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+
+.card .card_title {
+  text-align: center;
+  border-radius: 0px 0px 40px 40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: -40px;
+  height: 40px;
+}
+
+.card:hover {
+  box-shadow: 5px 5px 30px 15px rgba(178, 175, 175, 0.25), -5px -5px 30px 15px rgba(165, 162, 162, 0.22);
+}
+
+.title-white {
+  color: white;
+}
+
+.title-black {
+  padding-top: 10%;
+  color: black;
+}
+
+.title-black p {
+  font-size: 80%;
+  font-weight: bold;
+}
+
+@media all and (max-width: 500px) {
+  .cards-list {
+    flex-direction: row;
+  }
+}
+
+#top {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}
+
+h2 {
+  font-size: 40px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 2px;
+  line-height: 1.5;
+}
+
+#top h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.card_image {
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: gray;
+  color: #fafafa;
+  text-align: center;
+  padding: 8px;
+  box-sizing: border-box;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.card_image:hover .overlay {
+  transform: translateY(0);
+}
+
+.card_image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.overlay p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+#footer-sec {
+  background-color: #333;
+  color: white;
+  padding: 40px 0;
+}
+
+#footer-sec a {
+  color: #fff;
+}
+
+#footer-sec a:hover {
+  color: #ccc;
+}
+
+h4 {
+  font-size: 1.7em;
+  font-family: "Edwardian";
+  text-shadow: rgb(233, 219, 219) 0px 0px 3px;
+  color: white;
+}
+
+
+
+h4:hover {
+  color: rgb(223, 220, 175);
+}
+
+#footer-sec h4 {
+  color: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th,
+td {
+  padding: 5px;
+  text-align: center;
+  align-items: center;
+}
+
+
+
+/* Puedes agregar más estilos según tus necesidades */
+#content_shop_houses {
+  max-width: 50%;
+  /* Establece la anchura máxima al 50% de la pantalla */
+  overflow-y: auto;
+  /* Agrega una barra de desplazamiento vertical si es necesario */
+  margin: 0 20px;
+  /* Añade un pequeño margen del borde de la pantalla */
+  padding: 20px;
+  /* Añade un poco de espacio alrededor del contenido */
+  /* background-color: white; */
+
+}
+
+.list_content_shop {
+  border-radius: 20px;
+  border-bottom: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 4%;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.list_product {
+  display: flex;
+}
+
+
+
+.img-container img {
+  object-fit: cover;
+  /* Ajusta la imagen al contenedor manteniendo la proporción */
+  width: 100%;
+  /* Ocupa el 100% del ancho del contenedor */
+  height: 100%;
+  /* Ocupa el 100% de la altura del contenedor */
+  align-items: center;
+  /* No es necesario para imágenes */
+  display: block;
+  /* Asegura que la imagen se comporte como un bloque */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.product-info {
+  padding-left: 20px;
+}
+
+.product-content h1 {
+  font-size: 2em;
+  text-align: center;
+  color: rgb(106, 106, 203);
+}
+
+.product-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-content ul li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.buttons {
+  margin-top: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.buttons button {
+  align-items: center;
+  text-align: center;
+  margin-right: 10px;
+  background-color: #3498db;
+  /* Fondo azul */
+  color: #ffffff;
+  /* Texto blanco */
+  padding: 10px 20px;
+  /* Espaciado interno del botón */
+  border: none;
+  /* Sin borde */
+  border-radius: 5px;
+  /* Bordes redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  /* Transición para el efecto hover */
+}
+
+.buttons button:hover {
+  background-color: #2265929a;
+  /* Fondo azul más oscuro en hover */
+}
+
+#price {
+  font-weight: bold;
+  color: #e44d26;
+}
+
+.list__heart {
+  margin-left: 10px;
+  color: #e44d26;
+  cursor: pointer;
+}
+
+#details-shop {
+  max-width: 50%;
+  margin: 0 auto;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.carousel {
+  margin-bottom: 20px;
+}
+
+.carousel__container {
+  position: relative;
+}
+
+.carousel__indicator {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.date_house {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+.details_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.details_table th,
+.details_table td {
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  text-align: left;
+}
+
+.details_table th {
+  align-items: center;
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+.details_table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.content-img-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 600px;
+  margin: 0 auto;
+}
+
+.content-img-details img {
+  width: 100%;
+  height: auto;
+}
+
+
+/* Style 9
+   ----------------------------- */
+.nine h1 {
+  text-align: center;
+  font-size: 50px;
+  text-transform: uppercase;
+  color: #222;
+  letter-spacing: 1px;
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+}
+
+.nine h1 span {
+  margin-top: 5px;
+  font-size: 15px;
+  color: #444;
+  word-spacing: 1px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: "Raleway", sans-serif;
+
+  display: grid;
+  grid-template-columns: 1fr max-content 1fr;
+  grid-template-rows: 27px 0;
+  grid-gap: 20px;
+  align-items: center;
+}
+
+.nine h1 span:after,
+.nine h1 span:before {
+  content: " ";
+  display: block;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  height: 5px;
+  background-color: #f8f8f8;
+}
+
+/* Estilo para todos los selects dentro de .filters-shop */
+.filters-shop select {
+  width: auto;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #6d6565b3;
+  border: none;
+  margin: 10px;
+  color: white;
+  appearance: none;
+  padding: 10px;
+  padding-right: 38px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+
+/* Estilo para el contenedor .filters-shop */
+.filters-shop {
+  text-align: center;
+}
+
+/* Estilo específico para el botón con la clase .filter_button */
+.filters-shop .filter_button {
+  /* Propiedades de estilo aquí */
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 20px;
+  /* Ajusta la separación entre los botones según tus necesidades */
+}
+
+/* Estilo específico para el botón con la clase .filter_remove */
+.filters-shop .filter_remove {
+  /* Propiedades de estilo aquí */
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 10px;
+  margin: 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+
+/*------------------------------------------------------*/
+
+.modal-title {
+  font-size: 2em;
+  font-family: "Edwardian";
+  text-shadow: rgb(233, 219, 219) 0px 0px 3px;
+  color: black;
+}
+
+
+.modal-content {
+  width: 50%;
+  margin: 0 auto;
+  border: 2px solid #e3e3a1;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f0f5e1;
+}
+
+.modal-header {
+  background-color: #e3e3a1;
+  color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3e3a1;
+  color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  margin-right: 10px;
+  background-color: transparent;
+  position: relative;
+  top: 6px;
+}
+
+input[type="radio"]:checked::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: #a34f2b;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: appear 0.8s;
+}
+
+
+.filter_order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.filter_order select {
+  width: auto;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #6d6565b3;
+  border: none;
+  margin: 10px;
+  color: white;
+  appearance: none;
+  padding: 10px;
+  padding-right: 38px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+.filter_order .order_button {
+  /* Propiedades de estilo aquí */
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 20px;
+  /* Ajusta la separación entre los botones según tus necesidades */
+}
+
+
+.div_search select {
+  width: auto;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #e4dac4;
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.3em;
+  text-align: center;
+  align-items: center;
+  margin: 10px;
+  color: #000000;
+  appearance: none;
+  padding: 10px;
+  padding-right: 38px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+.autocomplete-container {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-input {
+  width: 15%;
+  margin-left: 10px;
+  padding: 5px;
+  border: 2px solid #ccc;
+  font-family: "Calibri";
+  border-radius: 15px;
+  font-size: 20px;
+}
+
+.autocomplete-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.autocomplete-input::placeholder {
+  color: #999;
+  text-align: center;
+}
+
+.autocomplete-input:not(:placeholder-shown) {
+  border-color: #2196F3;
+}
+
+#search_auto {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  z-index: 999;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.searchElement {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.searchElement:hover {
+  background-color: #f0f0f0;
+}
+
+#map {
+  align-items: center;
+  width: 95%;
+  height: 500px;
+  border-radius: 20px;
+}
+
+
+.general_shop {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+}
+
+.container_shop {
+  flex: 1;
+  /* El primer div ocupará el 50% del ancho */
+  padding: 20px;
+  /* Ajusta el espacio interior según sea necesario */
+}
+
+.map_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1000px;
+  max-height: 1000px;
+  padding: 20px;
+  flex: 1;
+  position: sticky;
+  top: 160px;
+  overflow-y: auto;
+  flex: 1;
+  padding: 20px;
+}
+
+.map_details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+  height: 800px;
+  border: 2px solid #ccc;
+  /* Borde del contenedor */
+  margin: 0 auto;
+  /* Centra horizontalmente el contenedor */
+  overflow: hidden;
+  /* Evita que el mapa sobresalga del contenedor */
+}
+
+#map_details {
+  width: 100%;
+  height: 100%;
+}
+
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination-container li {
+  display: inline-block;
+  margin: 0 5px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.pagination-container li a {
+  display: inline-block;
+  padding: 10px 15px;
+  /* Ajusta el tamaño del cuadro blanco */
+  color: #2196F3;
+  text-decoration: none;
+}
+
+.pagination-container li.active a {
+  color: #fff;
+  background-color: #2196F3;
+}
+
+
+#related_houses_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  /* Espacio superior */
+}
+
+#related_houses_button button {
+  background-color: #3498db;
+  /* Fondo azul */
+  color: #ffffff;
+  /* Texto blanco */
+  padding: 10px 20px;
+  /* Espaciado interno del botón */
+  border: none;
+  /* Sin borde */
+  border-radius: 5px;
+  /* Bordes redondeados */
+  cursor: pointer;
+  /* Cursor al pasar por encima */
+  transition: background-color 0.3s;
+  /* Transición para el efecto hover */
+}
+
+
+
+
+.register_login_buttons {
+  text-align: right;
+  margin-top: 10px;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  /* Centra verticalmente */
+  justify-content: center;
+  /* Centra horizontalmente */
+  height: 100%;
+  /* Ajusta la altura del div contenedor */
+}
+
+.register_login_buttons button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 600;
+  margin: 0 10px;
+  width: 200px;
+  padding: 10px 0;
+  box-shadow: 0 0 20px rgba(104, 85, 224, 0.2);
+  transition: 0.4s;
+
+}
+
+.reg {
+  color: rgb(104, 85, 224);
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(104, 85, 224, 1);
+}
+
+.reg:hover {
+  color: white;
+  background-color: rgba(104, 85, 224, 1);
+}
+
+.log {
+  color: rgb(104, 85, 224);
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(104, 85, 224, 1);
+}
+
+.log:hover {
+  color: white;
+  background-color: rgba(104, 85, 224, 1);
+}
+
+
+#loged_username {
+  color: #fff !important;
+  /* Texto blanco */
+  padding: 5px 10px;
+  /* Espaciado interno */
+  border-radius: 5px;
+  /* Bordes redondeados */
+}
+
+
+.navbar-right {
+  display: flex;
+  justify-content: flex-end;
+  /* Alinea los elementos al final del contenedor */
+  align-items: center;
+  /* Centra verticalmente los elementos */
+  /* Otros estilos que puedas tener para .navbar-right */
+}
