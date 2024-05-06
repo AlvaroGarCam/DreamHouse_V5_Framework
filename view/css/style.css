@@ -811,3 +811,17 @@ input[type="radio"]:checked::before {
   /* Centra verticalmente los elementos */
   /* Otros estilos que puedas tener para .navbar-right */
 }
+
+
+#error_404_html {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Opcional: ajusta la altura según tus necesidades */
+}
+
+#error_404_html img {
+  max-width: 100%;
+  height: auto;
+}

@@ -1,5 +1,7 @@
 /* AJAX PROMISE */
-function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
+function ajaxPromise(sType, sTData, sUrl, sData = undefined) {
+    // console.log('hola promises js');
+    // return false;
     return new Promise((resolve, reject) => {
         $.ajax({
             url: sUrl,
@@ -12,7 +14,7 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
             reject(errorThrow);
         });
     });
-}
+};
 
 // /* FRIENDLY URL */
 // function friendlyURL(url) {
@@ -44,22 +46,20 @@ function loading_spinner() {
 
 /* LOAD MENU */
 function load_menu() {
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>').appendTo('.nav_list');
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>').appendTo('.nav_list');
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact&op=view") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
-    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>').appendTo('.nav_list');
+    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + "?module=home&op=view" + '" class="nav_link">Home</a>').appendTo('.nav_list');
+    $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + "?module=shop&op=view" + '" class="nav_link">Shop</a>').appendTo('.nav_list');
 
-    ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('token') })
-        .then(function (data) {
-            if (data[0].user_type === 'admin') {
-                menu_admin();
-            } else if (data[0].user_type === 'client') {
-                menu_client();
-            }
-            click_profile(data[0]);
-        }).catch(function () {
-            $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>').appendTo('.nav_list');
-        });
+    // ajaxPromise(friendlyURL('?module=login&op=data_user'), 'POST', 'JSON', { token: localStorage.getItem('token') })
+    //     .then(function (data) {
+    //         if (data[0].user_type === 'admin') {
+    //             menu_admin();
+    //         } else if (data[0].user_type === 'client') {
+    //             menu_client();
+    //         }
+    //         click_profile(data[0]);
+    //     }).catch(function () {
+    //         $('<li></li>').attr({ 'class': 'nav_item' }).html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>').appendTo('.nav_list');
+    //     });
 }
 
 /* MENUS */
@@ -118,6 +118,6 @@ function logout() {
 
 $(document).ready(function () {
     load_menu();
-    click_logout();
-    loading_spinner();
+    // click_logout();
+    // loading_spinner();
 });
