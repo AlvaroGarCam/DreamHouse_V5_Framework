@@ -5,9 +5,6 @@ class db
     private $user;
     private $password;
     private $database;
-
-    private $port;
-
     private $link;
     private $stmt;
     private $array;
@@ -28,7 +25,6 @@ class db
         $this->database = $conf->getDB();
         $this->user = $conf->getUserDB();
         $this->password = $conf->getPassDB();
-        $this->port = $conf->getPortDB();
     }
 
     private function __clone()
@@ -45,7 +41,7 @@ class db
 
     private function conectar()
     {
-        $this->link = new mysqli($this->server, $this->user, $this->password, $this->port);
+        $this->link = new mysqli($this->server, $this->user, $this->password);
         $this->link->select_db($this->database);
     }
 

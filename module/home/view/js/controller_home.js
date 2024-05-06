@@ -15,11 +15,11 @@ function ajaxPromise(sType, sTData, sUrl, sData = undefined) {
      });
 };
 function pets() {
-     // console.log("Hola pets");
+     console.log("Hola pets");
      ajaxPromise('GET', 'JSON', '?module=home&op=pets')
           .then(function (data) {
-               console.log(data);
-               return false;
+               // console.log(data);
+               // return false;
                var htmlContent = '';
                for (var row in data) {
                     htmlContent += `

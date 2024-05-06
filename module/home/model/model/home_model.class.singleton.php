@@ -1,4 +1,5 @@
 <?php
+// include_once ("module\home\model\BLL\home_bll.class.singleton.php");
 class home_model
 {
 
@@ -12,16 +13,21 @@ class home_model
 
     public static function getInstance()
     {
+        //return "hola getInstance home_model";
         if (!(self::$_instance instanceof self)) {
+            //return "hola getInstance home_model, dentro del instanceof";
             self::$_instance = new self();
         }
+        //return "hola getInstance home_model, después el instanceOf";
         return self::$_instance;
     }
 
-    public function get_pets($array)
+
+
+    public function get_pets()
     {
         // return "Home model get pets";
-        return $this->bll->get_pets_BLL($array);
+        return $this->bll->get_pets_BLL();
     }
     // public function get_carrusel($array)
     // {

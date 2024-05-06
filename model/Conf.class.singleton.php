@@ -5,18 +5,20 @@ class Conf
     private $_passdb;
     private $_hostdb;
     private $_db;
-
-    private $_portdb;
     static $_instance;
 
     private function __construct()
     {
         $cnfg = parse_ini_file(UTILS . "db.ini");
-        $this->_userdb = $cnfg['DB_USERNAME'];
-        $this->_passdb = $cnfg['DB_PASS'];
-        $this->_hostdb = $cnfg['DB_HOST'];
-        $this->_db = $cnfg['DB_NAME'];
-        $this->_portdb = $cnfg['DB_PORT'];
+        $this->_userdb = $cnfg['user'];
+        $this->_passdb = $cnfg['pass'];
+        $this->_hostdb = $cnfg['host'];
+        $this->_db = $cnfg['db'];
+    }
+
+    private function __clone()
+    {
+
     }
 
     public static function getInstance()
@@ -47,12 +49,6 @@ class Conf
     public function getDB()
     {
         $var = $this->_db;
-        return $var;
-    }
-
-    public function getPortDB()
-    {
-        $var = $this->_portdb;
         return $var;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+// include_once ("module\home\model\DAO\home_dao.class.singleton.php");
 class home_bll
 {
 	private $dao;
@@ -13,13 +14,14 @@ class home_bll
 
 	public static function getInstance()
 	{
+		//return "hola getInstance home_bll";
 		if (!(self::$_instance instanceof self)) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
 	}
 
-	public function get_pets_BLL($array)
+	public function get_pets_BLL()
 	{
 		// return "holaaaa BLL pets";
 		return $this->dao->select_data_pets($this->db);

@@ -34,6 +34,7 @@ class common
                if (method_exists($model, $function)) {
                     // return "holaaaaaaaa";
                     $obj = $model::getInstance();
+                    // return $obj;
                     if ($args != null) {
                          return call_user_func(array($obj, $function), $args);
                     }
@@ -43,27 +44,27 @@ class common
           throw new Exception();
      }
 
-     public static function generate_token_secure($longitud)
-     {
-          if ($longitud < 4) {
-               $longitud = 4;
-          }
-          return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2));
-     }
+     // public static function generate_token_secure($longitud)
+     // {
+     //      if ($longitud < 4) {
+     //           $longitud = 4;
+     //      }
+     //      return bin2hex(openssl_random_pseudo_bytes(($longitud - ($longitud % 2)) / 2));
+     // }
 
-     function friendlyURL_php($url)
-     {
-          $link = "";
-          if (URL_FRIENDLY) {
-               $url = explode("&", str_replace("?", "", $url));
-               foreach ($url as $key => $value) {
-                    $aux = explode("=", $value);
-                    $link .= $aux[1] . "/";
-               }
-          } else {
-               $link = "index.php?" . $url;
-          }
-          return SITE_PATH . $link;
-     }
+     // function friendlyURL_php($url)
+     // {
+     //      $link = "";
+     //      if (URL_FRIENDLY) {
+     //           $url = explode("&", str_replace("?", "", $url));
+     //           foreach ($url as $key => $value) {
+     //                $aux = explode("=", $value);
+     //                $link .= $aux[1] . "/";
+     //           }
+     //      } else {
+     //           $link = "index.php?" . $url;
+     //      }
+     //      return SITE_PATH . $link;
+     // }
 }
 ?>
