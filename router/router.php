@@ -2,9 +2,8 @@
 
 require 'autoload.php';
 
-$path = $_SERVER['DOCUMENT_ROOT'] . '/DREAMHOUSE_V5_FRAMEWORK/';
-include ($path . "utils/common.inc.php");
-
+// $path = $_SERVER['DOCUMENT_ROOT'] . '/DREAMHOUSE_V5_FRAMEWORK/';
+// include ($path . "utils/common.inc.php");
 // include($path . "utils/mail.inc.php");
 // include ($path . "paths.php");
 

@@ -1,21 +1,6 @@
-function ajaxPromise(sType, sTData, sUrl, sData = undefined) {
-     // console.log('hola promises js');
-     // return false;
-     return new Promise((resolve, reject) => {
-          $.ajax({
-               url: sUrl,
-               type: sType,
-               dataType: sTData,
-               data: sData
-          }).done((data) => {
-               resolve(data);
-          }).fail((jqXHR, textStatus, errorThrow) => {
-               reject(errorThrow);
-          });
-     });
-};
+
 function pets() {
-     console.log("Hola pets");
+     // console.log("Hola pets");
      ajaxPromise('GET', 'JSON', '?module=home&op=pets')
           .then(function (data) {
                // console.log(data);
@@ -51,7 +36,7 @@ function pets() {
 }
 
 function categories() {
-     console.log("Hola categories");
+     // console.log("Hola categories");
      ajaxPromise('GET', 'JSON', '?module=home&op=categories')
           .then(function (data) {
                var htmlContent = '';
@@ -84,7 +69,7 @@ function categories() {
 }
 
 function operations() {
-     console.log("Hola operations");
+     // console.log("Hola operations");
      ajaxPromise('GET', 'JSON', '?module=home&op=operations')
           .then(function (data) {
                var htmlContent = '';
@@ -108,7 +93,7 @@ function operations() {
 }
 
 function cities() {
-     console.log("Hola cities");
+     // console.log("Hola cities");
      ajaxPromise('GET', 'JSON', '?module=home&op=cities')
           .then(function (data) {
                var htmlContent = '';
@@ -141,7 +126,7 @@ function cities() {
 }
 
 function services() {
-     console.log("Hola services");
+     // console.log("Hola services");
      ajaxPromise('GET', 'JSON', '?module=home&op=services')
           .then(function (data) {
                var htmlContent = '';
@@ -174,7 +159,7 @@ function services() {
 }
 
 function types() {
-     console.log("Hola types");
+     // console.log("Hola types");
      ajaxPromise('GET', 'JSON', '?module=home&op=types')
           .then(function (data) {
                var typeHouseHtml = '';
@@ -301,10 +286,6 @@ $(document).ready(function () {
      categories();
      cities();
      services();
-     // loadOperations();
-     // loadCategories();
-     // loadCities();
-     // loadServices();
      // loadVisited_houses();
      // clicks_home();
 
