@@ -50,8 +50,9 @@ function pets() {
           });
 }
 
-function loadCategories() {
-     ajaxPromise('GET', 'JSON', 'module/home/ctrl/ctrl_home.php?op=homePageCategory')
+function categories() {
+     console.log("Hola categories");
+     ajaxPromise('GET', 'JSON', '?module=home&op=categories')
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -82,8 +83,9 @@ function loadCategories() {
           });
 }
 
-function loadOperations() {
-     ajaxPromise('GET', 'JSON', 'module/home/ctrl/ctrl_home.php?op=homePageOperation')
+function operations() {
+     console.log("Hola operations");
+     ajaxPromise('GET', 'JSON', '?module=home&op=operations')
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -105,8 +107,9 @@ function loadOperations() {
           });
 }
 
-function loadCities() {
-     ajaxPromise('GET', 'JSON', 'module/home/ctrl/ctrl_home.php?op=homePageCity')
+function cities() {
+     console.log("Hola cities");
+     ajaxPromise('GET', 'JSON', '?module=home&op=cities')
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -137,8 +140,9 @@ function loadCities() {
           });
 }
 
-function loadServices() {
-     ajaxPromise('GET', 'JSON', 'module/home/ctrl/ctrl_home.php?op=homePageService')
+function services() {
+     console.log("Hola services");
+     ajaxPromise('GET', 'JSON', '?module=home&op=services')
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -169,13 +173,13 @@ function loadServices() {
           });
 }
 
-function carouselTypes() {
-     ajaxPromise('GET', 'JSON', 'module/home/ctrl/ctrl_home.php?op=Carrousel_Type')
+function types() {
+     console.log("Hola types");
+     ajaxPromise('GET', 'JSON', '?module=home&op=types')
           .then(function (data) {
                var typeHouseHtml = '';
                for (var row in data) {
-                    typeHouseHtml += `
-                                                
+                    typeHouseHtml += `                    
                         <div class='card_image'>
                             <div class='filter_type' id='${data[row].type_id}' >
                                     <img src='${data[row].type_image}' alt='${data[row].type_name}' >
@@ -291,8 +295,12 @@ function clicks_home() {
 
 
 $(document).ready(function () {
-     // carouselTypes();
      pets();
+     types();
+     operations();
+     categories();
+     cities();
+     services();
      // loadOperations();
      // loadCategories();
      // loadCities();

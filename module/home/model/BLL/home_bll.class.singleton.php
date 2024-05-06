@@ -27,6 +27,36 @@ class home_bll
 		return $this->dao->select_data_pets($this->db);
 	}
 
+
+	public function get_types_BLL()
+	{
+		// return "holaaaa BLL types";
+		return $this->dao->select_data_types($this->db);
+	}
+
+	public function get_operations_BLL()
+	{
+		// return "holaaaa BLL operations";
+		return $this->dao->select_data_operations($this->db);
+	}
+
+	public function get_categories_BLL()
+	{
+		// return "holaaaa BLL categories";
+		return $this->dao->select_data_categories($this->db);
+	}
+
+	public function get_cities_BLL()
+	{
+		// return "holaaaa BLL cities";
+		return $this->dao->select_data_cities($this->db);
+	}
+
+	public function get_services_BLL()
+	{
+		// return "holaaaa BLL cities";
+		return $this->dao->select_data_services($this->db);
+	}
 	// public function get_carrusel_BLL($array)
 	// {
 	// 	return $this->dao->select_data_carrusel($this->db, $array[0], $array[0]);

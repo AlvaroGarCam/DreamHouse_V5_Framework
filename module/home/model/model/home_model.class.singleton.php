@@ -29,6 +29,36 @@ class home_model
         // return "Home model get pets";
         return $this->bll->get_pets_BLL();
     }
+
+    public function get_types()
+    {
+        // return "Home model get types";
+        return $this->bll->get_types_BLL();
+    }
+
+    public function get_operations()
+    {
+        // return "Home model get operations";
+        return $this->bll->get_operations_BLL();
+    }
+
+    public function get_categories()
+    {
+        // return "Home model get operations";
+        return $this->bll->get_categories_BLL();
+    }
+
+    public function get_cities()
+    {
+        // return "Home model get cities";
+        return $this->bll->get_cities_BLL();
+    }
+
+    public function get_services()
+    {
+        // return "Home model get cities";
+        return $this->bll->get_services_BLL();
+    }
     // public function get_carrusel($array)
     // {
     //     return $this->bll->get_carrusel_BLL($array);

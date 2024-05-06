@@ -25,6 +25,52 @@ class home_dao
 
     }
 
+    public function select_data_types($db)
+    {
+        $sql = "SELECT * FROM type";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
+
+    public function select_data_operations($db)
+    {
+        $sql = "SELECT * FROM operation";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
+    public function select_data_categories($db)
+    {
+        $sql = "SELECT * FROM category";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
+    public function select_data_cities($db)
+    {
+        $sql = "SELECT * FROM city";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
+    public function select_data_services($db)
+    {
+        $sql = "SELECT * FROM service";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
     // public function select_data_carrusel($db) {
 
     //     $sql = "SELECT * FROM brand LIMIT 6";
