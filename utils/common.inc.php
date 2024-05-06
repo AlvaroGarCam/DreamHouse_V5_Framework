@@ -23,13 +23,16 @@ class common
           }
      }
 
-     public static function load_model($model, $function = null, $args = null)
+     public static function load_model($model, $function, $args)
      {
+          // return "hola common get pets";
           $dir = explode('_', $model);
           $path = constant('MODEL_' . strtoupper($dir[0])) . $model . '.class.singleton.php';
+
           if (file_exists($path)) {
                require_once ($path);
                if (method_exists($model, $function)) {
+                    // return "holaaaaaaaa";
                     $obj = $model::getInstance();
                     if ($args != null) {
                          return call_user_func(array($obj, $function), $args);
