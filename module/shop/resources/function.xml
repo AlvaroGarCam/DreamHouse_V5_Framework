@@ -9,8 +9,8 @@
         <uri>list</uri>
     </function>
     <function>
-        <name>filters</name>
-        <uri>filters</uri>
+        <name>get_filters</name>
+        <uri>get_filters</uri>
     </function>
     <function>
         <name>filters_search</name>
@@ -24,7 +24,7 @@
         <name>details_carousel</name>
         <uri>details_carousel</uri>
     </function>
-        <function>
+    <function>
         <name>most_visit</name>
         <uri>most_visit</uri>
     </function>

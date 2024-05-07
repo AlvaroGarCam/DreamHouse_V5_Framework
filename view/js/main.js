@@ -95,8 +95,8 @@ function load_menu() {
         console.log("No hay ningún usuario logueado");
         var menu_logout = $(
             '<li><img src="view/img/LOGO1.png" width="90px"></li>' +
-            '<li><a href="index.php?page=home" id="home_link"><h4>HOME</h4></a></li>' +
-            '<li><a href="index.php?page=shop"><h4>SHOP</h4></a></li>' +
+            '<li><a href="?module=home&op=view" id="home_link"><h4>HOME</h4></a></li>' +
+            '<li><a href="?module=shop&op=view"><h4>SHOP</h4></a></li>' +
             '<li>' +
             '<span class="register_login_buttons">' +
             '<a href="index.php?page=login"><button class="log">Login</button></a>' +
