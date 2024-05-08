@@ -31,7 +31,7 @@ function friendlyURL(url) {
             link += "/" + aux[1];
         }
     }
-    link = "http://localhost/Dreamhouse" + link;
+    link = "http://localhost/DreamHouse_V5_Framework" + link;
     // console.log(link);
     return link;
 }
@@ -96,13 +96,13 @@ function load_menu() {
     } else {
         console.log("No hay ningún usuario logueado");
         var menu_logout = $(
-            '<li><img src="view/img/LOGO1.png" width="90px"></li>' +
-            '<li><a href="?module=home" id="home_link"><h4>HOME</h4></a></li>' +
-            '<li><a href="?module=shop"><h4>SHOP</h4></a></li>' +
+            '<li><a href="http://localhost/DreamHouse_V5_Framework/home"><img src="view/img/LOGO1.png" width="90px"></a></li>' +
+            '<li><a href="' + friendlyURL('?module=home') + '" id="home_link"><h4>HOME</h4></a></li>' +
+            '<li><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></li>' +
             '<li>' +
             '<span class="register_login_buttons">' +
-            '<a href="' + friendlyURL("?module=home") + '"><button class="log">Login</button></a>' +
-            '<a href="' + friendlyURL("?module=shop") + '"><button class="reg">Register</button></a>' +
+            '<a href="index.php?page=login"><button class="log">Login</button></a>' +
+            '<a href="index.php?page=register"><button class="reg">Register</button></a>' +
             '</span>' +
             '</li>'
         );

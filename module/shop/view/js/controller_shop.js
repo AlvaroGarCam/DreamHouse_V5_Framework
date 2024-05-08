@@ -155,8 +155,6 @@ function like_reactive(house_id, access_token) {
     });
 }
 
-
-
 function clicks() {
     //detector del botón "details" cuando hacemos click
     $(document).on("click", ".details", function () {
@@ -432,7 +430,7 @@ function print_filters_shop(url) {
 //dinamica buena
 
 function print_filters() {
-    console.log("hola print_filters");
+    //console.log("hola print_filters");
     ajaxPromise('GET', 'JSON', '?module=shop&op=get_filters')
         .then(function (data) {
             // console.log(data);
@@ -1004,7 +1002,7 @@ function more_related_houses(house_id, pet_id) {
 $(document).ready(function () {
     // console.log("hola controller_shop.js");
     print_filters();
-    // print_order_by();
+    print_order_by(); //esto necesitará también el loadHouses() para funcionar bien
     // clicks();
     // filter_button();
     // filter_order();
