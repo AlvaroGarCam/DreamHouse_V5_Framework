@@ -192,7 +192,7 @@ function types() {
 
 function loadVisited_houses() {
      var visited_houses = localStorage.getItem('visited_houses');
-     console.log(visited_houses);
+     // console.log(visited_houses);
 
      if (visited_houses) {
           ajaxPromise('POST', 'JSON', '?module=home&op=visited_houses', { visited_houses })

@@ -38,7 +38,7 @@ class common
                     if ($args != null) {
                          return call_user_func(array($obj, $function), $args);
                     }
-                    return call_user_func(array($obj, $function));
+                    return call_user_func(array($obj, $function), null);
                }
           }
           throw new Exception();
