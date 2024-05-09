@@ -59,5 +59,11 @@ class controller_home
 		// echo json_encode("hola services controller home");
 		echo json_encode(common::load_model('home_model', 'get_services', null));
 	}
+	function visited_houses()
+	{
+		$visited_houses = $_POST['visited_houses'];
+		echo json_encode(common::load_model('home_model', 'visited_houses', $visited_houses));
+	}
+
 }
 ?>

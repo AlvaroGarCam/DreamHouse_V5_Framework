@@ -71,29 +71,33 @@ class home_dao
 
     }
 
-    // public function select_data_carrusel($db) {
 
-    //     $sql = "SELECT * FROM brand LIMIT 6";
+    public function visited_houses($db, $array)
+    {
+        $array = json_decode($array);
 
-    //     $stmt = $db -> ejecutar($sql);
-    //     return $db -> listar($stmt);
-    // }
+        $sql = "SELECT house.house_id, images.image_path 
+        FROM house
+        INNER JOIN images ON house.house_id = images.house_id
+        WHERE house.house_id IN (";
 
-    // public function select_data_category($db) {
+        for ($i = 0; $i < count($array); $i++) {
+            $sql .= "'" . $array[$i] . "'";
 
-    //     $sql = "SELECT * FROM category LIMIT 3";
+            if ($i < count($array) - 1) {
+                $sql .= ",";
+            }
+        }
 
-    //     $stmt = $db -> ejecutar($sql);
-    //     return $db -> listar($stmt);
-    // }
+        $sql .= ") GROUP BY house.house_id;";
 
-    // public function select_data_type($db) {
 
-    //     $sql = "SELECT * FROM type LIMIT 4";
 
-    //     $stmt = $db -> ejecutar($sql);
-    //     return $db -> listar($stmt);
-    // }
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+
 
 }
 ?>

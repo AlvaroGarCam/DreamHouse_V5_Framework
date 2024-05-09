@@ -28,4 +28,8 @@
           <name>services</name>
           <uri>services</uri>
      </function>
+     <function>
+          <name>visited_houses</name>
+          <uri>visited_houses</uri>
+     </function>
 </functions>

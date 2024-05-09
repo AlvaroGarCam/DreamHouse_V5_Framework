@@ -59,21 +59,12 @@ class home_model
         // return "Home model get cities";
         return $this->bll->get_services_BLL();
     }
-    // public function get_carrusel($array)
-    // {
-    //     return $this->bll->get_carrusel_BLL($array);
-    // }
 
-    // public function get_category()
-    // {
-    //     return $this->bll->get_category_BLL();
-    // }
-
-    // public function get_type()
-    // {
-    //     // return 'hola car type';
-    //     return $this->bll->get_type_BLL();
-    // }
+    public function visited_houses($array)
+    {
+        // return "Home model get cities";
+        return $this->bll->visited_houses_BLL($array);
+    }
 
 }
 ?>

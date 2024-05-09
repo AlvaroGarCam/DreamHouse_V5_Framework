@@ -36,6 +36,33 @@ h3 {
   border-radius: 20px;
 }
 
+.visited-houses-carousel {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cambiado de nowrap a wrap */
+  overflow-x: auto;
+  /* Agrega barras de desplazamiento horizontal si es necesario */
+}
+
+.visited-houses-carousel .card_image {
+  width: 300px;
+  /* Ancho de la tarjeta */
+  height: 200px;
+  /* Altura de la tarjeta */
+  margin: 10px;
+  /* Espacio entre las tarjetas */
+  flex: 0 0 auto;
+  /* Establece el tamaño flexible a automático */
+}
+
+.visited-houses-carousel .card_image img {
+  width: 100%;
+  /* Ancho de la imagen al 100% del contenedor */
+  height: 100%;
+  /* Altura de la imagen al 100% del contenedor */
+  object-fit: cover;
+  /* Ajusta la imagen dentro del contenedor */
+}
 
 .card .card_title {
   text-align: center;
@@ -824,4 +851,10 @@ input[type="radio"]:checked::before {
 #error_404_html img {
   max-width: 100%;
   height: auto;
+}
+
+
+#filter_order {
+  margin: 0 auto;
+  display: block;
 }

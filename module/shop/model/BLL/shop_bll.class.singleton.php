@@ -24,54 +24,41 @@ class shop_bll
 	{
 		return $this->dao->select_all_filters($this->db);
 	}
-	//    public function get_list_BLL($args) {
-	// 		return $this -> dao -> select_all_cars($this->db, $args[0], $args[1], $args[2]);
-	// 	}
 
-	//    public function get_details_carousel_BLL($args) {
-	// 		return $this -> dao -> select_details_images($this->db, $args);
-	// 	}
+	public function details_BLL($house_id)
+	{
+		$house_data = $this->dao->house_data_details($this->db, $house_id);
 
-	// 	public function get_filters_BLL() {
-	// 		return $this -> dao -> select_filters($this->db);
-	// 	}
+		return $house_data;
+	}
+	public function list_BLL($pagina)
+	{
+		return $this->dao->select_all_houses($this->db, $pagina);
+	}
 
-	// 	public function get_filters_search_BLL($args) {
-	// 		return $this -> dao -> filters($this->db, $args[0], $args[1], $args[2], json_decode($args[3]));
-	// 	}
+	public function pagination_BLL($filters_shop)
+	{
+		if (is_array($filters_shop)) {
+			return $this->dao->pagination($this->db, $filters_shop);
+		} else {
+			return $this->dao->pagination($this->db, null);
+		}
+	}
+	public function filters_shop_BLL($array)
+	{
+		return $this->dao->filters_shop($this->db, $array);
+	}
 
-	// 	public function get_most_visit_BLL($args) {
-	// 		return $this -> dao -> update_view($this->db, $args[0]);
-	// 	}
 
-	// 	public function get_count_BLL() {
-	// 		return $this -> dao -> select_count($this->db);
-	// 	}
+	public function count_related_houses_BLL($array)
+	{
+		return $this->dao->count_related_houses($this->db, $array);
+	}
 
-	// 	public function get_count_filters_BLL($args) {
-	// 		return $this -> dao -> select_count_filters($this->db, json_decode($args));
-	// 	}
+	public function related_houses_BLL($array)
+	{
+		return $this->dao->related_houses($this->db, $array);
+	}
 
-	// 	public function get_cars_BLL($args) {
-	// 		return $this -> dao -> select_cars($this->db, $args[0], $args[1], $args[2], $args[3], $args[4]);
-	// 	}
-
-	// 	public function get_load_likes_BLL($args) {
-
-	// 		$token = explode('"', $args);
-	// 		$decode = middleware::decode_username($token[1]);
-	// 		return $this -> dao -> select_load_likes($this->db, $decode);
-	// 	}
-
-	// 	public function get_control_likes_BLL($args) {
-
-	// 		$token = explode('"', $args[1]);
-	// 		$decode = middleware::decode_username($token[1]);
-
-	// 		if ($this -> dao -> select_likes($this->db, $args[0], $decode)) {
-	// 			return $this -> dao -> delete_likes($this->db, $args[0], $decode);
-	// 		}
-	// 		return $this -> dao -> insert_likes($this->db, $args[0], $decode);
-	// 	}
 }
 ?>

@@ -13,16 +13,16 @@
         <uri>get_filters</uri>
     </function>
     <function>
-        <name>filters_search</name>
-        <uri>filters_search</uri>
+        <name>filters_shop</name>
+        <uri>filters_shop</uri>
     </function>
     <function>
         <name>details</name>
         <uri>details</uri>
     </function>
     <function>
-        <name>details_carousel</name>
-        <uri>details_carousel</uri>
+        <name>pagination</name>
+        <uri>pagination</uri>
     </function>
     <function>
         <name>most_visit</name>
@@ -47,5 +47,13 @@
     <function>
         <name>control_likes</name>
         <uri>control_likes</uri>
+    </function>
+    <function>
+        <name>count_related_houses</name>
+        <uri>count_related_houses</uri>
+    </function>
+    <function>
+        <name>related_houses</name>
+        <uri>related_houses</uri>
     </function>
 </functions>

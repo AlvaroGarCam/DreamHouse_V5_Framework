@@ -57,19 +57,13 @@ class home_bll
 		// return "holaaaa BLL cities";
 		return $this->dao->select_data_services($this->db);
 	}
-	// public function get_carrusel_BLL($array)
-	// {
-	// 	return $this->dao->select_data_carrusel($this->db, $array[0], $array[0]);
-	// }
 
-	// public function get_category_BLL()
-	// {
-	// 	return $this->dao->select_data_category($this->db);
-	// }
 
-	// public function get_type_BLL()
-	// {
-	// 	return $this->dao->select_data_type($this->db);
-	// }
+
+	public function visited_houses_BLL($array)
+	{
+		// return "holaaaa BLL cities";
+		return $this->dao->visited_houses($this->db, $array);
+	}
 }
 ?>

@@ -34,192 +34,302 @@ class shop_dao
     }
 
 
-    // public function select_all_cars($db, $orderby, $total_prod, $items_page) {
 
-    //     $sql = "SELECT c.*, b.*, t.*, ct.* FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand " 
-    //     . "AND c.type = t.cod_type AND c.category = ct.cod_category ORDER BY $orderby visits DESC LIMIT $total_prod, $items_page";
+    public function house_data_details($db, $house_id)
+    {
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
+        $sql = "SELECT
+    h.*,
+    c.city_name,
+    p.pet_name,
+    p.pet_image,
+    (
+        SELECT GROUP_CONCAT(image_id) FROM images WHERE house_id = h.house_id
+    ) AS image_ids,
+    (
+        SELECT GROUP_CONCAT(image_path) FROM images WHERE house_id = h.house_id
+    ) AS image_paths,
+    GROUP_CONCAT(DISTINCT cat.category_name) AS category_names,
+    GROUP_CONCAT(DISTINCT t.type_name) AS type_names,
+    GROUP_CONCAT(DISTINCT s.service_name) AS service_names,
+    GROUP_CONCAT(DISTINCT o.operation_name) AS operation_names
+FROM
+    house h
+    JOIN city c ON h.city_id = c.city_id
+    JOIN pet p ON h.pet_id = p.pet_id
+    LEFT JOIN house_category hc ON h.house_id = hc.house_id
+    LEFT JOIN category cat ON hc.category_id = cat.category_id
+    LEFT JOIN house_type ht ON h.house_id = ht.house_id
+    LEFT JOIN type t ON ht.type_id = t.type_id
+    LEFT JOIN house_service hs ON h.house_id = hs.house_id
+    LEFT JOIN service s ON hs.service_id = s.service_id
+    LEFT JOIN house_operation ho ON h.house_id = ho.house_id
+    LEFT JOIN operation o ON ho.operation_id = o.operation_id
+WHERE
+    h.house_id = '$house_id';";
 
-    // function select_details($db, $id){
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
-    //     $sql = "SELECT c.*, b.*, t.*, ct.* FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand "
-    //     . "AND c.type = t.cod_type AND c.category = ct.cod_category WHERE c.id = '$id'";
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
 
-    // public function select_details_images($db, $id){
+    public function select_all_houses($db, $pagina)
+    {
 
-    //     $details = self::select_details($db, $id);
-    //     $sql = "SELECT image_name FROM car_images WHERE id_car = '$id'";
+        $offset = ($pagina - 1) * 3; // Si $pagina es 1, el offset será 0; si es 2, el offset será 3, etc.
 
-    //     $stmt = $db->ejecutar($sql);
+        $sql = "SELECT
+            h.*,
+            c.city_name,
+            p.pet_name,
+            p.pet_image,
+            i.image_path,
+            GROUP_CONCAT(DISTINCT cat.category_name) AS category_names,
+            GROUP_CONCAT(DISTINCT t.type_name) AS type_names,
+            GROUP_CONCAT(DISTINCT s.service_name) AS service_names,
+            GROUP_CONCAT(DISTINCT o.operation_name) AS operation_names
+            FROM
+            house h
+            JOIN city c ON h.city_id = c.city_id
+            JOIN pet p ON h.pet_id = p.pet_id
+            LEFT JOIN images i ON h.house_id = i.house_id
+            LEFT JOIN house_category hc ON h.house_id = hc.house_id
+            LEFT JOIN category cat ON hc.category_id = cat.category_id
+            LEFT JOIN house_type ht ON h.house_id = ht.house_id
+            LEFT JOIN type t ON ht.type_id = t.type_id
+            LEFT JOIN house_service hs ON h.house_id = hs.house_id
+            LEFT JOIN service s ON hs.service_id = s.service_id
+            LEFT JOIN house_operation ho ON h.house_id = ho.house_id
+            LEFT JOIN operation o ON ho.operation_id = o.operation_id
+            GROUP BY h.house_id
+            LIMIT 3
+            OFFSET $offset;"; // Concatenar $offset a la consulta SQL
 
-    //     $array = array();
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
-    //     if (mysqli_num_rows($stmt) > 0) {
-    //         foreach ($stmt as $row) {
-    //             array_push($array, $row);
-    //         }
-    //     }
 
-    //     $rdo = array();
-    //     $rdo[0] = $details;
-    //     $rdo[1][] = $array;
+    public function pagination($db, $filters_shop)
+    {
+        if (isset($filters_shop) && !empty($filters_shop)) {
+            $subquery = "(SELECT
+                            h.*,
+                            c.city_name,
+                            p.pet_name,
+                            p.pet_image,
+                            i.image_path,
+                            GROUP_CONCAT(DISTINCT cat.category_name) AS category_names,
+                            GROUP_CONCAT(DISTINCT t.type_name) AS type_names,
+                            GROUP_CONCAT(DISTINCT s.service_name) AS service_names,
+                            GROUP_CONCAT(DISTINCT o.operation_name) AS operation_names
+                        FROM
+                            house h
+                        JOIN city c ON h.city_id = c.city_id
+                        JOIN pet p ON h.pet_id = p.pet_id
+                        LEFT JOIN images i ON h.house_id = i.house_id
+                        LEFT JOIN house_category hc ON h.house_id = hc.house_id
+                        LEFT JOIN category cat ON hc.category_id = cat.category_id
+                        LEFT JOIN house_type ht ON h.house_id = ht.house_id
+                        LEFT JOIN type t ON ht.type_id = t.type_id
+                        LEFT JOIN house_service hs ON h.house_id = hs.house_id
+                        LEFT JOIN service s ON hs.service_id = s.service_id
+                        LEFT JOIN house_operation ho ON h.house_id = ho.house_id
+                        LEFT JOIN operation o ON ho.operation_id = o.operation_id";
 
-    //     return $rdo;
-    //     // return $db->listar($array);
-    //     // return $db->listar($rdo);
-    // }
+            $conditions = array();
+            foreach ($filters_shop as $filter) {
+                $prefijo = "";
+                switch ($filter[0]) {
+                    case "category":
+                        $prefijo = "cat";
+                        break;
+                    case "type":
+                        $prefijo = "t";
+                        break;
+                    case "operation":
+                        $prefijo = "o";
+                        break;
+                    case "city":
+                        $prefijo = "c";
+                        break;
+                    case "service":
+                        $prefijo = "s";
+                        break;
+                    case "pet":
+                        $prefijo = "p";
+                        break;
+                }
+                $conditions[] = "$prefijo." . $filter[0] . "_id=" . $filter[1];
+            }
 
-    // public function select_filters($db) {
+            $where_clause = implode(" AND ", $conditions);
+            $subquery .= " WHERE " . $where_clause;
+            $subquery .= " GROUP BY h.house_id) AS subquery";
+            $sql = "SELECT COUNT(*) AS contador FROM $subquery;";
+        } else {
+            $sql = "SELECT COUNT(*) as contador FROM house;";
+        }
 
-    //     $array_filters = array('type_name', 'category_name', 'color', 'extras', 'doors');  // 'brand_name', 
-    //     $array_return = array();
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
-    //     foreach ($array_filters as $row) {
 
-    //         $sql = 'SELECT DISTINCT ' . $row . ' FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand AND c.type = t.cod_type AND c.category = ct.cod_category';
 
-    //         $stmt = $db->ejecutar($sql);
 
-    //         if (mysqli_num_rows($stmt) > 0) {
-    //             while ($row_inner[] = mysqli_fetch_assoc($stmt)) {
-    //                 $array_return[$row] = $row_inner;
-    //             }
-    //             unset($row_inner);
-    //         }
-    //     }
-    //     return $array_return;
-    // }
 
-    // function sql_filter($filters){
-    //     $continue = "";
-    //     $cont = 0;
-    //     $cont1 = 0;
-    //     $cont2 = 0;
-    //     $select = ' WHERE ';
-    //     foreach ($filters as $key => $row) {
-    //         foreach ( $row as $key => $row_inner) {
-    //             if ($cont == 0) {
-    //                 foreach ($row_inner as $value) {
-    //                     if ($cont1 == 0) {
-    //                         $continue = $key . ' IN ("'. $value . '"';
-    //                     }else {
-    //                         $continue = $continue  . ', "' . $value . '"';
-    //                     }
-    //                     $cont1++;
-    //                 }
-    //                 $continue = $continue . ')';
-    //             }else {
-    //                 foreach ($row_inner as $value)  {
-    //                     if ($cont2 == 0) {
-    //                         $continue = ' AND ' . $key . ' IN ("' . $value . '"';
-    //                     }else {
-    //                         $continue = $continue . ', "' . $value . '"';
-    //                     }
-    //                     $cont2++;
-    //                 }
-    //                 $continue = $continue . ')';
-    //             }
-    //         }
-    //         $cont++;
-    //         $cont2 = 0;
-    //         $select = $select . $continue;
-    //     }
-    //     return $select;
-    // }
+    public function filters_shop($db, $array)
+    {
+        $filters_shop = $array[0];
+        $pagina = $array[1];
 
-    // public function filters($db, $orderby, $total_prod, $items_page, $query) {
+        $offset = ($pagina - 1) * 3;
 
-    //     $sql_filter = self::sql_filter($query);
+        // Verificar si filter_order está presente y extraerlo si es necesario
+        $filter_order = null;
+        if (!empty($filters_shop) && $filters_shop[count($filters_shop) - 1][0] === "filter_order") {
+            $filter_order = array_pop($filters_shop);
+        }
 
-    //     $sql = "SELECT c.*, b.*, t.*, ct.* FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand "
-    //     . "AND c.category = ct.cod_category AND c.type = t.cod_type $sql_filter ORDER BY $orderby visits DESC LIMIT $total_prod, $items_page";
+        $sql = "SELECT
+                h.*,
+                c.city_name,
+                p.pet_name,
+                p.pet_image,
+                i.image_path,
+                GROUP_CONCAT(DISTINCT cat.category_name) AS category_names,
+                GROUP_CONCAT(DISTINCT t.type_name) AS type_names,
+                GROUP_CONCAT(DISTINCT s.service_name) AS service_names,
+                GROUP_CONCAT(DISTINCT o.operation_name) AS operation_names
+                FROM
+                house h
+                JOIN city c ON h.city_id = c.city_id
+                JOIN pet p ON h.pet_id = p.pet_id
+                LEFT JOIN images i ON h.house_id = i.house_id
+                LEFT JOIN house_category hc ON h.house_id = hc.house_id
+                LEFT JOIN category cat ON hc.category_id = cat.category_id
+                LEFT JOIN house_type ht ON h.house_id = ht.house_id
+                LEFT JOIN type t ON ht.type_id = t.type_id
+                LEFT JOIN house_service hs ON h.house_id = hs.house_id
+                LEFT JOIN service s ON hs.service_id = s.service_id
+                LEFT JOIN house_operation ho ON h.house_id = ho.house_id
+                LEFT JOIN operation o ON ho.operation_id = o.operation_id";
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
+        // Añadir condiciones según los filtros
+        for ($i = 0; $i < count($filters_shop); $i++) {
+            if ($filters_shop[$i][0] === "category") {
+                $prefijo = "cat";
+            }
+            if ($filters_shop[$i][0] === "type") {
+                $prefijo = "t";
+            }
+            if ($filters_shop[$i][0] === "operation") {
+                $prefijo = "o";
+            }
+            if ($filters_shop[$i][0] === "city") {
+                $prefijo = "c";
+            }
+            if ($filters_shop[$i][0] === "service") {
+                $prefijo = "s";
+            }
+            if ($filters_shop[$i][0] === "pet") {
+                $prefijo = "p";
+            }
+            if ($i == 0) {
+                $sql .= " WHERE " . $prefijo . "." . $filters_shop[$i][0] . "_id=" . $filters_shop[$i][1];
+            } else {
+                $sql .= " AND " . $prefijo . "." . $filters_shop[$i][0] . "_id=" . $filters_shop[$i][1];
+            }
+        }
+        $sql .= " GROUP BY h.house_id";
+        // Añadir la cláusula ORDER BY según filter_order
+        if ($filter_order !== null) {
+            $order_field = null;
+            switch ($filter_order[0]) {
+                case "1":
+                    $order_field = "h.price ASC";
+                    break;
+                case "2":
+                    $order_field = "h.price DESC";
+                    break;
+                case "3":
+                    $order_field = "h.num_rooms ASC";
+                    break;
+                case "4":
+                    $order_field = "h.num_rooms DESC";
+                    break;
+                default:
+                    $order_field = "h.house_id";
+                    break;
+            }
+            $sql .= " ORDER BY $order_field";
+        } else {
+            $sql .= " ORDER BY h.house_id";
+        }
 
-    // public function maps_details($db, $id){
+        $sql .= " LIMIT 3
+                OFFSET $offset;";
 
-    //     $sql = "SELECT id, city, lat, lng FROM cars WHERE id = '$id'";
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
-    // public function update_view($db, $id){
 
-    //     $sql = "UPDATE cars c SET visits = visits + 1 WHERE id = '$id'";
+    public function count_related_houses($db, $array)
+    {
+        $house_id = $array[0];
+        $pet_id = $array[1];
+        $sql = "SELECT COUNT(*) AS contador
+                    FROM house h
+				WHERE h.house_id != '$house_id' 
+                    AND h.pet_id = '$pet_id'
+                    ORDER BY h.house_id";
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
-    // public function select_count($db){
+    public function related_houses($db, $array)
+    {
+        $house_id = $array[0];
+        $pet_id = $array[1];
+        $offset = $array[2];
 
-    //     $sql = "SELECT COUNT(*) AS num_cars FROM cars";
+        $sql = "SELECT
+                    h.*,
+                    c.city_name,
+                    p.pet_name,
+                    p.pet_image,
+                    i.image_path,
+                    GROUP_CONCAT(DISTINCT cat.category_name) AS category_names,
+                    GROUP_CONCAT(DISTINCT t.type_name) AS type_names,
+                    GROUP_CONCAT(DISTINCT s.service_name) AS service_names,
+                    GROUP_CONCAT(DISTINCT o.operation_name) AS operation_names
+                    FROM
+                    house h
+                    JOIN city c ON h.city_id = c.city_id
+                    JOIN pet p ON h.pet_id = p.pet_id
+                    LEFT JOIN images i ON h.house_id = i.house_id
+                    LEFT JOIN house_category hc ON h.house_id = hc.house_id
+                    LEFT JOIN category cat ON hc.category_id = cat.category_id
+                    LEFT JOIN house_type ht ON h.house_id = ht.house_id
+                    LEFT JOIN type t ON ht.type_id = t.type_id
+                    LEFT JOIN house_service hs ON h.house_id = hs.house_id
+                    LEFT JOIN service s ON hs.service_id = s.service_id
+                    LEFT JOIN house_operation ho ON h.house_id = ho.house_id
+                    LEFT JOIN operation o ON ho.operation_id = o.operation_id
+                    WHERE h.house_id != '$house_id' 
+                    AND h.pet_id = '$pet_id'
+                    GROUP BY h.house_id
+                    LIMIT 2
+                    OFFSET $offset;";
 
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
-
-    // public function select_count_filters($db, $query){
-
-    //     $filters = self::sql_filter($query);
-
-    //     $sql = "SELECT COUNT(*) AS num_cars FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand "
-    //     . "AND c.category = ct.cod_category AND c.type = t.cod_type $filters";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
-
-    // public function select_cars($db, $category, $type, $id, $loaded, $items){
-
-    //     $sql = "SELECT c.*, b.*, t.*, ct.* FROM cars c INNER JOIN brand b INNER JOIN type t INNER JOIN category ct ON c.brand = b.cod_brand "
-    //     . "AND c.type = t.cod_type AND c.category = ct.cod_category WHERE c.category = '$category' AND c.id <> $id OR c.type = '$type' AND c.id <> $id LIMIT $loaded, $items";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
-
-    // public function select_load_likes($db, $username){
-
-    //     $sql = "SELECT id_car FROM likes WHERE username='$username'";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
-
-    // public function select_likes($db, $id, $username){
-
-    //     $sql = "SELECT username, id_car FROM likes WHERE username='$username' AND id_car='$id'";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return $db->listar($stmt);
-    // }
-
-    // public function insert_likes($db, $id, $username){
-
-    //     $sql = "INSERT INTO likes (username, id_car) VALUES ('$username','$id')";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return "like";
-    // }
-
-    // function delete_likes($db, $id, $username){
-
-    //     $sql = "DELETE FROM likes WHERE username='$username' AND id_car='$id'";
-
-    //     $stmt = $db->ejecutar($sql);
-    //     return "unlike";
-    // }
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 }
 
 ?>

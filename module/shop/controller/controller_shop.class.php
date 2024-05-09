@@ -29,48 +29,46 @@ class controller_shop
         echo json_encode(common::load_model('shop_model', 'get_filters', null));
     }
 
+    function details()
+    {
+        $house_id = $_POST['house_id'];
+        echo json_encode(common::load_model('shop_model', 'details', $house_id));
+    }
 
-    // function list() {
-    //     echo json_encode(common::load_model('shop_model', 'get_list', [$_POST['orderby'], $_POST['total_prod'], $_POST['items_page']]));
-    // }
+    function list()
+    {
+        $pagina = $_POST['pagina'];
+        echo json_encode(common::load_model('shop_model', 'list', $pagina));
+    }
 
-    // function details_carousel() {
-    //     echo json_encode(common::load_model('shop_model', 'get_details_carousel', $_GET['id']));
-    // }
+    function filters_shop()
+    {
+        $pagina = $_POST['pagina'];
+        $filters_shop = $_POST['filters_shop'];
+        echo json_encode(common::load_model('shop_model', 'filters_shop', [$filters_shop, $pagina]));
+    }
+    function pagination()
+    {
+        $filters_shop = isset($_POST['filters_shop']) ? $_POST['filters_shop'] : null;
 
-    // function filters() {
-    //     echo json_encode(common::load_model('shop_model', 'get_filters'));
-    // }
+        echo json_encode(common::load_model('shop_model', 'pagination', $filters_shop));
+    }
+    function count_related_houses()
+    {
+        $house_id = $_POST['house_id'];
+        $pet_id = $_POST['pet_id'];
 
-    // function filters_search() {
-    //     echo json_encode(common::load_model('shop_model', 'get_filters_search', [$_POST['orderby'], $_POST['total_prod'],$_POST['items_page'], $_POST['filters']]));
-    // }
+        echo json_encode(common::load_model('shop_model', 'count_related_houses', [$house_id, $pet_id]));
+    }
 
-    // function most_visit() {
-    //     echo json_encode(common::load_model('shop_model', 'get_most_visit_BLL', $_POST['id']));
-    // }
+    function related_houses()
+    {
+        $house_id = $_POST['house_id'];
+        $pet_id = $_POST['pet_id'];
+        $offset = $_POST['offset'];
 
-    // function count() {
-    //     echo json_encode(common::load_model('shop_model', 'get_count'));
-    // }
-
-    // function count_filters() {
-    //     echo json_encode(common::load_model('shop_model', 'get_count_filters', $_POST['filters']));
-    // }
-
-    // function cars() {
-    //     // echo json_encode('Hola');
-    //     echo json_encode(common::load_model('shop_model', 'get_cars', [$_POST['category'], $_POST['type'], $_POST['id'], $_POST['loaded'], $_POST['items']]));
-    // }
-
-    // function load_likes() {
-    //     // echo json_encode($_POST['token']);
-    //     echo json_encode(common::load_model('shop_model', 'get_load_likes', $_POST['token']));
-    // }
-
-    // function control_likes() {
-    //     echo json_encode(common::load_model('shop_model', 'get_control_likes', [$_POST['id'], $_POST['token']]));
-    // }
+        echo json_encode(common::load_model('shop_model', 'related_houses', [$house_id, $pet_id, $offset]));
+    }
 
 }
 ?>
