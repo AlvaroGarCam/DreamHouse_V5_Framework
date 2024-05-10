@@ -1,5 +1,5 @@
 function load_types() {
-    ajaxPromise('POST', 'JSON', '?module=search&op=load_types')
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=search'), { op: 'load_types' })
         .then(function (data) {
             // console.log(data);
             // return false;
@@ -17,7 +17,7 @@ function load_pets() {
     var type_id = JSON.parse(localStorage.getItem('type_id'));
     // console.log(type_id);
     // return false;
-    ajaxPromise('POST', 'JSON', '?module=search&op=search_pet', { 'type_id': type_id })
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=search'), { 'type_id': type_id, op: 'search_pet' })
         .then(function (data) {
             // console.log(data);
             // return false;
@@ -65,7 +65,8 @@ function autocomplete() {
         $('#search_auto').empty();
         // console.log(sdata);
         // return false;
-        ajaxPromise('POST', 'JSON', '?module=search&op=autocomplete', { 'sdata': sdata })
+        ajaxPromise('POST', 'JSON', friendlyURL('?module=search'), { 'sdata': sdata, op: 'autocomplete' })
+
             .then(function (data) {
                 // console.log(data);
                 // return false;
@@ -141,7 +142,7 @@ function button_search() {
             localStorage.removeItem('search_pet');
         }
         setTimeout(function () {
-            window.location.href = '?module=shop';
+            window.location.href = friendlyURL('?module=shop');
         }, 1000);
         // console.log(search);
         // return false;

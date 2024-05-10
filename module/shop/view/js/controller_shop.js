@@ -20,12 +20,11 @@ function loadHouses() {
     $('#details-shop').hide();
     $('#content_shop_houses').hide();
 
-    if (filters_home !== false) {
-        localStorage.removeItem('filters_shop');
+    if (filters_home !== false && filters_shop === false) {
         // console.log('Hola Ctrl_shop (salto del home)');
         // print_filter_home_jump(('module/shop/ctrl/ctrl_shop.php?op=redirect_home'));
         localStorage.setItem('filters_shop', localStorage.getItem('filters_home'));
-        localStorage.removeItem('filters_home');
+        // localStorage.removeItem('filters_home');
         print_filters_shop();
     }
     if (details_visited_houses !== false) {
@@ -80,8 +79,7 @@ function loadHouses() {
 //list del shop
 function List() {
     var pagina = JSON.parse(localStorage.getItem('pagina'));
-    ajaxPromise('POST', 'JSON', '?module=shop&op=list', { 'pagina': pagina })
-
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'pagina': pagina, op: 'list' })
         .then(function (data) {
             // console.log(data);
             // return false;
@@ -242,7 +240,7 @@ function loadDetails(id_house) {
 
     var initialLikeButton = $('#' + house_id + '.like').clone(); // Clonar el botón "like" inicial
 
-    ajaxPromise('POST', 'JSON', '?module=shop&op=details', { 'house_id': house_id })
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'house_id': house_id, op: 'details' })
         .then(function (data) {
             var imagePaths = data[0].image_paths;
             var imagePathsArray = imagePaths.split(',');
@@ -417,10 +415,15 @@ function print_filters_shop() {
     var pagina = JSON.parse(localStorage.getItem('pagina'));
     var filters_shop = JSON.parse(localStorage.getItem('filters_shop'));
 
-    ajaxPromise('POST', 'JSON', '?module=shop&op=filters_shop', { 'filters_shop': filters_shop, 'pagina': pagina })
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'filters_shop': filters_shop, 'pagina': pagina, op: 'filters_shop' })
+
         .then(function (shop) {
             // console.log(shop);
             // return false;
+            if (localStorage.getItem('filters_shop')) {
+                highlight_filters_shop();
+            }
+
             $('#content_shop_houses').empty();
             $('.date_house, .date_img').empty();
             $('#details_shop').empty();
@@ -457,9 +460,7 @@ function print_filters_shop() {
                 }
                 mapBox_all(shop);
             }
-            if (localStorage.getItem('filters_shop')) {
-                highlight_filters_shop();
-            }
+
 
         }).catch(function () {
             console.error('Error al cargar las casas.');
@@ -468,7 +469,7 @@ function print_filters_shop() {
 
 function print_filters() {
     //console.log("hola print_filters");
-    ajaxPromise('GET', 'JSON', '?module=shop&op=get_filters')
+    ajaxPromise('GET', 'JSON', friendlyURL('?module=shop'), { op: 'get_filters' })
         .then(function (data) {
             // console.log(data);
             // return false;
@@ -683,8 +684,9 @@ function filter_button() {
     if (localStorage.getItem('filters_shop')) {
         var highlightedFilters = JSON.parse(localStorage.getItem('filters_shop'));
         filters_shop = filters_shop.concat(highlightedFilters);
-        filter_change = true;
+        filter_change = true; // Añadir esta línea para indicar un cambio en los filtros
     }
+
 
     $(document).on('click', '.filter_button', function () {
         if (!filter_change) {
@@ -724,7 +726,7 @@ function filter_button() {
                 filters_shop.push(['filter_order', localStorage.getItem('filter_order')])
             }
             //Aqui borrar todos los filtros individuales
-            localStorage.removeItem('filters_home');
+            // localStorage.removeItem('filters_home');
             localStorage.removeItem('filter_type');
             localStorage.removeItem('filter_operation');
             localStorage.removeItem('filter_category');
@@ -938,7 +940,7 @@ function pagination() {
     // console.log(filters_shop);
 
     // Enviar un objeto con la clave filters_shop
-    ajaxPromise('POST', 'JSON', '?module=shop&op=pagination', { 'filters_shop': filters_shop })
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'filters_shop': filters_shop, op: 'pagination' })
         .then(function (data) {
             // console.log(data);
             // return false;
@@ -1035,14 +1037,14 @@ function more_related_houses(house_id, pet_id) {
     var offset = localStorage.getItem('details_offset') || 0;
     // Incrementar offset en 2 porque lo inicializamos a -2 para que la primera vez sea 0 y luego ya pase a 2, 4, 6...
 
-    ajaxPromise('POST', 'JSON', '?module=shop&op=count_related_houses', { 'house_id': house_id, 'pet_id': pet_id })
+    ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'house_id': house_id, 'pet_id': pet_id, op: 'count_related_houses' })
         .then(function (data) {
             // console.log(data[0].contador);
             // return false;
             var num_related_houses = data[0].contador;
 
             // Cargar las casas relacionadas solo si hay más disponibles
-            ajaxPromise('POST', 'JSON', '?module=shop&op=related_houses', { 'house_id': house_id, 'pet_id': pet_id, 'offset': offset })
+            ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'house_id': house_id, 'pet_id': pet_id, 'offset': offset, op: 'related_houses' })
                 .then(function (relatedData) {
                     //Incrementamos la variable offset para tenerla en cuenta para el siguiente click o para ocultar el botón directamente
                     offset = parseInt(offset) + 2;

@@ -1,7 +1,7 @@
 
 function pets() {
      // console.log("Hola pets");
-     ajaxPromise('GET', 'JSON', '?module=home&op=pets')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'pets' })
           .then(function (data) {
                // console.log(data);
                // return false;
@@ -37,7 +37,7 @@ function pets() {
 
 function categories() {
      // console.log("Hola categories");
-     ajaxPromise('GET', 'JSON', '?module=home&op=categories')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'categories' })
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -70,7 +70,7 @@ function categories() {
 
 function operations() {
      // console.log("Hola operations");
-     ajaxPromise('GET', 'JSON', '?module=home&op=operations')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'operations' })
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -94,7 +94,7 @@ function operations() {
 
 function cities() {
      // console.log("Hola cities");
-     ajaxPromise('GET', 'JSON', '?module=home&op=cities')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'cities' })
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -127,7 +127,7 @@ function cities() {
 
 function services() {
      // console.log("Hola services");
-     ajaxPromise('GET', 'JSON', '?module=home&op=services')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'services' })
           .then(function (data) {
                var htmlContent = '';
                for (var row in data) {
@@ -160,7 +160,7 @@ function services() {
 
 function types() {
      // console.log("Hola types");
-     ajaxPromise('GET', 'JSON', '?module=home&op=types')
+     ajaxPromise('POST', 'JSON', friendlyURL('?module=home'), { op: 'types' })
           .then(function (data) {
                var typeHouseHtml = '';
                for (var row in data) {
@@ -241,9 +241,10 @@ function clicks_home() {
                filters_home.push([key, value]);
           }
           localStorage.removeItem('filters_home');
+          localStorage.removeItem('filters_shop');
           localStorage.setItem('filters_home', JSON.stringify(filters_home));
           setTimeout(function () {
-               window.location.href = '?module=shop';
+               window.location.href = friendlyURL('?module=shop')
           }, 1000);
      }
 
@@ -291,7 +292,7 @@ function clicks_home() {
           localStorage.removeItem('details_visited_houses');
           localStorage.setItem('details_visited_houses', JSON.stringify(id));
           setTimeout(function () {
-               window.location.href = '?module=shop';
+               window.location.href = friendlyURL('?module=shop')
           }, 1000);
      });
 }
