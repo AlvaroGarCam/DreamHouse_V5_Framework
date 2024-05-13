@@ -177,9 +177,6 @@ WHERE
     }
 
 
-
-
-
     public function filters_shop($db, $array)
     {
         $filters_shop = $array[0];
