@@ -30,16 +30,16 @@ class login_bll
 			return 'error';
 		} else {
 			$this->dao->insert_user($this->db, $args[0], $hashed_pass, $args[2], $avatar, $token_email);
-			return 'usuario insertado en la base de datos';
-			// $message = [
-			// 	'type' => 'validate',
-			// 	'token' => $token_email,
-			// 	'toEmail' => $args[0]
-			// ];
-			// $email = json_decode(mail::send_email($message), true);
-			// if (!empty($email)) {
-			// 	return;
-			// }
+			// return 'usuario insertado en la base de datos';
+			$message = [
+				'type' => 'validate',
+				'token' => $token_email,
+				'toEmail' => $args[2]
+			];
+			$email = json_decode(mail::send_email($message), true);
+			if (!empty($email)) {
+				return;
+			}
 		}
 	}
 

@@ -5,8 +5,6 @@ class mail
 {
 
 
-
-
     public static function send_resend($data)
     {
 
@@ -14,9 +12,9 @@ class mail
         try {
             $result = $resend->emails->send([
                 'from' => 'Acme <onboarding@resend.dev>',
-                'to' => ['alvgarcam@alu.edu.gva.es'],
-                'subject' => 'Hello world',
-                'html' => '<strong>It works!</strong>',
+                'to' => $data['to'],
+                'subject' => $data['inputMatter'],
+                'html' => $data['inputMessage'],
             ]);
         } catch (\Exception $e) {
             exit('Error: ' . $e->getMessage());
@@ -27,19 +25,21 @@ class mail
         // return $result();
     }
 
-    public static function send_email($email)
+    public static function send_email($message)
     {
-        switch ($email['type']) {
+        switch ($message['type']) {
             case 'validate';
-                $email['inputMatter'] = 'Email verification';
-                $email['inputMessage'] = "<h2>Email verification.</h2><a href='http://localhost/DreamHouse_V5_Framework/login/verify/$email[token]'>Click here for verify your email.</a>";
+                $message['to'] = $message['toEmail'];
+                $message['inputMatter'] = 'Email verification';
+                $message['inputMessage'] = "<h2>Email verification.</h2><a href='http://localhost/DreamHouse_V5_Framework/login/verify/$message[token]'>Click here for verify your email.</a>";
                 break;
             case 'recover';
-                $email['inputMatter'] = 'Recover password';
-                $email['inputMessage'] = "<a href='http://localhost/DreamHouse_V5_Framework/login/recover/$email[token]'>Click here for recover your password.</a>";
+                $message['to'] = $message['toEmail'];
+                $message['inputMatter'] = 'Recover password';
+                $message['inputMessage'] = "<a href='http://localhost/DreamHouse_V5_Framework/login/recover/$message[token]'>Click here for recover your password.</a>";
                 break;
         }
-        return self::send_resend($email);
+        return self::send_resend($message);
     }
 
 }

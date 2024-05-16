@@ -678,7 +678,6 @@ function charge_views() {
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
     let path = window.location.pathname.split('/');
-
     if (path[5] === 'recover') {
         window.location.href = friendlyURL("?module=login&op=recover_view");
         localStorage.setItem("token_email", path[6]);

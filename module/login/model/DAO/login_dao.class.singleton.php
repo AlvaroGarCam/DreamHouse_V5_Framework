@@ -17,7 +17,7 @@ class login_dao
     public function select_user($db, $username, $email)
     {
         $sql = "SELECT * 
-        FROM users 
+        FROM user
         WHERE username = '$username' 
         OR email = '$email'";
 
@@ -27,8 +27,8 @@ class login_dao
     public function insert_user($db, $username_reg, $hashed_pass, $email_reg, $avatar, $token_email)
     {
 
-        $sql = "INSERT INTO users(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `is_active`) 
-            VALUES ( $username_reg, $hashed_pass, $email_reg, 'client', $avatar, $token_email, 0);";
+        $sql = "INSERT INTO user(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `is_active`) 
+            VALUES ( '$username_reg', '$hashed_pass', '$email_reg', 'client', '$avatar', '$token_email', 0);";
 
         $db->ejecutar($sql);
         return;
