@@ -101,8 +101,8 @@ function load_menu() {
             '<li><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></li>' +
             '<li>' +
             '<span class="register_login_buttons">' +
-            '<a href="index.php?page=login"><button class="log">Login</button></a>' +
-            '<a href="index.php?page=register"><button class="reg">Register</button></a>' +
+            '<a href="' + friendlyURL('?module=login') + '"><button class="log">Login</button></a>' +
+            // '<a href="' + friendlyURL('?module=login') + '"><button class="reg">Register</button></a>' +
             '</span>' +
             '</li>'
         );

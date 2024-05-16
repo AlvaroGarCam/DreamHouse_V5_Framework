@@ -1,0 +1,133 @@
+#login_form .sign-in-htm {
+     max-width: 400px;
+     margin: 0 auto;
+     padding: 20px;
+     background: #f7f7f7;
+     border-radius: 8px;
+     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+#login_form .label {
+     font-size: 16px;
+     color: #333;
+     margin-bottom: 8px;
+}
+
+#login_form .input {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 20px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     font-size: 16px;
+}
+
+#login_form .error {
+     color: #ff0000;
+     font-size: 14px;
+}
+
+#login_form .button {
+     background-color: #4caf50;
+     color: white;
+     padding: 10px 20px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 16px;
+}
+
+#login_form .button:hover {
+     background-color: #45a049;
+}
+
+#login_form a {
+     color: #4caf50;
+     text-decoration: none;
+}
+
+#login_form a:hover {
+     text-decoration: underline;
+}
+
+
+.form-register {
+     background-color: #e4dac4;
+}
+
+.form-title {
+     text-align: center;
+}
+
+.sign-up-htm {
+     max-width: 400px;
+     margin: 0 auto;
+     padding: 20px;
+     background: #f7f7f7;
+     border-radius: 8px;
+     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.group {
+     margin-bottom: 15px;
+}
+
+.label {
+     font-size: 16px;
+     color: #333;
+}
+
+.input {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 20px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     font-size: 16px;
+}
+
+.error {
+     color: #ff0000;
+     font-size: 14px;
+}
+
+.button {
+     background-color: #4caf50;
+     color: white;
+     padding: 10px 20px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 16px;
+}
+
+.button:hover {
+     background-color: #45a049;
+}
+
+.hr {
+     border: 0;
+     height: 2px;
+     background: #ccc;
+     margin: 20px 0;
+}
+
+.text {
+     text-align: center;
+}
+
+.text h3 a {
+     color: #4caf50;
+     text-decoration: none;
+}
+
+.text h3 a:hover {
+     text-decoration: underline;
+}
+
+
+.toast-center {
+     top: 50% !important;
+     left: 50% !important;
+     transform: translate(-50%, -50%);
+}
