@@ -26,24 +26,6 @@ class controller_login
 
     function register()
     {
-        // echo json_encode("hola register controller login");
-        // Verificar si los datos esperados están presentes en $_POST
-        // if (isset($_POST['username_reg'], $_POST['passwd1_reg'], $_POST['email_reg'])) {
-
-        //     // Crear un array asociativo con los datos
-        //     $data = array(
-        //         'username_reg' => $_POST['username_reg'],
-        //         'passwd1_reg' => $_POST['passwd1_reg'],
-        //         'email_reg' => $_POST['email_reg']
-        //     );
-
-        //     // Devolver los datos codificados en JSON
-        //     echo json_encode($data);
-        // } else {
-        //     // Devolver un mensaje de error si los datos esperados no están presentes
-        //     echo json_encode(array('error' => 'Missing POST data'));
-        // }
-
         $username = $_POST['username_reg'] ?? '';
         $password = $_POST['passwd1_reg'] ?? '';
         $email = $_POST['email_reg'] ?? '';
@@ -59,10 +41,7 @@ class controller_login
 
     function verify_email()
     {
-        // function view()
-        // {
-        //     common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'login.html');
-        // }
+        // echo json_encode('Hola verify');
         $verify = json_encode(common::load_model('login_model', 'get_verify_email', $_POST['token_email']));
         echo json_encode($verify);
     }

@@ -535,22 +535,24 @@ function register() {
             dataType: 'JSON',
             data: data
         }).then(function (response) {
-            console.log("Respuesta del servidor:", response);
-            return false;
+            // console.log("Respuesta del servidor:", response);
+            // return false;
             if (response === "error") {
                 // console.log("Respuesta del servidor: usuario/email ya en uso");
                 // return false;
                 document.getElementById('error_email_reg').innerHTML = "El email o el nombre de usuario ya está en uso, asegúrate de no tener ya una cuenta."
+            } else if (response === "error_email") {
+                // console.log("Respuesta del servidor: error al mandar el email");
             } else {
-                // console.log("Respuesta del servidor: usuario/email disponible");
+                console.log("Registrado correctamente");
                 // return false;
                 toastr.options = {
-                    closeButton: true,
-                    positionClass: "toast-center"
+                    closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                    positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
                 };
-                toastr.success("Successfully registered, now log in, please.");
+                toastr.success("Succesfully register, now verify your email, please. Check out your email.");
                 setTimeout(function () {
-                    window.location.href = "index.php?page=login";
+                    location.reload();
                 }, 1000);
             }
         }).catch(function (error) {
@@ -677,16 +679,24 @@ function charge_views() {
 
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
+    // console.log("hola load content");
     let path = window.location.pathname.split('/');
-    if (path[5] === 'recover') {
+    // console.log(path);
+    if (path[3] === 'recover') {
         window.location.href = friendlyURL("?module=login&op=recover_view");
-        localStorage.setItem("token_email", path[6]);
-    } else if (path[4] === 'verify') {
-        ajaxPromise('POST', 'JSON', friendlyURL('?module=login'), { token_email: path[5], op: 'verify_email' })
-            .then(function (data) {
-                if (data == 'verify') {
-                    toastr.options.timeOut = 3000;
-                    toastr.success('Email verified');
+        localStorage.setItem("token_email", path[4]);
+    } else if (path[3] === 'verify') {
+        ajaxPromise('POST', 'JSON', friendlyURL('?module=login'), { token_email: path[4], op: 'verify_email' })
+            .then(function (verify) {
+                // console.log(verify);
+                // return false;
+                if (verify = "verify") {
+                    // console.log('hola verify :D');
+                    toastr.options = {
+                        closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                        positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
+                    };
+                    toastr.success("Email successfully verified! :)");
                     setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
                 } else {
                     console.log('Fail while email verification');
@@ -695,12 +705,13 @@ function load_content() {
             .catch(function () {
                 console.log('Error: verify email error');
             });
-    } else if (path[4] === 'view') {
-        $(".login-wrap").show();
-        $(".forget_html").hide();
-    } else if (path[4] === 'recover_view') {
-        load_form_new_password();
     }
+    // else if (path[3] === 'view') {
+    //     $(".login-wrap").show();
+    //     $(".forget_html").hide();
+    // } else if (path[3] === 'recover_view') {
+    //     load_form_new_password();
+    // }
 }
 
 $(document).ready(function () {

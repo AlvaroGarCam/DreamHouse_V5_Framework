@@ -101,7 +101,9 @@ class login_bll
 			];
 			$email = json_decode(mail::send_email($message), true);
 			if (!empty($email)) {
-				return;
+				return 'okkey';
+			} else {
+				return 'email error';
 			}
 		} else {
 			return 'error';
