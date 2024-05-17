@@ -1,13 +1,4 @@
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+<br><br><br><br><br><br><br><br><br><br>
 <form id="login_form" method="POST" style="background-color: #e4dac4;">
      <legend style="text-align: center;">
           <h1>LOG IN</h1>
@@ -30,32 +21,30 @@
           <div class="text" style="text-align: center;">
                <h3>Social login:</h3>
                <a href="#" id="github_login" style="margin-right: 10px;">
-                    <img src="view\img\github_icon.jpg" alt="GitHub" style="width: 55px; height: 32px;">
+                    <img src="view/img/github_icon.jpg" alt="GitHub" style="width: 55px; height: 32px;">
                </a>
                <a href="#" id="facebook_login" style="margin-right: 10px;">
-                    <img src="view\img\facebook_icon.png" alt="Facebook" style="width: 32px; height: 32px;">
+                    <img src="view/img/facebook_icon.png" alt="Facebook" style="width: 32px; height: 32px;">
                </a>
                <a href="#" id="gmail_login">
-                    <img src="view\img\google_icon.png" alt="Gmail" style="width: 32px; height: 32px;">
+                    <img src="view/img/google_icon.png" alt="Gmail" style="width: 32px; height: 32px;">
                </a>
           </div>
-
           <div class="text" style="text-align: center;">
                <h3>Have you forgotten your password?<br><br>
-                    <a id="recover_password" href="#">Recover it here</a>
+                    <a id="recover_view" href="#">Recover it here</a>
                </h3>
           </div>
           <div class="hr"></div>
           <div class="text">
-               <h3>Don't have an account?
-                    <br>
-                    <br>
+               <h3>Don't have an account?<br><br>
                     <a id="register_view">Register now</a>
                </h3>
           </div>
      </div>
 </form>
-<form id="register_form" method="post" class="form-register">
+
+<form id="register_form" method="post" class="form-register" style="display:none;">
      <legend style="text-align: center;">
           <h1>REGISTER</h1>
      </legend>
@@ -85,19 +74,32 @@
           </div>
           <div class="hr"></div>
           <div class="text">
-               <h3>Already have an account?
-                    <br>
-                    <br>
-                    <a id="login_view">Login now</a>
+               <h3>Already have an account?<br><br>
+                    <a id="login_view" href="#">Login now</a>
                </h3>
           </div>
      </div>
 </form>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+
+<form id="recover_form" method="post" class="recover_form" style="display:none;">
+     <legend style="text-align: center;">
+          <h1>RECOVER PASSWORD</h1>
+     </legend>
+     <div class="sign-up-htm">
+          <div class="group">
+               <label for="pass" class="label">Email Address</label>
+               <input id="email_recover" type="email" class="input" name="email_recover" autocomplete="off">
+               <span id="error_email_recover" class="error"></span>
+          </div>
+          <div class="group" style="text-align: center;">
+               <input type="submit" id="recover" class="button" value="Recover Password">
+          </div>
+          <div class="hr"></div>
+          <div class="text">
+               <h3>
+                    <a id="login_view" href="login">Return to Login</a>
+               </h3>
+          </div>
+     </div>
+</form>
+<br><br><br><br><br><br><br><br>

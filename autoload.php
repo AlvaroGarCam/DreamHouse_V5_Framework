@@ -1,9 +1,9 @@
 <?php
 
 require_once ("paths.php");
-require_once (SITE_ROOT . 'model/middleware_auth.php');
-$path = $_SERVER['DOCUMENT_ROOT'] . '/DREAMHOUSE_V5_FRAMEWORK/';
-include ($path . "utils/common.inc.php");
+// require_once (SITE_ROOT . 'model/middleware.inc.php');
+// $path = $_SERVER['DOCUMENT_ROOT'] . '/DREAMHOUSE_V5_FRAMEWORK/';
+// include ($path . "utils/common.inc.php");
 
 spl_autoload_extensions('.php,.inc.php,.class.php,.class.singleton.php');
 spl_autoload_register('loadClasses');
@@ -24,6 +24,9 @@ function loadClasses($className)
         set_include_path(SITE_ROOT . 'model/');
         spl_autoload($className);
     } else if (file_exists(SITE_ROOT . 'model/' . $className . '.class.php')) {
+        set_include_path(SITE_ROOT . 'model/');
+        spl_autoload($className);
+    } else if (file_exists(SITE_ROOT . 'model/' . $className . '.inc.php')) {
         set_include_path(SITE_ROOT . 'model/');
         spl_autoload($className);
     } else if (file_exists(SITE_ROOT . 'utils/' . $className . '.inc.php')) {

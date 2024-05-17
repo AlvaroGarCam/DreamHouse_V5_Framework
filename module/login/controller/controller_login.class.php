@@ -45,7 +45,15 @@ class controller_login
         $verify = json_encode(common::load_model('login_model', 'get_verify_email', $_POST['token_email']));
         echo json_encode($verify);
     }
-
+    function send_recover_email()
+    {
+        $email_recover = $_POST['email_recover'] ?? '';
+        if (empty($email_recover)) {
+            echo json_encode('Email has not been correctly sent');
+            exit;
+        }
+        echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
+    }
 
     // function recover_view()
     // {
@@ -65,10 +73,7 @@ class controller_login
     // }
 
 
-    // function send_recover_email()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_recover_email', $_POST['email_forg']));
-    // }
+
 
     // function verify_token()
     // {

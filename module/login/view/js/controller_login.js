@@ -149,96 +149,7 @@
 //     }
 // }
 
-// // ------------------- REGISTER ------------------------ //
-// function click_register(){
-// 	$("#register_form").keypress(function(e) {
-//         var code = (e.keyCode ? e.keyCode : e.which);
-//         if(code == 13){
-//         	e.preventDefault();
-//             register();
-//         }
-//     });
 
-// 	$('#button_register').on('click', function(e) {
-//         e.preventDefault();
-//         register();
-//     }); 
-// }
-
-// function validate_register(){
-//     var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
-//     var error = false;
-
-// 	if(document.getElementById('username_reg').value.length === 0){
-// 		document.getElementById('error_username_reg').innerHTML = "You have to write an username";
-// 		error = true;
-// 	}else{
-//         if(document.getElementById('username_reg').value.length > 15 || document.getElementById('username_reg').value.length < 5){
-//             document.getElementById('error_username_reg').innerHTML = "The username must be between 5 and 15 characters";
-//             error = true;
-//         }else{
-//             document.getElementById('error_username_reg').innerHTML = "";
-//         }
-//     }
-
-//     if(document.getElementById('pass_reg').value.length === 0){
-// 		document.getElementById('error_password_reg').innerHTML = "You have to write a password";
-// 		error = true;
-// 	}else{
-//         if(document.getElementById('pass_reg').value.length < 8){
-//             document.getElementById('error_password_reg').innerHTML = "The password must be longer than 8 characters";
-//             error = true;
-//         }else{
-//             document.getElementById('error_password_reg').innerHTML = "";
-//         }
-//     }
-
-//     if(document.getElementById('pass_reg_2').value != document.getElementById('pass_reg').value){
-// 		document.getElementById('error_password_reg_2').innerHTML = "Passwords don't match";
-// 		error = true;
-// 	}else{
-//         document.getElementById('error_password_reg_2').innerHTML = "";
-//     }
-
-//     if(document.getElementById('email_reg').value.length === 0){
-// 		document.getElementById('error_email_reg').innerHTML = "You have to write an email";
-// 		error = true;
-// 	}else{
-//         if(!mail_exp.test(document.getElementById('email_reg').value)){
-//             document.getElementById('error_email_reg').innerHTML = "The email format is invalid"; 
-//             error = true;
-//         }else{
-//             document.getElementById('error_email_reg').innerHTML = "";
-//         }
-//     }
-
-//     if(error == true){
-//         return 0;
-//     }
-// }
-
-// function register(){
-//     if(validate_register() != 0){
-//         var data = $('#register_form').serialize();
-//         $.ajax({
-//             url: friendlyURL("?module=login&op=register"),
-//             type: "POST",
-//             dataType: "JSON",
-//             data: data,
-//         }).done(function(result) {  
-//             if(result == "error"){		
-//                 $("#error_email_reg").html('The email is already in use');
-//                 $("#error_username_reg").html('The username is already in use');
-//             }else{
-//                 toastr.options.timeOut = 2000;
-//                 toastr.success("Email sended");
-//                 setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000);
-//             }	
-//         }).fail(function() {
-//             console.log('Error: Register error');
-//         }); 
-//     }
-// }
 
 // // ------------------- RECOVER PASSWORD ------------------------ //
 // function load_form_recover_password(){
@@ -390,36 +301,6 @@
 //     }
 // }
 
-// // ------------------- LOAD CONTENT ------------------------ //
-// function load_content() {
-//     let path = window.location.pathname.split('/');
-
-//     if(path[5] === 'recover'){
-//         window.location.href = friendlyURL("?module=login&op=recover_view");
-//         localStorage.setItem("token_email", path[6]);
-//     }else if (path[5] === 'verify') {
-//         ajaxPromise(friendlyURL("?module=login&op=verify_email"), 'POST', 'JSON', {token_email: path[6]})
-//         .then(function(data) {
-//             toastr.options.timeOut = 3000;
-//             toastr.success('Email verified');
-//             setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000);
-//         })
-//         .catch(function() {
-//           console.log('Error: verify email error');
-//         });
-//     }else if (path[4] === 'view') {
-//         $(".login-wrap").show();
-//         $(".forget_html").hide();
-//     }else if (path[4] === 'recover_view') {
-//         load_form_new_password();
-//     }
-// }
-
-// $(document).ready(function(){
-//     load_content();
-//     click_login();
-//     click_register();
-// });
 
 function login() {
     if (validate_login() != 0) {
@@ -514,77 +395,7 @@ function validate_login() {
     }
 }
 
-
-function register() {
-    if (validate_register() != 0) {
-        var formData = {
-            username_reg: $('#username_reg').val(),
-            passwd1_reg: $('#passwd1_reg').val(),
-            passwd2_reg: $('#passwd2_reg').val(),
-            email_reg: $('#email_reg').val(),
-            op: 'register'
-        };
-
-        var data = $.param(formData);
-
-        console.log("Datos enviados:", data);
-
-        $.ajax({
-            url: friendlyURL('?module=login'),
-            type: 'POST',
-            dataType: 'JSON',
-            data: data
-        }).then(function (response) {
-            // console.log("Respuesta del servidor:", response);
-            // return false;
-            if (response === "error") {
-                // console.log("Respuesta del servidor: usuario/email ya en uso");
-                // return false;
-                document.getElementById('error_email_reg').innerHTML = "El email o el nombre de usuario ya está en uso, asegúrate de no tener ya una cuenta."
-            } else if (response === "error_email") {
-                // console.log("Respuesta del servidor: error al mandar el email");
-            } else {
-                console.log("Registrado correctamente");
-                // return false;
-                toastr.options = {
-                    closeButton: true, // Puedes configurar otras opciones según tus necesidades
-                    positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
-                };
-                toastr.success("Succesfully register, now verify your email, please. Check out your email.");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            }
-        }).catch(function (error) {
-            console.error("La solicitud ha fallado:", error);
-        });
-    } else {
-        console.log("Algo ha fallado en la validación de JS");
-    }
-}
-
-
-function key_register() {
-    $("#register").keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            // console.log("Hola register enter");
-            // return false;
-            e.preventDefault();
-            register();
-        }
-    });
-}
-
-function button_register() {
-    $('#register').on('click', function (e) {
-        // console.log("Hola register click");
-        // return false;
-        e.preventDefault();
-        register();
-    });
-}
-
+//----------------------REGISTER----------
 function validate_register() {
     var username_exp = /^(?=.{5,}$)(?=.*[a-zA-Z0-9]).*$/;
     var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
@@ -660,18 +471,178 @@ function validate_register() {
         return 0;
     }
 }
+function register() {
+    if (validate_register() != 0) {
+        var formData = {
+            username_reg: $('#username_reg').val(),
+            passwd1_reg: $('#passwd1_reg').val(),
+            passwd2_reg: $('#passwd2_reg').val(),
+            email_reg: $('#email_reg').val(),
+            op: 'register'
+        };
+
+        var data = $.param(formData);
+
+        console.log("Datos enviados:", data);
+
+        $.ajax({
+            url: friendlyURL('?module=login'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: data
+        }).then(function (response) {
+            // console.log("Respuesta del servidor:", response);
+            // return false;
+            if (response === "error") {
+                // console.log("Respuesta del servidor: usuario/email ya en uso");
+                // return false;
+                document.getElementById('error_email_reg').innerHTML = "El email o el nombre de usuario ya está en uso, asegúrate de no tener ya una cuenta."
+            } else if (response === "error_email") {
+                // console.log("Respuesta del servidor: error al mandar el email");
+            } else {
+                console.log("Registrado correctamente");
+                // return false;
+                toastr.options = {
+                    closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                    positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
+                };
+                toastr.success("Succesfully register, now verify your email, please. Check out your email.");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+        }).catch(function (error) {
+            console.error("La solicitud ha fallado:", error);
+        });
+    } else {
+        console.log("Algo ha fallado en la validación de JS");
+    }
+}
+//----------------RECOVER---------------------
+function validate_recover_password() {
+    var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
+    var error = false;
+
+    if (document.getElementById('email_recover').value.length === 0) {
+        document.getElementById('error_email_recover').innerHTML = "Tienes que escribir un correo";
+        error = true;
+    } else {
+        if (!mail_exp.test(document.getElementById('email_recover').value)) {
+            document.getElementById('error_email_recover').innerHTML = "El formato del mail es invalido";
+            error = true;
+        } else {
+            document.getElementById('error_email_recover').innerHTML = "";
+        }
+    }
+    if (error == true) {
+        return 0;
+    }
+}
+
+function send_recover_password() {
+    console.log("hola recover");
+    // return false;
+    if (validate_recover_password() != 0) {
+        var formData = {
+            email_recover: $('#email_recover').val(),
+            op: 'send_recover_email'
+        };
+
+        var data = $.param(formData);
+
+        console.log("Datos enviados:", data);
+        // return false;
+        // $.ajax({
+        //     url: friendlyURL('?module=login&op=send_recover_email'),
+        //     dataType: 'json',
+        //     type: "POST",
+        //     data: data,
+        $.ajax({
+            url: friendlyURL('?module=login'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: data
+        }).done(function (data) {
+            console.log(data);
+            return false;
+            if (data == "error") {
+                $("#error_email_recover").html("The email doesn't exist");
+            } else {
+                toastr.options.timeOut = 3000;
+                toastr.success("Email sended");
+                setTimeout('window.location.href = friendlyURL("?module=login")', 1000);
+            }
+        }).fail(function (textStatus) {
+            console.log('Error: Recover password error');
+        });
+    }
+}
+
+function key_register() {
+    $("#register").keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            // console.log("Hola register enter");
+            // return false;
+            e.preventDefault();
+            register();
+        }
+    });
+}
+
+function button_register() {
+    $('#register').on('click', function (e) {
+        // console.log("Hola register click");
+        // return false;
+        e.preventDefault();
+        register();
+    });
+}
+
+
+function key_recover() {
+    $("#recover").keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            // console.log("Hola recover enter");
+            // return false;
+            e.preventDefault();
+            send_recover_password();
+        }
+    });
+}
+
+function button_recover() {
+    $('#recover').on('click', function (e) {
+        // console.log("Hola recover click");
+        // return false;
+        e.preventDefault();
+        send_recover_password();
+    });
+}
 
 function charge_views() {
     $("#register_view").on("click", function (e) {
         e.preventDefault();
         $("#login_form").hide();
         $("#register_form").show();
+        $("#recover_form").hide();
         window.scrollTo(0, 0);
     });
+
     $("#login_view").on("click", function (e) {
         e.preventDefault();
         $("#register_form").hide();
         $("#login_form").show();
+        $("#recover_form").hide();
+        window.scrollTo(0, 0);
+    });
+
+    $("#recover_view").on("click", function (e) {
+        e.preventDefault();
+        $("#register_form").hide();
+        $("#login_form").hide();
+        $("#recover_form").show();
         window.scrollTo(0, 0);
     });
 }
@@ -681,7 +652,7 @@ function charge_views() {
 function load_content() {
     // console.log("hola load content");
     let path = window.location.pathname.split('/');
-    // console.log(path);
+    console.log([path[0], path[1], path[2], path[3], path[4]]);
     if (path[3] === 'recover') {
         window.location.href = friendlyURL("?module=login&op=recover_view");
         localStorage.setItem("token_email", path[4]);
@@ -696,8 +667,11 @@ function load_content() {
                         closeButton: true, // Puedes configurar otras opciones según tus necesidades
                         positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
                     };
-                    toastr.success("Email successfully verified! :)");
+                    toastr.success("Email successfully verified, now you can log in! :)");
                     setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
+                } else if (verify = "Expired_session") {
+                    console.log("Email caducao, pringao");
+
                 } else {
                     console.log('Fail while email verification');
                 }
@@ -716,10 +690,13 @@ function load_content() {
 
 $(document).ready(function () {
     $("#register_form").hide();
+    $("#recover_form").hide();
     load_content();
     charge_views();
     key_login();
     button_login();
     key_register();
     button_register();
+    key_recover();
+    button_recover();
 });

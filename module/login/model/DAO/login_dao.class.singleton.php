@@ -24,11 +24,11 @@ class login_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
-    public function insert_user($db, $username_reg, $hashed_pass, $email_reg, $avatar, $token_email)
+    public function insert_user($db, $username_reg, $hashed_pass, $email_reg, $avatar)
     {
 
-        $sql = "INSERT INTO user(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `is_active`) 
-            VALUES ( '$username_reg', '$hashed_pass', '$email_reg', 'client', '$avatar', '$token_email', 0);";
+        $sql = "INSERT INTO user(`username`, `password`, `email`, `type_user`, `avatar`, `is_active`) 
+            VALUES ( '$username_reg', '$hashed_pass', '$email_reg', 'client', '$avatar', 0);";
 
         $db->ejecutar($sql);
         return;
@@ -53,20 +53,18 @@ class login_dao
         return $stmt = $db->ejecutar($sql);
     }
 
-    public function select_verify_email($db, $token_email)
+    public function select_verify_email($db, $username)
     {
 
-        $sql = "SELECT token_email FROM user WHERE token_email = '$token_email'";
+        $sql = "SELECT * FROM user WHERE  username = '$username'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
 
-    public function update_verify_email($db, $token_email)
+    public function update_verify_email($db, $username)
     {
-
-        $sql = "UPDATE user SET is_active = 1 WHERE token_email = '$token_email'";
-
+        $sql = "UPDATE user SET is_active = 1 WHERE username = '$username'";
         $stmt = $db->ejecutar($sql);
         return;
     }

@@ -24,16 +24,18 @@ class login_bll
 		$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT);
 		$hashavatar = md5(strtolower(trim($args[2])));
 		$avatar = "https://i.pravatar.cc/500?u=$hashavatar";
-		$token_email = common::generate_Token_secure(20);
+		// $token_email = common::generate_Token_secure(20);
+		$token_verify = middleware::create_token($args[0]);
+		// return $token_verify;
 
 		if (!empty($this->dao->select_user($this->db, $args[0], $args[2]))) {
 			return 'error';
 		} else {
-			$this->dao->insert_user($this->db, $args[0], $hashed_pass, $args[2], $avatar, $token_email);
+			$this->dao->insert_user($this->db, $args[0], $hashed_pass, $args[2], $avatar);
 			// return 'usuario insertado en la base de datos';
 			$message = [
 				'type' => 'validate',
-				'token' => $token_email,
+				'token' => $token_verify,
 				'toEmail' => $args[2]
 			];
 			$email = json_decode(mail::send_email($message), true);
@@ -79,11 +81,19 @@ class login_bll
 
 	public function get_verify_email_BLL($args)
 	{
-		if ($this->dao->select_verify_email($this->db, $args)) {
-			$this->dao->update_verify_email($this->db, $args);
-			return 'verify';
+		$token = middleware::decode_token($args);
+		// return $token['user'];
+		// return ($this->dao->select_verify_email($this->db, $token['user']));
+		if ($token['exp'] < time()) {
+			return ("Expired_session");
 		} else {
-			return 'fail';
+			// return 'else token';
+			if ($this->dao->select_verify_email($this->db, $token['user'])) {
+				$this->dao->update_verify_email($this->db, $token['user']);
+				return 'verify';
+			} else {
+				return 'fail';
+			}
 		}
 	}
 
