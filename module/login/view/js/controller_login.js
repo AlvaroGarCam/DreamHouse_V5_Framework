@@ -540,41 +540,29 @@ function validate_recover_password() {
 }
 
 function send_recover_password() {
-    console.log("hola recover");
+    // console.log("hola recover");
     // return false;
     if (validate_recover_password() != 0) {
         var formData = {
             email_recover: $('#email_recover').val(),
             op: 'send_recover_email'
         };
-
         var data = $.param(formData);
-
         console.log("Datos enviados:", data);
-        // return false;
-        // $.ajax({
-        //     url: friendlyURL('?module=login&op=send_recover_email'),
-        //     dataType: 'json',
-        //     type: "POST",
-        //     data: data,
-        $.ajax({
-            url: friendlyURL('?module=login'),
-            type: 'POST',
-            dataType: 'JSON',
-            data: data
-        }).done(function (data) {
-            console.log(data);
-            return false;
-            if (data == "error") {
-                $("#error_email_recover").html("The email doesn't exist");
-            } else {
-                toastr.options.timeOut = 3000;
-                toastr.success("Email sended");
-                setTimeout('window.location.href = friendlyURL("?module=login")', 1000);
-            }
-        }).fail(function (textStatus) {
-            console.log('Error: Recover password error');
-        });
+        $.ajaxPromise({ type: 'POST', dataType: 'JSON', url: friendlyURL('?module=login'), data: data })
+            .then(function (data) {
+                console.log(data);
+                return false;
+                if (data == "error") {
+                    $("#error_email_recover").html("The email doesn't exist");
+                } else {
+                    toastr.options.timeOut = 3000;
+                    toastr.success("Email sended");
+                    setTimeout('window.location.href = friendlyURL("?module=login")', 1000);
+                }
+            }).fail(function (textStatus) {
+                console.log('Error: Recover password error');
+            });
     }
 }
 
@@ -668,7 +656,7 @@ function load_content() {
                         positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
                     };
                     toastr.success("Email successfully verified, now you can log in! :)");
-                    setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
+                    setTimeout('window.location.href = friendlyURL("?module=login")', 1000);
                 } else if (verify = "Expired_session") {
                     console.log("Email caducao, pringao");
 

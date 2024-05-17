@@ -51,8 +51,12 @@ class controller_login
         if (empty($email_recover)) {
             echo json_encode('Email has not been correctly sent');
             exit;
+        } else {
+            // echo json_encode($email_recover);
+            echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
         }
-        echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
+
+        // echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
     }
 
     // function recover_view()
