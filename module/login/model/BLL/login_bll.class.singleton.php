@@ -97,17 +97,17 @@ class login_bll
 		}
 	}
 
-	public function get_recover_email_BBL($args)
+	public function get_recover_email_BBL($email)
 	{
-		$user = $this->dao->select_recover_password($this->db, $args);
-		$token = common::generate_Token_secure(20);
+		$user = $this->dao->select_recover_password($this->db, $email);
+		$token = middleware::create_token($user);
 
 		if (!empty($user)) {
-			$this->dao->update_recover_password($this->db, $args, $token);
+			$this->dao->update_recover_password($this->db, $email, $token);
 			$message = [
 				'type' => 'recover',
 				'token' => $token,
-				'toEmail' => $args
+				'toEmail' => $email
 			];
 			$email = json_decode(mail::send_email($message), true);
 			if (!empty($email)) {

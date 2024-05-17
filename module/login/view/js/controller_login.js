@@ -549,16 +549,21 @@ function send_recover_password() {
         };
         var data = $.param(formData);
         console.log("Datos enviados:", data);
-        $.ajaxPromise({ type: 'POST', dataType: 'JSON', url: friendlyURL('?module=login'), data: data })
+        $.ajax({ type: 'POST', dataType: 'JSON', url: friendlyURL('?module=login'), data: data })
             .then(function (data) {
-                console.log(data);
-                return false;
+                // console.log(data);
+                // return false;
                 if (data == "error") {
                     $("#error_email_recover").html("The email doesn't exist");
                 } else {
-                    toastr.options.timeOut = 3000;
-                    toastr.success("Email sended");
-                    setTimeout('window.location.href = friendlyURL("?module=login")', 1000);
+                    toastr.options = {
+                        closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                        positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
+                    };
+                    toastr.success("Check out your email. We have sent you the recovery link");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
                 }
             }).fail(function (textStatus) {
                 console.log('Error: Recover password error');
@@ -641,6 +646,7 @@ function load_content() {
     // console.log("hola load content");
     let path = window.location.pathname.split('/');
     console.log([path[0], path[1], path[2], path[3], path[4]]);
+    // return false;
     if (path[3] === 'recover') {
         window.location.href = friendlyURL("?module=login&op=recover_view");
         localStorage.setItem("token_email", path[4]);

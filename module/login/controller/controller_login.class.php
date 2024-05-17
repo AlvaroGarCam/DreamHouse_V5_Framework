@@ -24,6 +24,11 @@ class controller_login
         common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'login.html');
     }
 
+    function recover_view()
+    {
+        common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
+    }
+
     function register()
     {
         $username = $_POST['username_reg'] ?? '';
@@ -59,10 +64,6 @@ class controller_login
         // echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
     }
 
-    // function recover_view()
-    // {
-    //     common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
-    // }
 
     // function login()
     // {

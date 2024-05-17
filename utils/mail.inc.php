@@ -59,7 +59,7 @@ class mail
             case 'recover';
                 $message['to'] = $message['toEmail'];
                 $message['inputMatter'] = 'DREAMHOUSE - Recover password';
-                $message['inputMessage'] = "<a href='http://localhost/DreamHouse_V5_Framework/login/recover/$message[token]'>Click here for recover your password.</a>";
+                $message['inputMessage'] = "<h2>Password recovery.</h2><a href='http://localhost/DreamHouse_V5_Framework/login/recover/$message[token]'>Click here for recover your password.</a>";
                 break;
         }
         return self::send_resend($message);

@@ -71,13 +71,13 @@ class login_dao
 
     public function select_recover_password($db, $email)
     {
-        $sql = "SELECT `email` FROM `users` WHERE email = '$email' AND password NOT LIKE ('')";
+        $sql = "SELECT username FROM `user` WHERE email = '$email' AND password NOT LIKE ('')";
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
-    public function update_recover_password($db, $email, $token_email)
+    public function update_recover_password($db, $email, $token)
     {
-        $sql = "UPDATE `users` SET `token_email`= '$token_email' WHERE `email` = '$email'";
+        $sql = "UPDATE `user` SET `token_email`= '$token' WHERE `email` = '$email'";
         $stmt = $db->ejecutar($sql);
         return "ok";
     }
