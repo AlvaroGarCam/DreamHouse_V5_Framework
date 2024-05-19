@@ -57,13 +57,20 @@ class controller_login
             echo json_encode('Email has not been correctly sent');
             exit;
         } else {
-            // echo json_encode($email_recover);
             echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
         }
-
-        // echo json_encode(common::load_model('login_model', 'get_recover_email', $email_recover));
+    }
+    function verify_token()
+    {
+        // echo json_encode($_POST['token_email']);
+        echo json_encode(common::load_model('login_model', 'get_verify_token', $_POST['token_email']));
     }
 
+    function new_password()
+    {
+        // echo json_encode('Hola new password');
+        echo json_encode(common::load_model('login_model', 'get_new_password', [$_POST['token_email'], $_POST['password']]));
+    }
 
     // function login()
     // {
@@ -80,15 +87,9 @@ class controller_login
 
 
 
-    // function verify_token()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_verify_token', $_POST['token_email']));
-    // }
 
-    // function new_password()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_new_password', [$_POST['token_email'], $_POST['password']]));
-    // }
+
+
 
     // function logout()
     // {

@@ -71,20 +71,38 @@ class login_dao
 
     public function select_recover_password($db, $email)
     {
-        $sql = "SELECT username FROM `user` WHERE email = '$email' AND password NOT LIKE ('')";
+        $sql = "SELECT username FROM `user` WHERE email = '$email' AND password NOT LIKE ('') AND is_active = 1";
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
     public function update_recover_password($db, $email, $token)
     {
-        $sql = "UPDATE `user` SET `token_email`= '$token' WHERE `email` = '$email'";
-        $stmt = $db->ejecutar($sql);
-        return "ok";
+        // Primer update
+        $sql1 = "UPDATE `user` SET `token_email` = '$token' WHERE `email` = '$email'";
+        $stmt1 = $db->ejecutar($sql1);
+
+        if ($stmt1) {
+            // Segundo update
+            $sql2 = "UPDATE `user` SET `is_active` = 0 WHERE `email` = '$email'";
+            $stmt2 = $db->ejecutar($sql2);
+
+            // Verifica si el segundo update fue exitoso
+            if ($stmt2) {
+                return "ok";
+            } else {
+                return "The second update failed.";
+            }
+        } else {
+            return "The first update failed.";
+        }
     }
 
-    public function update_new_passwoord($db, $token_email, $password)
+
+
+
+    public function update_new_passwoord($db, $username, $password)
     {
-        $sql = "UPDATE `users` SET `password`= '$password', `token_email`= '' WHERE `token_email` = '$token_email'";
+        $sql = "UPDATE `user` SET `password`= '$password', `token_email`= '', is_active = 1 WHERE `username` = '$username'";
         $stmt = $db->ejecutar($sql);
         return "ok";
     }

@@ -99,40 +99,63 @@ class login_bll
 
 	public function get_recover_email_BBL($email)
 	{
-		$user = $this->dao->select_recover_password($this->db, $email);
-		$token = middleware::create_token($user);
-
-		if (!empty($user)) {
-			$this->dao->update_recover_password($this->db, $email, $token);
+		try {
+			$user = $this->dao->select_recover_password($this->db, $email);
+			if (empty($user)) {
+				return 'user not found';
+			}
+			$token = middleware::create_token($user);
+			$updateResult = $this->dao->update_recover_password($this->db, $email, $token);
+			if ($updateResult !== "ok") {
+				return 'update error';
+			}
 			$message = [
 				'type' => 'recover',
 				'token' => $token,
 				'toEmail' => $email
 			];
-			$email = json_decode(mail::send_email($message), true);
-			if (!empty($email)) {
-				return 'okkey';
-			} else {
+			$emailResponse = json_decode(mail::send_email($message), true);
+			if (empty($emailResponse)) {
 				return 'email error';
 			}
-		} else {
-			return 'error';
+			return 'okkey';
+		} catch (Exception $e) {
+			return 'error: ' . $e->getMessage();
 		}
 	}
 
 
 	public function get_verify_token_BLL($args)
 	{
-		if ($this->dao->select_verify_email($this->db, $args)) {
-			return 'verify';
+		$token = middleware::decode_token($args);
+		$userArray = $token['user'];
+		$userObject = $userArray[0];
+		$username = $userObject['username'];
+
+		// return $username; // Devuelve el nombre de usuario
+
+		if ($token['exp'] < time()) {
+			return "Expired_session";
+		} else {
+			if ($this->dao->select_verify_email($this->db, $username)) {
+				return 'verify';
+			} else {
+				return 'fail';
+			}
 		}
-		return 'fail';
 	}
+
 
 	public function get_new_password_BLL($args)
 	{
+
 		$hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
-		if ($this->dao->update_new_passwoord($this->db, $args[0], $hashed_pass)) {
+		$token = middleware::decode_token($args[0]);
+		$userArray = $token['user'];
+		$userObject = $userArray[0];
+		$username = $userObject['username'];
+
+		if ($this->dao->update_new_passwoord($this->db, $username, $hashed_pass)) {
 			return 'done';
 		}
 		return 'fail';
