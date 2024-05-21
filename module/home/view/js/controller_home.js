@@ -307,7 +307,7 @@ $(document).ready(function () {
      categories();
      cities();
      services();
-     loadVisited_houses();
+     // loadVisited_houses();
      clicks_home();
 
      // Función para borrar 'pagina''

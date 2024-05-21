@@ -222,7 +222,7 @@ function load_form_new_password() {
     token_email = localStorage.getItem('token_email');
     // console.log(token_email);
     // return false;
-    // localStorage.removeItem('token_email');
+    localStorage.removeItem('token_email');
     var formData = {
         token_email: token_email,
         op: 'verify_token'
@@ -320,17 +320,22 @@ function send_new_password(token_email) {
     }
 }
 
-
+//------------------------LOGIN
 function login() {
+    // console.log("Hola login");
+    // return false;
     if (validate_login() != 0) {
         // var data = $('#login_form').serialize();
         var username = document.getElementById('username_log').value;
         var password = document.getElementById('passwd_log').value;
         var data = {
             username_log: username,
-            passwd_log: password
+            passwd_log: password,
+            op: 'login'
         };
-        ajaxPromise('POST', 'JSON', 'module/login/ctrl/ctrl_login.php?op=login', data)
+        // console.log(data);
+        // return false;
+        ajaxPromise('POST', 'JSON', friendlyURL("?module=login"), data)
             .then(function (result) {
                 // console.log(result);
                 // return false;
@@ -340,23 +345,31 @@ function login() {
                     document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta"
                 } else {
                     console.log("Contraseña correcta!");
-                    localStorage.setItem("access_token", result.access_token);
-                    localStorage.setItem("refresh_token", result.refresh_token);
-                    // return false;
-                    toastr.options = {
-                        closeButton: true, // Puedes configurar otras opciones según tus necesidades
-                        positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
-                    };
-                    toastr.success("Loged succesfully");
-                    if (localStorage.getItem('redirect_like')) {
-                        localStorage.setItem("ok_redirect_like", 'ok');
-                        setTimeout(' window.location.href = "index.php?page=shop"; ', 1000);
-                        // var house_id = localStorage.getItem('redirect_like');
-                        // window.location.href = "index.php?page=shop";
-                        // loadDetails(house_id);
-                    } else {
-                        setTimeout(' window.location.href = "index.php?page=home"; ', 1000);
+                    // console.log(result);
+                    // console.log(result[0]);
+                    // console.log(result[1]);
+                    // var data = JSON.parse(result);
+                    var access_token = result[0];
+                    var refresh_token = result[1];
+                    localStorage.setItem('access_token', access_token);
+                    localStorage.setItem('refresh_token', refresh_token);
+                    if (localStorage.getItem('access_token') !== undefined) {
+                        toastr.options = {
+                            closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                            positionClass: 'toast-center' // Esto centra el toastr en la parte superior del centro
+                        };
+                        toastr.success("Loged succesfully");
+                        setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
                     }
+                    // if (localStorage.getItem('redirect_like')) {
+                    //     localStorage.setItem("ok_redirect_like", 'ok');
+                    //     setTimeout(' window.location.href = "index.php?page=shop"; ', 1000);
+                    //     // var house_id = localStorage.getItem('redirect_like');
+                    //     // window.location.href = "index.php?page=shop";
+                    //     // loadDetails(house_id);
+                    // } else {
+                    //     setTimeout(' window.location.href = "index.php?page=home"; ', 1000);
+                    // }
                 }
             }).catch(function (textStatus) {
                 if (console && console.log) {

@@ -72,12 +72,28 @@ class controller_login
         echo json_encode(common::load_model('login_model', 'get_new_password', [$_POST['token_email'], $_POST['password']]));
     }
 
-    // function login()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_login', [$_POST['username'], $_POST['password']]));
-    // }
+    function login()
+    {
+        // echo json_encode('Hola login php');
+
+        $username = $_POST['username_log'];
+        $password = $_POST['passwd_log'];
+        // echo json_encode($password);
+        echo json_encode(common::load_model('login_model', 'get_login', [$username, $password]));
+    }
 
 
+    function data_user()
+    {
+        // echo json_encode('Hola data_user php');
+        // echo json_encode($_POST['access_token']);
+        echo json_encode(common::load_model('login_model', 'get_data_user', $_POST['access_token']));
+    }
+
+    function logout()
+    {
+        echo json_encode('Done');
+    }
 
     // function social_login()
     // {
@@ -91,15 +107,9 @@ class controller_login
 
 
 
-    // function logout()
-    // {
-    //     echo json_encode('Done');
-    // }
 
-    // function data_user()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_data_user', $_POST['token']));
-    // }
+
+
 
     // function activity()
     // {

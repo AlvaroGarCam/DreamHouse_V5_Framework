@@ -47,21 +47,25 @@ class login_bll
 
 	public function get_login_BLL($args)
 	{
+		// return "Hola BLL";
+
 		if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
 			$user = $this->dao->select_user($this->db, $args[0], $args[0]);
-			if (password_verify($args[1], $user[0]['password']) && $user[0]['activate'] == 1) {
-				$jwt = jwt_process::encode($user[0]['username']);
-				$_SESSION['username'] = $user[0]['username'];
-				$_SESSION['tiempo'] = time();
-				session_regenerate_id();
-				return json_encode($jwt);
-			} else if (password_verify($args[1], $user[0]['password']) && $user[0]['activate'] == 0) {
+			// return $user;
+			if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 1) {
+				$access_token = middleware::create_token($user[0]['username']);
+				$refresh_token = middleware::create_refresh_token($user[0]['username']);
+				// $_SESSION['username'] = $user[0]['username'];
+				// $_SESSION['tiempo'] = time();
+				// session_regenerate_id();
+				return [$access_token, $refresh_token];
+			} else if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 0) {
 				return 'activate error';
 			} else {
-				return 'error';
+				return 'error_passwd';
 			}
 		} else {
-			return 'user error';
+			return 'error_user';
 		}
 	}
 
@@ -163,9 +167,11 @@ class login_bll
 
 	public function get_data_user_BLL($args)
 	{
-		$token = explode('"', $args);
-		$decode = middleware::decode_username($token[1]);
-		return $this->dao->select_data_user($this->db, $decode);
+
+		// return $args;
+		$decoded_token = middleware::decode_token($args);
+		// return $decoded_token['user'];
+		return $this->dao->select_data_user($this->db, $decoded_token['user']);
 	}
 
 	public function get_activity_BLL()

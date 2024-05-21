@@ -109,7 +109,7 @@ class login_dao
     public function select_data_user($db, $username)
     {
 
-        $sql = "SELECT id, username, password, email, user_type, avatar, token_email, activate FROM users WHERE username = '$username'";
+        $sql = "SELECT * FROM user WHERE username = '$username'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
