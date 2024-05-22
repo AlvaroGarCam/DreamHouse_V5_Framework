@@ -114,7 +114,47 @@ class login_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+    public function check_login_attempts($db, $username)
+    {
+        $sql = "SELECT login_attempts, phone_number FROM user WHERE username = '$username'";
 
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+
+    public function increase_login_attempts($db, $username)
+    {
+        $sql = "UPDATE user
+        SET login_attempts=login_attempts+1
+        WHERE username = '$username'";
+        $db->ejecutar($sql);
+    }
+
+    public function reset_login_attempts($db, $username)
+    {
+        $sql = "UPDATE user
+        SET login_attempts=0, otp_token=''
+        WHERE username = '$username'";
+        $db->ejecutar($sql);
+    }
+
+    public function insert_otp_token($db, $username, $token)
+    {
+        $sql = "UPDATE user
+        SET otp_token='$token'
+        WHERE username = '$username'";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
+
+    public function check_otp_token($db, $username, $otp_code)
+    {
+        $sql = "SELECT * FROM user WHERE username = '$username' AND otp_token = '$otp_code'";
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 }
+
 
 ?>

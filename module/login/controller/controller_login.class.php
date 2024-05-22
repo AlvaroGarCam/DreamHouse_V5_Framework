@@ -78,7 +78,7 @@ class controller_login
 
         $username = $_POST['username_log'];
         $password = $_POST['passwd_log'];
-        // echo json_encode($password);
+        // echo json_encode($otp_token);
         echo json_encode(common::load_model('login_model', 'get_login', [$username, $password]));
     }
 
@@ -95,6 +95,15 @@ class controller_login
         echo json_encode('Done');
     }
 
+
+    function send_otp()
+    {
+        $username = $_POST['username'];
+        $otp = $_POST['otp'];
+        // echo json_encode($otp);
+        // echo json_encode($username);
+        echo json_encode(common::load_model('login_model', 'get_send_otp', [$username, $otp]));
+    }
     // function social_login()
     // {
     //     echo json_encode(common::load_model('login_model', 'get_social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));

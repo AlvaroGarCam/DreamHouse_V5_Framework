@@ -47,7 +47,7 @@ class middleware
 
         $header = $jwt['header'];
         $secret = $jwt['secret'];
-        $payload = json_encode(['iat' => time(), 'exp' => time() + (360), 'user' => $user]);
+        $payload = json_encode(['iat' => time(), 'exp' => time() + (600), 'user' => $user]); //10minutos
 
         $JWT = new jwt();
         return $JWT->encode($header, $payload, $secret);
@@ -64,7 +64,7 @@ class middleware
 
         $header = $jwt['header'];
         $secret = $jwt['secret'];
-        $payload = json_encode(['iat' => time(), 'exp' => time() + (36000), 'user' => $user]);
+        $payload = json_encode(['iat' => time(), 'exp' => time() + (36000), 'user' => $user]);//10horas
 
         $JWT = new jwt();
         return $JWT->encode($header, $payload, $secret);

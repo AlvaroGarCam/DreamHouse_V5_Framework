@@ -319,13 +319,9 @@ function send_new_password(token_email) {
         });
     }
 }
-
-//------------------------LOGIN
+//-------------------LOGIN
 function login() {
-    // console.log("Hola login");
-    // return false;
     if (validate_login() != 0) {
-        // var data = $('#login_form').serialize();
         var username = document.getElementById('username_log').value;
         var password = document.getElementById('passwd_log').value;
         var data = {
@@ -333,43 +329,34 @@ function login() {
             passwd_log: password,
             op: 'login'
         };
-        // console.log(data);
-        // return false;
         ajaxPromise('POST', 'JSON', friendlyURL("?module=login"), data)
             .then(function (result) {
                 // console.log(result);
                 // return false;
-                if (result == "error_user") {
-                    document.getElementById('error_username_log').innerHTML = "El usario no existe,asegurase de que lo a escrito correctamente"
-                } else if (result == "error_passwd") {
+                var errorType = result[0];
+                if (errorType == "error_user") {
+                    document.getElementById('error_username_log').innerHTML = "El usario no existe, asegurase de que lo a escrito correctamente"
+                } else if (errorType == "error_passwd") {
                     document.getElementById('error_passwd_log').innerHTML = "La contraseña es incorrecta"
-                } else {
+                } else if (errorType == "error_attempts") {
+                    document.getElementById('error_username_log').innerHTML = "No puedes iniciar sesión por haber fallado la autentificación 3 veces.";
+                    setTimeout(load_otp_form, 2000);
+                } else if (errorType == "okkey_login") {
                     console.log("Contraseña correcta!");
-                    // console.log(result);
-                    // console.log(result[0]);
-                    // console.log(result[1]);
-                    // var data = JSON.parse(result);
-                    var access_token = result[0];
-                    var refresh_token = result[1];
+                    var access_token = result[2];
+                    var refresh_token = result[3];
                     localStorage.setItem('access_token', access_token);
                     localStorage.setItem('refresh_token', refresh_token);
                     if (localStorage.getItem('access_token') !== undefined) {
                         toastr.options = {
-                            closeButton: true, // Puedes configurar otras opciones según tus necesidades
-                            positionClass: 'toast-center' // Esto centra el toastr en la parte superior del centro
+                            closeButton: true,
+                            positionClass: 'toast-center'
                         };
                         toastr.success("Loged succesfully");
                         setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
                     }
-                    // if (localStorage.getItem('redirect_like')) {
-                    //     localStorage.setItem("ok_redirect_like", 'ok');
-                    //     setTimeout(' window.location.href = "index.php?page=shop"; ', 1000);
-                    //     // var house_id = localStorage.getItem('redirect_like');
-                    //     // window.location.href = "index.php?page=shop";
-                    //     // loadDetails(house_id);
-                    // } else {
-                    //     setTimeout(' window.location.href = "index.php?page=home"; ', 1000);
-                    // }
+                } else {
+                    console.log("Error desconocido");
                 }
             }).catch(function (textStatus) {
                 if (console && console.log) {
@@ -424,6 +411,57 @@ function validate_login() {
 
     if (error == true) {
         return 0;
+    }
+}
+function validate_otp() {
+    var error = false;
+    if ($("#username_input").val().length === 0) {
+        $("#error_username_input").html("Debes ingresar un nombre de usuario");
+        error = true;
+    } else {
+        $("#error_username_input").html("");
+    }
+    if ($("#otp_input").val().length === 0) {
+        $("#error_otp_input").html("Debes ingresar un código OTP");
+        error = true;
+    } else {
+        $("#error_otp_input").html("");
+    }
+    if (error == true) {
+        return 0;
+    }
+}
+
+function send_otp() {
+    if (validate_otp() != 0) {
+        var username = $("#username_input").val();
+        var otp_code = $("#otp_input").val();
+        // console.log(username, otp);
+        // return false;
+        var data = {
+            username: username,
+            otp: otp_code,
+            op: 'send_otp'
+        };
+        ajaxPromise('POST', 'JSON', friendlyURL("?module=login"), data)
+            .then(function (result) {
+                // console.log('Respuesta del servidor: ' + result);
+                // return false;
+                if (result === 'okkey') {
+                    toastr.options = {
+                        closeButton: true,
+                        positionClass: 'toast-center'
+                    };
+                    toastr.success("Account restored successfully, now try to login or recover password.");
+                    setTimeout(' window.location.href = friendlyURL("?module=login"); ', 2000);
+                } else if (result[0] === 'error_otp') {
+                    $("#error_otp_input").html("Código OTP incorrecto. Por favor, inténtalo de nuevo.");
+                } else if (result[0] === 'error_username') {
+                    $("#error_username_input").html("Nombre de usuario incorrecto. Por favor, inténtalo de nuevo.");
+                }
+            }).catch(function (textStatus) {
+                console.log('AJAX request failed: ' + textStatus);
+            });
     }
 }
 
@@ -662,12 +700,32 @@ function button_recover() {
     });
 }
 
+function key_otp() {
+    $("#otp_form").on('submit', function (e) {
+        e.preventDefault();
+        // console.log("Hola otp enter");
+        // return false;
+        send_otp();
+    });
+}
+
+function button_otp() {
+    $("#otp_form").on("submit", function (e) {
+        e.preventDefault();
+        // console.log("Hola otp click");
+        // return false;
+        send_otp();
+    });
+}
+
+
 function charge_views() {
     $("#register_view").on("click", function (e) {
         e.preventDefault();
         $("#login_form").hide();
         $("#register_form").show();
         $("#recover_form").hide();
+        $("#otp_form").hide();
         window.scrollTo(0, 0);
     });
 
@@ -676,6 +734,7 @@ function charge_views() {
         $("#register_form").hide();
         $("#login_form").show();
         $("#recover_form").hide();
+        $("#otp_form").hide();
         window.scrollTo(0, 0);
     });
 
@@ -684,10 +743,19 @@ function charge_views() {
         $("#register_form").hide();
         $("#login_form").hide();
         $("#recover_form").show();
+        $("#otp_form").hide();
         window.scrollTo(0, 0);
     });
+
 }
 
+function load_otp_form() {
+    $("#register_form").hide();
+    $("#login_form").hide();
+    $("#recover_form").hide();
+    $("#otp_form").show();
+    window.scrollTo(0, 0);
+}
 
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
@@ -735,6 +803,7 @@ function load_content() {
 $(document).ready(function () {
     $("#register_form").hide();
     $("#recover_form").hide();
+    $("#otp_form").hide();
     load_content();
     charge_views();
     key_login();
@@ -743,4 +812,6 @@ $(document).ready(function () {
     button_register();
     key_recover();
     button_recover();
+    key_otp();
+    button_otp();
 });
