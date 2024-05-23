@@ -4,8 +4,6 @@ require_once ('vendor/autoload.php');
 
 class ultramsg
 {
-
-
      public static function send_ultramsg($message)
      {
           $ini_file = UTILS . "resend.ini";

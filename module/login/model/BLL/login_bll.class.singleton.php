@@ -69,7 +69,6 @@ class login_bll
 			} else {
 				return ['error_insert_otp_token'];
 			}
-
 		} else {
 			if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
 				$user = $this->dao->select_user($this->db, $args[0], $args[0]);
@@ -96,7 +95,8 @@ class login_bll
 	{
 		$username = $args[0];
 		$otp_code = $args[1];
-		if ($this->dao->select_user($this->db, $username, $username)) {
+		// return $username;
+		if ($this->dao->select_user($this->db, $username, null)) {
 			if ($this->dao->check_otp_token($this->db, $username, $otp_code)) {
 				$this->dao->reset_login_attempts($this->db, $username);
 				return 'okkey';

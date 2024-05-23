@@ -459,8 +459,8 @@ function send_otp() {
                 } else if (result === 'error_username') {
                     $("#error_username_input").html("Nombre de usuario incorrecto. Por favor, inténtalo de nuevo.");
                 }
-            }).catch(function (textStatus) {
-                console.log('AJAX request failed: ' + textStatus);
+            }).catch(function (error) {
+                console.log('AJAX request failed: ' + error.message);
             });
     }
 }
@@ -700,15 +700,6 @@ function button_recover() {
     });
 }
 
-function key_otp() {
-    $("#otp_form").on('submit', function (e) {
-        e.preventDefault();
-        // console.log("Hola otp enter");
-        // return false;
-        send_otp();
-    });
-}
-
 function button_otp() {
     $("#otp_form").on("submit", function (e) {
         e.preventDefault();
@@ -812,6 +803,5 @@ $(document).ready(function () {
     button_register();
     key_recover();
     button_recover();
-    key_otp();
     button_otp();
 });

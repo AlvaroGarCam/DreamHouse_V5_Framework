@@ -22,7 +22,12 @@ class login_dao
         OR email = '$email'";
 
         $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
+        $result = $db->listar($stmt);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
     public function insert_user($db, $username_reg, $hashed_pass, $email_reg, $avatar)
     {
@@ -137,6 +142,7 @@ class login_dao
         SET login_attempts=0, otp_token=''
         WHERE username = '$username'";
         $db->ejecutar($sql);
+
     }
 
     public function insert_otp_token($db, $username, $token)
@@ -150,9 +156,14 @@ class login_dao
 
     public function check_otp_token($db, $username, $otp_code)
     {
-        $sql = "SELECT * FROM user WHERE username = '$username' AND otp_token = '$otp_code'";
+        $sql = "SELECT * FROM user WHERE username = '$username' AND otp_token = '$otp_code';";
         $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
+        $result = $db->listar($stmt);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
