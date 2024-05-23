@@ -92,6 +92,9 @@ class controller_login
 
     function logout()
     {
+        unset($_SESSION['username']);
+        unset($_SESSION['tiempo']);
+        session_destroy();
         echo json_encode('Done');
     }
 
@@ -104,46 +107,38 @@ class controller_login
         // echo json_encode($username);
         echo json_encode(common::load_model('login_model', 'get_send_otp', [$username, $otp]));
     }
+
+    function control_user()
+    {
+        $access_token = $_POST['access_token'];
+        // echo json_encode('Hola control_user php');
+        echo json_encode(common::load_model('login_model', 'get_control_user', $access_token));
+    }
+
+    function control_expires_token()
+    {
+        $access_token = $_POST['access_token'];
+        $refresh_token = $_POST['refresh_token'];
+        // echo json_encode('Hola control_expires_token php');
+        echo json_encode(common::load_model('login_model', 'get_control_expires_token', [$access_token, $refresh_token]));
+    }
+
+
+    function control_activity()
+    {
+        // echo json_encode('Hola control_activity php');
+        echo json_encode(common::load_model('login_model', 'get_control_activity', null));
+    }
+    function refresh_cookie()
+    {
+        session_regenerate_id();
+        return 'Done';
+    }
     // function social_login()
     // {
     //     echo json_encode(common::load_model('login_model', 'get_social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));
-    // }
+    //}
 
-
-
-
-
-
-
-
-
-
-
-
-    // function activity()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_activity'));
-    // }
-
-    // function controluser()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_controluser', $_POST['token']));
-    // }
-
-    // function refresh_token()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_refresh_token', $_POST['token']));
-    // }
-
-    // function token_expires()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_token_expires', $_POST['token']));
-    // }
-
-    // function refresh_cookie()
-    // {
-    //     session_regenerate_id();
-    // }
 
 }
 

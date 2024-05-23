@@ -62,14 +62,14 @@ class login_model
         return $this->bll->get_data_user_BLL($args);
     }
 
-    public function get_activity()
+    public function get_control_activity()
     {
-        return $this->bll->get_activity_BLL();
+        return $this->bll->get_control_activity_BLL();
     }
 
-    public function get_controluser($args)
+    public function get_control_user($args)
     {
-        return $this->bll->get_controluser_BLL($args);
+        return $this->bll->get_control_user_BLL($args);
     }
 
     public function get_refresh_token($args)
@@ -81,4 +81,10 @@ class login_model
     {
         return $this->bll->get_token_expires_BLL($args);
     }
+
+    public function get_control_expires_token($args)
+    {
+        return $this->bll->get_control_expires_token_BLL($args);
+    }
+
 }

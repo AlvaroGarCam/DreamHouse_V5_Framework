@@ -37,7 +37,6 @@ class middleware
     }
     public static function create_token($user)
     {
-
         $jwt_file = UTILS . "jwt.ini";
         $jwt = parse_ini_file($jwt_file);
 
@@ -47,7 +46,7 @@ class middleware
 
         $header = $jwt['header'];
         $secret = $jwt['secret'];
-        $payload = json_encode(['iat' => time(), 'exp' => time() + (600), 'user' => $user]); //10minutos
+        $payload = json_encode(['iat' => time(), 'exp' => time() + (3600), 'user' => $user]); //1 hora
 
         $JWT = new jwt();
         return $JWT->encode($header, $payload, $secret);

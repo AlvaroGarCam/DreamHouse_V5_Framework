@@ -7,8 +7,8 @@ require 'autoload.php';
 // include($path . "utils/mail.inc.php");
 // include ($path . "paths.php");
 
-// ob_start();
-// session_start();
+ob_start();
+session_start();
 
 class router
 {

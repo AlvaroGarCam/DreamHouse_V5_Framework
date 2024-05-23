@@ -343,8 +343,8 @@ function login() {
                     setTimeout(load_otp_form, 2000);
                 } else if (errorType == "okkey_login") {
                     console.log("Contraseña correcta!");
-                    var access_token = result[2];
-                    var refresh_token = result[3];
+                    var access_token = result[1];
+                    var refresh_token = result[2];
                     localStorage.setItem('access_token', access_token);
                     localStorage.setItem('refresh_token', refresh_token);
                     if (localStorage.getItem('access_token') !== undefined) {
@@ -436,7 +436,7 @@ function send_otp() {
     if (validate_otp() != 0) {
         var username = $("#username_input").val();
         var otp_code = $("#otp_input").val();
-        // console.log(username, otp);
+        console.log(username, otp_code);
         // return false;
         var data = {
             username: username,
@@ -445,7 +445,7 @@ function send_otp() {
         };
         ajaxPromise('POST', 'JSON', friendlyURL("?module=login"), data)
             .then(function (result) {
-                // console.log('Respuesta del servidor: ' + result);
+                console.log('Respuesta del servidor: ' + result);
                 // return false;
                 if (result === 'okkey') {
                     toastr.options = {
@@ -454,9 +454,9 @@ function send_otp() {
                     };
                     toastr.success("Account restored successfully, now try to login or recover password.");
                     setTimeout(' window.location.href = friendlyURL("?module=login"); ', 2000);
-                } else if (result[0] === 'error_otp') {
+                } else if (result === 'error_otp') {
                     $("#error_otp_input").html("Código OTP incorrecto. Por favor, inténtalo de nuevo.");
-                } else if (result[0] === 'error_username') {
+                } else if (result === 'error_username') {
                     $("#error_username_input").html("Nombre de usuario incorrecto. Por favor, inténtalo de nuevo.");
                 }
             }).catch(function (textStatus) {

@@ -1,5 +1,5 @@
 <?php
-@session_start();
+
 class login_bll
 {
 	private $dao;
@@ -78,7 +78,7 @@ class login_bll
 					$refresh_token = middleware::create_refresh_token($user[0]['username']);
 					$_SESSION['username'] = $user[0]['username'];
 					$_SESSION['tiempo'] = time();
-					session_regenerate_id();
+
 					return ['okkey_login', $access_token, $refresh_token];
 				} else if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 0) {
 					return ['activate error'];
@@ -213,12 +213,13 @@ class login_bll
 		return $this->dao->select_data_user($this->db, $decoded_token['user']);
 	}
 
-	public function get_activity_BLL()
+	public function get_control_activity_BLL()
 	{
+		// return 'Hola control_activity_BLL';
 		if (!isset($_SESSION["tiempo"])) {
 			return "inactivo";
 		} else {
-			if ((time() - $_SESSION["tiempo"]) >= 1800) {
+			if ((time() - $_SESSION["tiempo"]) >= 600) { //10min
 				return "inactivo";
 			} else {
 				return (time() - $_SESSION["tiempo"]);
@@ -226,18 +227,15 @@ class login_bll
 		}
 	}
 
-	public function get_controluser_BLL($args)
+	public function get_control_user_BLL($args)
 	{
-		$token = explode('"', $args);
-		$void_email = "";
-		$decode = middleware::decode_username($token[1]);
-		$user = $this->dao->select_user($this->db, $decode, $void_email);
+		$token_dec = middleware::decode_username($args);
+		// return $token_dec;
 
-		if (!isset($_SESSION['username']) != $user) {
-			if (isset($_SESSION['username']) != $user) {
-				return 'not_match';
-			}
-			return 'match';
+		if (isset($_SESSION['username']) && ($_SESSION['username']) == $token_dec) {
+			return "Correct_User";
+		} else {
+			return "Wrong_user";
 		}
 	}
 
@@ -262,6 +260,23 @@ class login_bll
 			return "inactivo";
 		} else {
 			return "activo";
+		}
+	}
+
+	public function get_control_expires_token_BLL($args)
+	{
+		$access_token = middleware::decode_token($args[0]);
+		$refresh_token = middleware::decode_token($args[1]);
+		// return [$access_token['exp'], $refresh_token['exp']];
+		if ($refresh_token['exp'] < time()) {
+			return 'Expired session';
+		} else {
+			if ($access_token['exp'] < time()) {
+				$new_access_token = middleware::create_token($refresh_token['username']);
+				return $new_access_token;
+			} else {
+				return 'okkey';
+			}
 		}
 	}
 }

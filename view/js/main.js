@@ -50,8 +50,8 @@ function friendlyURL(url) {
 function load_menu() {
     var access_token = localStorage.getItem('access_token');
     if (access_token) {
-        console.log("hola, usuario logueado :D");
-        console.log(access_token);
+        // console.log("hola, usuario logueado :D");
+        // console.log(access_token);
         // return false;
         ajaxPromise('POST', 'JSON', friendlyURL('?module=login'), { 'access_token': access_token, op: 'data_user' })
             .then(function (data) {

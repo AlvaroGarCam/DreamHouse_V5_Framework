@@ -49,8 +49,8 @@
         <uri>data_user</uri>
     </function>
     <function>
-        <name>activity</name>
-        <uri>activity</uri>
+        <name>control_activity</name>
+        <uri>control_activity</uri>
     </function>
     <function>
         <name>controluser</name>
@@ -71,5 +71,17 @@
     <function>
         <name>send_otp</name>
         <uri>send_otp</uri>
+    </function>
+    <function>
+        <name>control_user</name>
+        <uri>control_user</uri>
+    </function>
+    <function>
+        <name>control_expires_token</name>
+        <uri>control_expires_token</uri>
+    </function>
+    <function>
+        <name>refresh_cookie</name>
+        <uri>refresh_cookie</uri>
     </function>
 </functions>
