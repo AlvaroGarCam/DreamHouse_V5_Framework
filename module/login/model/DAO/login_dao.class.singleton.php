@@ -29,6 +29,16 @@ class login_dao
             return false;
         }
     }
+
+    public function select_user_login($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM user
+        WHERE username = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
     public function insert_user($db, $username_reg, $hashed_pass, $email_reg, $avatar)
     {
 
@@ -121,7 +131,7 @@ class login_dao
     }
     public function check_login_attempts($db, $username)
     {
-        $sql = "SELECT login_attempts, phone_number FROM user WHERE username = '$username'";
+        $sql = "SELECT * FROM user WHERE username = '$username'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);

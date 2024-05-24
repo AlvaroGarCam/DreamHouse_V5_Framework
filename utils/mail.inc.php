@@ -23,19 +23,19 @@ class mail
         }
 
         // Verificar si las claves necesarias están presentes en el archivo ini
-        if (!isset($resend_ini['API_KEY'], $resend_ini['FROM'])) {
+        if (!isset($resend_ini['API_KEY'], $resend_ini['FROM'], $resend_ini['TO'])) {
             exit('Error: Missing required keys in ini file');
         }
 
         $API_KEY = $resend_ini['API_KEY'];
         $FROM = $resend_ini['FROM'];
-
+        $TO = $resend_ini['TO'];
         // Inicializar el cliente de Resend con la API key
         $resend = Resend::client($API_KEY);
         try {
             $result = $resend->emails->send([
                 'from' => $FROM,
-                'to' => $data['to'],
+                'to' => $TO,
                 'subject' => $data['inputMatter'],
                 'html' => $data['inputMessage'],
             ]);

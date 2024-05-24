@@ -49,45 +49,49 @@ class login_bll
 
 	public function get_login_BLL($args)
 	{
-		$attempts = $this->dao->check_login_attempts($this->db, $args[0]);
-		$login_attempts = $attempts[0]['login_attempts'];
-		$phone_number = $attempts[0]['phone_number'];
-		if ($login_attempts >= 3) {
-			$token = common::generate_token_secure(4);
-			if ($this->dao->insert_otp_token($this->db, $args[0], $token)) {
-				$message = [
-					'type' => 'login_failed',
-					'token' => $token,
-					'phone_number' => $phone_number
-				];
-				$ultramsgResponse = json_decode(ultramsg::send_whatsapp($message));
-				if (empty($ultramsgResponse)) {
-					return ['ultramsg error'];
+		if (!empty($this->dao->select_user_login($this->db, $args[0]))) {
+			$attempts = $this->dao->check_login_attempts($this->db, $args[0]);
+			$login_attempts = $attempts[0]['login_attempts'];
+			$phone_number = $attempts[0]['phone_number'] || null;
+			if ($login_attempts >= 3) {
+				$token = common::generate_token_secure(4);
+				if ($this->dao->insert_otp_token($this->db, $args[0], $token)) {
+					$message = [
+						'type' => 'login_failed',
+						'token' => $token,
+						'phone_number' => $phone_number
+					];
+					$ultramsgResponse = json_decode(ultramsg::send_whatsapp($message));
+					if (empty($ultramsgResponse)) {
+						return ['ultramsg error'];
+					} else {
+						return ['error_attempts'];
+					}
 				} else {
-					return ['error_attempts'];
+					return ['error_insert_otp_token'];
 				}
 			} else {
-				return ['error_insert_otp_token'];
+				if (!empty($this->dao->select_user_login($this->db, $args[0]))) {
+					$user = $this->dao->select_user_login($this->db, $args[0]);
+					if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 1) {
+						$access_token = middleware::create_token($user[0]['username']);
+						$refresh_token = middleware::create_refresh_token($user[0]['username']);
+						$_SESSION['username'] = $user[0]['username'];
+						$_SESSION['tiempo'] = time();
+
+						return ['okkey_login', $access_token, $refresh_token];
+					} else if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 0) {
+						return ['activate error'];
+					} else {
+						$this->dao->increase_login_attempts($this->db, $args[0]);
+						return ['error_passwd'];
+					}
+				} else {
+					return ['error_user'];
+				}
 			}
 		} else {
-			if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
-				$user = $this->dao->select_user($this->db, $args[0], $args[0]);
-				if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 1) {
-					$access_token = middleware::create_token($user[0]['username']);
-					$refresh_token = middleware::create_refresh_token($user[0]['username']);
-					$_SESSION['username'] = $user[0]['username'];
-					$_SESSION['tiempo'] = time();
-
-					return ['okkey_login', $access_token, $refresh_token];
-				} else if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 0) {
-					return ['activate error'];
-				} else {
-					$this->dao->increase_login_attempts($this->db, $args[0]);
-					return ['error_passwd'];
-				}
-			} else {
-				return ['error_user'];
-			}
+			return ['error_user'];
 		}
 	}
 
