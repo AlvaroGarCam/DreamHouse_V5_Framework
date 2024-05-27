@@ -59,13 +59,13 @@ class login_dao
         return $db->listar($stmt);
     }
 
-    public function insert_social_login($db, $id, $username, $email, $avatar)
+    public function insert_social_login($db, $username, $email, $avatar)
     {
 
-        $sql = "INSERT INTO users (id, username, password, email, user_type, avatar, token_email, activate)     
-                VALUES ('$id', '$username', '', '$email', 'client', '$avatar', '', 1)";
+        $sql = "INSERT INTO user (username, password, email, type_user, avatar, token_email, is_active)     
+                VALUES ('$username', '', '$email', 'client', '$avatar', '', 0)";
 
-        return $stmt = $db->ejecutar($sql);
+        return $db->ejecutar($sql);
     }
 
     public function select_verify_email($db, $username)

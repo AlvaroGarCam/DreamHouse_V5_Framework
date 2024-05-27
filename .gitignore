@@ -2,3 +2,4 @@
 ./.htaccess
 *.lock
 vendor/
+credentials.js 

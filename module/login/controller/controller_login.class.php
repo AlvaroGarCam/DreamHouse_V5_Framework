@@ -134,10 +134,11 @@ class controller_login
         session_regenerate_id();
         return 'Done';
     }
-    // function social_login()
-    // {
-    //     echo json_encode(common::load_model('login_model', 'get_social_login', [$_POST['id'], $_POST['username'], $_POST['email'], $_POST['avatar']]));
-    //}
+    function social_login()
+    {
+        // echo json_encode("Hola social login");
+        echo json_encode(common::load_model('login_model', 'get_social_login', $_POST['social_user']));
+    }
 
 
 }

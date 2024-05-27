@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2024 a las 19:04:34
+-- Tiempo de generación: 27-05-2024 a las 12:51:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dreamhouse_v4`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `manage_like` (IN `username_p` VARCHAR(25), IN `house_id_p` INT(11), IN `operation` VARCHAR(20))   BEGIN
+        IF operation = 'add' THEN
+             INSERT INTO likes(house_id, username) 
+             VALUES(house_id_p, username_p);
+
+             UPDATE house
+             SET likes = likes + 1
+             WHERE house_id = house_id_p;
+        ELSEIF operation = 'remove' THEN
+             DELETE FROM likes
+             WHERE username = username_p AND house_id = house_id_p;
+
+             UPDATE house
+             SET likes = likes - 1
+             WHERE house_id = house_id_p;
+        END IF;
+        END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -108,21 +132,21 @@ CREATE TABLE `house` (
 
 INSERT INTO `house` (`house_id`, `ref_cat`, `surface`, `num_rooms`, `num_wcs`, `price`, `city_id`, `pet_id`, `lng`, `lat`, `likes`) VALUES
 (1, 'ABC-123', '200sqm', '3', '2', '200000', 1, 1, '-0.163754', '39.350387', 1),
-(2, 'DEF-456', '140sqm', '4', '2', '250000', 2, 2, '-0.19722', '38.495334', 1),
-(3, 'CBA-245', '88sqm', '2', '1', '150000', 3, 3, '-0.05', '40.031394', 1),
+(2, 'DEF-456', '140sqm', '4', '2', '250000', 2, 2, '-0.19722', '38.495334', 0),
+(3, 'CBA-245', '88sqm', '2', '1', '150000', 3, 3, '-0.05', '40.031394', 0),
 (4, 'GTQ-846', '150sqm', '5', '3', '300000', 4, 4, '-3.824652', '40.644406', 0),
 (5, 'GLE-567', '105sqm', '3', '1', '180000', 5, 5, '2.180775', '41.279869', 0),
 (6, 'XYZ-789', '180sqm', '4', '3', '280000', 7, 2, '-3.598557', '37.177336', 0),
-(7, 'LMN-456', '120sqm', '3', '2', '220000', 6, 1, '-5.532825', '37.051456', 0),
+(7, 'LMN-456', '120sqm', '3', '2', '220000', 6, 1, '-5.532825', '37.051456', 1),
 (8, 'OQL-720', '200sqm', '5', '4', '350000', 1, 3, '-0.101304', '39.28331', 0),
 (9, 'MEN-489', '150sqm', '4', '3', '280000', 2, 4, '-0.294827', '38.521622', 0),
 (10, 'GHI-789', '180sqm', '4', '3', '320000', 3, 5, '-0.05', '39.97416', 0),
 (11, 'JKL-012', '220sqm', '6', '4', '420000', 4, 1, '-3.825383', '40.420265', 1),
 (12, 'MNO-345', '130sqm', '3', '2', '250000', 5, 2, '2.178356', '41.316204', 0),
-(13, 'PQR-678', '180sqm', '4', '3', '320000', 1, 3, '-0.150987', '39.429409', 1),
+(13, 'PQR-678', '180sqm', '4', '3', '320000', 1, 3, '-0.150987', '39.429409', 0),
 (14, 'STU-901', '160sqm', '4', '3', '290000', 2, 4, '-0.12673', '38.552803', 0),
 (15, 'VWX-234', '190sqm', '5', '4', '360000', 3, 5, '-0.05', '39.826494', 0),
-(16, 'YZA-567', '200sqm', '6', '4', '400000', 4, 1, '-3.760404', '40.68538', 0),
+(16, 'YZA-567', '200sqm', '6', '4', '400000', 4, 1, '-3.760404', '40.68538', 1),
 (17, 'BCD-890', '140sqm', '3', '2', '260000', 5, 2, '2.161789', '41.189057', 0),
 (18, 'EFG-123', '210sqm', '5', '4', '380000', 1, 3, '-0.15701', '39.208973', 0),
 (19, 'HIJ-456', '170sqm', '4', '3', '300000', 2, 4, '-0.454434', '38.408656', 0),
@@ -370,11 +394,10 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`house_id`, `username`) VALUES
-(1, 'Velksar'),
-(2, 'Zarpas'),
-(3, 'Velksar'),
-(11, 'Velksar'),
-(13, 'Velksar');
+(7, 'Angela892984'),
+(1, 'Angela892984'),
+(11, 'Angela892984'),
+(16, 'Angela892984');
 
 -- --------------------------------------------------------
 
@@ -497,7 +520,10 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `is_active`, `login_attempts`, `phone_number`, `otp_token`) VALUES
 (45, 'user123', '$2y$12$C/YIQmyGlnwsx562CigeQuptVUPMcfQXiQy9IV2eKgX0bjm758hrC', 'user123@example.com', 'client', 'https://i.pravatar.cc/500?u=6a69ec475f1c9f5aa2c37fb382f9ae7b', NULL, 0, 0, NULL, NULL),
 (47, 'Velksar', '$2y$12$ewDhpSY/KIXQK3IR4v4VaOTU/34rWmzGBLPae10E77hhRYlJ3NHnO', 'alvarokjadjis@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3f219667eb5dc73fc4facf91a37739ab', NULL, 0, 0, NULL, NULL),
-(66, 'Angela892984', '$2y$12$qas4.RYF2rGIbTvFpcsRz.B2KxkWg82ED9c2djOPxpiOnoEsrJ3Sq', 'alvgarcam@alu.edu.gva.es', 'client', 'https://i.pravatar.cc/500?u=4abc56236ccdb0dd1e7a242265213eb6', '', 1, 0, '+34666777888', '');
+(66, 'Angela892984', '$2y$12$qas4.RYF2rGIbTvFpcsRz.B2KxkWg82ED9c2djOPxpiOnoEsrJ3Sq', 'alvgarcam@alu.edu.gva.com', 'client', 'https://i.pravatar.cc/500?u=4abc56236ccdb0dd1e7a242265213eb6', '', 1, 1, '+34666777888', ''),
+(67, 'weelee', '$2y$10$l7Yrcbqf8UU8HcZFXOcG3.Ogt/AzPncvYDnET9CLk/SfD12C4XS4y', 'alvaro20cs@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=4ef9b96e90cc031cb116ff5c7b42543a', NULL, 1, 0, NULL, ''),
+(69, 'al.garridocampos@google', '', 'al.garridocampos@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocId7vL4zhNr2rINX3JBLRx9IIoAlQGr9gJrL3wZkSYh06_lgg=s96-c', '', 0, 0, NULL, NULL),
+(70, 'alvgarcam@github', '', 'alvgarcam@alu.edu.gva.es', 'client', 'https://avatars.githubusercontent.com/u/157162001?v=4', '', 0, 0, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -563,6 +589,13 @@ ALTER TABLE `house_type`
 ALTER TABLE `images`
   ADD PRIMARY KEY (`image_id`),
   ADD KEY `fk_house_id` (`house_id`);
+
+--
+-- Indices de la tabla `likes`
+--
+ALTER TABLE `likes`
+  ADD KEY `house_id` (`house_id`),
+  ADD KEY `username` (`username`);
 
 --
 -- Indices de la tabla `operation`
@@ -658,7 +691,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Restricciones para tablas volcadas
@@ -682,7 +715,7 @@ ALTER TABLE `house_category`
 --
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`house_id`) REFERENCES `house` (`house_id`),
-  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
+  ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

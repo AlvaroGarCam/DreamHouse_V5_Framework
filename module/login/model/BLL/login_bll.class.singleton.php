@@ -78,7 +78,6 @@ class login_bll
 						$refresh_token = middleware::create_refresh_token($user[0]['username']);
 						$_SESSION['username'] = $user[0]['username'];
 						$_SESSION['tiempo'] = time();
-
 						return ['okkey_login', $access_token, $refresh_token];
 					} else if (password_verify($args[1], $user[0]['password']) && $user[0]['is_active'] == 0) {
 						return ['activate error'];
@@ -114,15 +113,34 @@ class login_bll
 
 	public function get_social_login_BLL($args)
 	{
-		if (!empty($this->dao->select_user($this->db, $args[1], $args[2]))) {
-			$user = $this->dao->select_user($this->db, $args[1], $args[2]);
-			$jwt = jwt_process::encode($user[0]['username']);
-			return json_encode($jwt);
+		// return $args;
+
+		if (!isset($args['username'], $args['email'], $args['avatar'], $args['provider'])) {
+			throw new InvalidArgumentException('Missing required argument');
+		}
+		$username = $args['username'] . "@" . $args['provider'];
+		$email = $args['email'];
+		$avatar = $args['avatar'];
+
+		if (!empty($this->dao->select_user($this->db, $username, $email))) {
+			$access_token = middleware::create_token($username);
+			$refresh_token = middleware::create_refresh_token($username);
+			if (!$access_token || !$refresh_token) {
+				throw new RuntimeException('Failed to create token');
+			}
+			$_SESSION['username'] = $username;
+			$_SESSION['tiempo'] = time();
+			return ['okkey_login', $access_token, $refresh_token];
 		} else {
-			$this->dao->insert_social_login($this->db, $args[0], $args[1], $args[2], $args[3]);
-			$user = $this->dao->select_user($this->db, $args[1], $args[2]);
-			$jwt = jwt_process::encode($user[0]['username']);
-			return json_encode($jwt);
+			$this->dao->insert_social_login($this->db, $username, $email, $avatar);
+			$access_token = middleware::create_token($username);
+			$refresh_token = middleware::create_refresh_token($username);
+			if (!$access_token || !$refresh_token) {
+				throw new RuntimeException('Failed to create token');
+			}
+			$_SESSION['username'] = $username;
+			$_SESSION['tiempo'] = time();
+			return ['okkey_login', $access_token, $refresh_token];
 		}
 	}
 

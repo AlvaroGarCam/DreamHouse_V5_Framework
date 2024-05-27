@@ -1,69 +1,81 @@
-// function social_login(param){
-//     authService = firebase_config();
-//     authService.signInWithPopup(provider_config(param))
-//     .then(function(result) {
-//         console.log('Hemos autenticado al usuario ', result.user);
-//         email_name = result.user.email;
-//         let username = email_name.split('@');
-//         console.log(username[0]);
+function social_login(param) {
+    authService = firebase_config();
+    authService.signInWithPopup(provider_config(param))
+        .then(function (result) {
+            // console.log('Hemos autenticado al usuario ', result.user);
+            email_name = result.user.email;
+            let username = email_name.split('@');
+            // console.log(username[0]);
+            social_user = { id_user: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL, provider: param };
+            // console.log(social_user);
+            // return false;
+            var data = {
+                social_user: social_user,
+                op: 'social_login'
+            };
+            // console.log(data);
+            // return false;
+            if (result) {
+                ajaxPromise('POST', 'JSON', friendlyURL("?module=login"), data)
+                    .then(function (data) {
+                        // console.log(data);
+                        // return false;
+                        if (!Array.isArray(data) || data.length < 3) {
+                            throw new Error('Invalid data format');
+                        }
+                        var access_token = data[1];
+                        var refresh_token = data[2];
+                        if (!access_token || !refresh_token) {
+                            throw new Error('Missing token');
+                        }
+                        localStorage.setItem("access_token", access_token);
+                        localStorage.setItem("refresh_token", refresh_token);
+                        toastr.options = {
+                            closeButton: true,
+                            positionClass: 'toast-center'
+                        };
+                        toastr.success("Loged succesfully");
+                        if (localStorage.getItem('redirect_like') == null) {
+                            setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
+                        } else {
+                            setTimeout('window.location.href = friendlyURL("?module=shop")', 1000);
+                        }
+                    })
+                    .catch(function () {
+                        console.log('Error: Social login error');
+                    });
+            }
+        })
+        .catch(function (error) {
+            var errorCode = error.code;
+            console.log(errorCode);
+            var errorMessage = error.message;
+            console.log(errorMessage);
+            var email = error.email;
+            console.log(email);
+            var credential = error.credential;
+            console.log(credential);
+        });
+}
 
-//         social_user = {id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL};
-//         if (result) {
-//             ajaxPromise(friendlyURL("?module=login&op=social_login"), 'POST', 'JSON', social_user)
-//             .then(function(data) {
-//                 localStorage.setItem("token", data);
-//                 toastr.options.timeOut = 3000;
-//                 toastr.success("Inicio de sesión realizado");
-//                 if(localStorage.getItem('likes') == null) {
-//                     setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000);
-//                 } else {
-//                     setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000);
-//                 }
-//             })
-//             .catch(function() {
-//                 console.log('Error: Social login error');
-//             });
-//         }
-//     })
-//     .catch(function(error) {
-//         var errorCode = error.code;
-//         console.log(errorCode);
-//         var errorMessage = error.message;
-//         console.log(errorMessage);
-//         var email = error.email;
-//         console.log(email);
-//         var credential = error.credential;
-//         console.log(credential);
-//     });
-// }
+function firebase_config() {
+    if (!firebase.apps.length) {
+        firebase.initializeApp(window.config);
+    } else {
+        firebase.app();
+    }
+    return authService = firebase.auth();
+}
 
-// function firebase_config(){
-//     var config = {
-//         apiKey: "AIzaSyBOo5emMZXMi0T411OPKgoDGcvDl_IKSno",
-//         authDomain: "test-php-js-7fc12.firebaseapp.com",
-//         projectId: "test-php-js-7fc12",
-//         storageBucket: "test-php-js-7fc12.appspot.com",
-//         messagingSenderId: "495514694215",
-//         appId: "1:495514694215:web:b183cd7f513ce8b0d6f762",
-//         measurementId: "G-JXEGLTGLTC"
-//     };
-//     if(!firebase.apps.length){
-//         firebase.initializeApp(config);
-//     }else{
-//         firebase.app();
-//     }
-//     return authService = firebase.auth();
-// }
-
-// function provider_config(param){
-//     if(param === 'google'){
-//         var provider = new firebase.auth.GoogleAuthProvider();
-//         provider.addScope('email');
-//         return provider;
-//     }else if(param === 'github'){
-//         return provider = new firebase.auth.GithubAuthProvider();
-//     }
-// }
+function provider_config(param) {
+    if (param === 'google') {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('email');
+        return provider;
+    } else if (param === 'github') {
+        return provider = new firebase.auth.GithubAuthProvider();
+    }
+}
 
 
 //--------------RECOVER PASSWORD
@@ -391,16 +403,16 @@ function send_otp() {
 function github_login_click() {
     $("#github_login").on("click", function (e) {
         e.preventDefault();
-        console.log("Hola github login");
-        // social_login('github');
+        // console.log("Hola github login");
+        social_login('github');
     });
 }
 
 function gmail_login_click() {
     $("#gmail_login").on("click", function (e) {
         e.preventDefault();
-        console.log("Hola google login");
-        // social_login('gmail');
+        // console.log("Hola google login");
+        social_login('google');
     });
 }
 
