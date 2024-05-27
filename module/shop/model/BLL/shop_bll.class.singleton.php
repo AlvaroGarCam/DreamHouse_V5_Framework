@@ -60,5 +60,58 @@ class shop_bll
 		return $this->dao->related_houses($this->db, $array);
 	}
 
+
+	public function click_like_BLL($array)
+	{
+		$username = middleware::decode_username($array[0]);
+		$house_id = $array[1];
+
+		try {
+			$check_like = $this->dao->check_like($this->db, $username, $house_id);
+		} catch (Exception $e) {
+			return "error en en check_like";
+		}
+
+		if (!empty($check_like)) {
+			//restar el like, borrarlo de "likes" y -1 likes en house
+			try {
+				if ($this->dao->manage_like($this->db, $username, $house_id, 'remove')) {
+					return "Se ha quitado el like correctamente";
+				} else {
+					return "error en manage_like_remove";
+				}
+			} catch (Exception $e) {
+				return "error en manage_like_remove catch";
+			}
+		} else {
+			//sumar el like, insertar en "likes" y +1 likes en house
+			try {
+				if ($this->dao->manage_like($this->db, $username, $house_id, 'add')) {
+					return "Se ha añadido el like correctamente";
+				} else {
+					return "error en manage_like_add";
+				}
+			} catch (Exception $e) {
+				return "error en manage_like_add catch";
+			}
+		}
+	}
+
+	public function like_reactive_BLL($array)
+	{
+		$user = middleware::decode_username($array[0]);
+		$house_id = $array[1];
+		try {
+			$check_like = $this->dao->check_like($this->db, $user, $house_id);
+			if (!empty($check_like)) {
+				return "like";
+			} else {
+				return "dislike";
+			}
+		} catch (Exception $e) {
+			return "error en check_like_reactive";
+		}
+	}
+
 }
 ?>

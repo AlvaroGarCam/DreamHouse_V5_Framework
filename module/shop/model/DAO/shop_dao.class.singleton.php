@@ -327,6 +327,52 @@ WHERE
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
+    public function check_like($db, $username, $house_id)
+    {
+        $sql = "SELECT *
+            FROM likes
+            WHERE house_id='$house_id' 
+            AND username='$username';";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function manage_like($db, $username, $house_id, $op)
+    {
+        // //procedure usado en base de datos
+
+        // // DELIMITER //
+        // // CREATE PROCEDURE manage_like(
+        // // IN username_p VARCHAR(25), 
+        // // IN house_id_p INT(11), 
+        // // IN operation VARCHAR(20)
+        // // )
+        // // BEGIN
+        // // IF operation = 'add' THEN
+        // //      INSERT INTO likes(house_id, username) 
+        // //      VALUES(house_id_p, username_p);
+        // //      UPDATE house
+        // //      SET likes = likes + 1
+        // //      WHERE house_id = house_id_p;
+        // // ELSEIF operation = 'remove' THEN
+        // //      DELETE FROM likes
+        // //      WHERE username = username_p AND house_id = house_id_p;
+        // //      UPDATE house
+        // //      SET likes = likes - 1
+        // //      WHERE house_id = house_id_p;
+        // // END IF;
+        // // END;
+        // // //
+        // // DELIMITER ;
+
+        $sql = "CALL manage_like('$username', '$house_id', '$op');";
+        return $db->ejecutar($sql);
+
+    }
 }
+
+
 
 ?>

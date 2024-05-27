@@ -48,6 +48,14 @@ class shop_model
     {
         return $this->bll->related_houses_BLL($array);
     }
+    public function like_reactive($array)
+    {
+        return $this->bll->like_reactive_BLL($array);
+    }
 
+    public function click_like($array)
+    {
+        return $this->bll->click_like_BLL($array);
+    }
 }
 ?>

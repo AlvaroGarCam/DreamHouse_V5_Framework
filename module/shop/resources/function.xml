@@ -56,4 +56,12 @@
         <name>related_houses</name>
         <uri>related_houses</uri>
     </function>
+    <function>
+        <name>click_like</name>
+        <uri>click_like</uri>
+    </function>
+    <function>
+        <name>like_reactive</name>
+        <uri>like_reactive</uri>
+    </function>
 </functions>

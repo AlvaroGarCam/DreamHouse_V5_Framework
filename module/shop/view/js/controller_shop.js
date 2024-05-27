@@ -1,10 +1,8 @@
 function loadHouses() {
-    //Nos aseguramos de que valga lo del localStorage o "false" para evitar que haya fallos en el "if"
-    var filters_home = localStorage.getItem('filters_home') || false;
-    //Filtros de shop guardados si los hay
-    var filters_shop = localStorage.getItem('filters_shop') || false;
 
-    // var filter_order = localStorage.getItem('filter_order') || false;
+    var filters_home = localStorage.getItem('filters_home') || false;
+
+    var filters_shop = localStorage.getItem('filters_shop') || false;
 
     var details_visited_houses = localStorage.getItem('details_visited_houses') || false;
 
@@ -12,66 +10,35 @@ function loadHouses() {
 
     var redirect_like = localStorage.getItem('redirect_like') || false;
 
-    var ok_redirect_like = localStorage.getItem('ok_redirect_like') || false;
 
-    // var cont_redirect_like = localStorage.getItem("contador_redirect_like") || false;
-
-    //pequeña mejora, todo esto está repartido en todas las funciones que cambian el "body" entre esos 2 divs 
     $('#details-shop').hide();
     $('#content_shop_houses').hide();
-
     if (filters_home !== false && filters_shop === false) {
-        // console.log('Hola Ctrl_shop (salto del home)');
-        // print_filter_home_jump(('module/shop/ctrl/ctrl_shop.php?op=redirect_home'));
         localStorage.setItem('filters_shop', localStorage.getItem('filters_home'));
-        // localStorage.removeItem('filters_home');
+        localStorage.removeItem('filters_home');
         print_filters_shop();
     }
     if (details_visited_houses !== false) {
         setTimeout(function () {
-            // Tu código aquí
-        }, 1000); // 1000 milisegundos equivalen a 1 segundo
-
-        var id = localStorage.getItem('details_visited_houses')
-        localStorage.removeItem('details_visited_houses');
-        // console.log(id);
-        // return false;
-        loadDetails(id);
+            var id = localStorage.getItem('details_visited_houses')
+            localStorage.removeItem('details_visited_houses');
+            loadDetails(id);
+        }, 1000);
     }
     if (redirect_like !== false) {
-        if (ok_redirect_like === 'ok') {
-            // if (ok_redirect_like === 'okk') {
-            loadDetails(redirect_like);
-            localStorage.removeItem("redirect_like");
-            localStorage.removeItem("ok_redirect_like");
-            // }
-            // ok_redirect_like = 'okk';
-            // localStorage.removeItem("ok_redirect_like");
-            // localStorage.setItem("ok_redirect_like", ok_redirect_like);
-        }
+        loadDetails(redirect_like);
+        localStorage.removeItem("redirect_like");
     }
     if (filters_search !== false) {
-        // console.log('Hola search');
-        // return false;
         localStorage.removeItem('filters_shop');
         localStorage.setItem('filters_shop', localStorage.getItem('filters_search'));
         localStorage.removeItem('filters_search');
         print_filters_shop();
     }
     if (filters_shop !== false) {
-        // console.log('Hola Ctrl_shop (filters_shop)');
-        // console.log(filters_shop);
-        // return false;
-        //console.log(JSON.parse(localStorage.getItem('filters_shop')));
         print_filters_shop();
-        // highlight_filters_shop();
-        // } else if (filter_order !== false) {
-        //     // console.log('Hola Ctrl_shop (filter_order)');
-        //     // console.log(filter_order);
-        //     // return false;
-        //     print_ordered_shop();
     }
-    if (details_visited_houses == false && filters_home == false && filters_search == false && filters_shop == false && redirect_like === false && ok_redirect_like === false) {
+    if (details_visited_houses == false && filters_home == false && filters_search == false && filters_shop == false && redirect_like == false) {
         List();
     }
 }
@@ -89,7 +56,6 @@ function List() {
             $('#details-shop').hide();
             $('#content_shop_houses').show();
             $('#filter_order').show();
-
             if (data === "error") {
                 $('<div></div>').appendTo('#content_shop_houses')
                     .html('<h3>¡No se encuentran resultados con los filtros aplicados!</h3>');
@@ -101,22 +67,22 @@ function List() {
                     var ruta = "";
                     if (access_token === false) {
                         ruta = "view/img/dislike.png";
-                        appendHouseToPage(house, ruta); // Agregar casa a la página con la ruta actual
+                        appendHouseToPage(house, ruta);
                     } else {
                         like_reactive(house_id, access_token)
                             .then(function (ruta_response) {
                                 ruta = ruta_response;
-                                appendHouseToPage(house, ruta); // Agregar casa a la página con la ruta actual
+                                appendHouseToPage(house, ruta);
                             })
                             .catch(function (error) {
-                                console.error(error); // Maneja cualquier error que ocurra durante la ejecución de la promesa
+                                console.error(error);
                             });
                     }
                 }
             }
             mapBox_all(data);
         }).catch(function () {
-            // Maneja el error en la llamada ajax
+            console.log('Error al cargar las casas');
         });
 }
 
@@ -144,7 +110,7 @@ function appendHouseToPage(house, ruta) {
 
 function like_reactive(house_id, access_token) {
     return new Promise((resolve, reject) => {
-        ajaxPromise('POST', 'JSON', 'module/shop/ctrl/ctrl_shop.php?op=click_like_pija', { 'access_token': access_token, 'house_id': house_id })
+        ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'access_token': access_token, 'house_id': house_id, op: 'like_reactive' })
             .then(function (respuesta) {
                 if (respuesta == "like") {
                     resolve("view/img/like.jpg");
@@ -161,7 +127,6 @@ function like_reactive(house_id, access_token) {
 }
 
 function clicks() {
-    //detector del botón "details" cuando hacemos click
     $(document).on("click", ".details", function () {
         var id_house = this.getAttribute('id');
         $('html, body').scrollTop(0);
@@ -169,28 +134,32 @@ function clicks() {
         localStorage.setItem('details_offset', 0);
         loadDetails(id_house);
     });
-    // // Controlar el clic en el botón "Like"
-    // $(document).on("click", ".like", function () {
-    //     var house_id = this.getAttribute('id');
-    //     var access_token = localStorage.getItem('access_token') || false;
-    //     if (access_token === false) {
-    //         localStorage.removeItem('redirect_like');
-    //         localStorage.setItem('redirect_like', house_id);
-    //         toastr.options = {
-    //             closeButton: true, // Puedes configurar otras opciones según tus necesidades
-    //             positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
-    //         };
-    //         toastr.success("You have to be logged in to 'like' or 'dislike'");
-    //         setTimeout(' window.location.href="index.php?page=login"; ', 1000);
-    //     } else {
-    //         ajaxPromise('POST', 'JSON', 'module/shop/ctrl/ctrl_shop.php?op=click_like', { 'access_token': access_token, 'house_id': house_id })
-    //             .then(function (data) {
-    //                 console.log(data);
-    //                 location.reload();
-    //             }).catch(function () {
-    //             });
-    //     }
-    // });
+    // Controlar el clic en el botón "Like"
+    $(document).on("click", ".like", function () {
+        var house_id = this.getAttribute('id');
+        var access_token = localStorage.getItem('access_token') || false;
+        if (access_token == false) {
+            localStorage.removeItem('redirect_like');
+            localStorage.setItem('redirect_like', house_id);
+            toastr.options = {
+                closeButton: true, // Puedes configurar otras opciones según tus necesidades
+                positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
+            };
+            toastr.options.timeOut = 3000;
+            toastr.success("You have to be logged in to 'like' or 'dislike'");
+            setTimeout(function () {
+                window.location.href = friendlyURL('?module=login');
+            }, 1000);
+        } else {
+            ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'access_token': access_token, 'house_id': house_id, op: 'click_like' })
+                .then(function (data) {
+                    console.log(data);
+                    location.reload();
+                }).catch(function () {
+                    console.log('Error click_like');
+                });
+        }
+    });
 }
 
 //detalles de la vivienda cuando pulsamos el botón "Details"
@@ -295,23 +264,23 @@ function loadDetails(id_house) {
                     "</div>"
                 );
 
-            // var likeButtonContainer = $('.buttons');
-            // initialLikeButton.appendTo(likeButtonContainer); // Restaurar el botón "like" inicial
+            var likeButtonContainer = $('.buttons');
+            initialLikeButton.appendTo(likeButtonContainer); // Restaurar el botón "like" inicial
 
-            // // Actualizar la ruta de la imagen del botón "like" dinámicamente
-            // var likeButton = $('#' + data[0].house_id + '.like');
-            // var access_token = localStorage.getItem('access_token') || false;
-            // if (access_token === false) {
-            //     likeButton.find('img').attr('src', 'view/img/dislike.png');
-            // } else {
-            //     like_reactive(data[0].house_id, access_token)
-            //         .then(function (ruta_response) {
-            //             likeButton.find('img').attr('src', ruta_response);
-            //         })
-            //         .catch(function (error) {
-            //             console.error(error);
-            //         });
-            // }
+            // Actualizar la ruta de la imagen del botón "like" dinámicamente
+            var likeButton = $('#' + data[0].house_id + '.like');
+            var access_token = localStorage.getItem('access_token') || false;
+            if (access_token === false) {
+                likeButton.find('img').attr('src', 'view/img/dislike.png');
+            } else {
+                like_reactive(data[0].house_id, access_token)
+                    .then(function (ruta_response) {
+                        likeButton.find('img').attr('src', ruta_response);
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            }
 
             mapBox_details(data);
 
@@ -331,137 +300,47 @@ function loadDetails(id_house) {
     });
 }
 
-
-//función que imprime las casa según el filtro que hayamos clickado en "home"
-function print_filter_home_jump(url) {
-
-    console.log('Hola print_filter_home_jump');
-    //return false;
-
-    // localStorage.removeItem('filters_shop');
-    // if (filters_shop === undefined) {
-    //      var filters_shop = [];
-    // }
-
-    var filters_home = JSON.parse(localStorage.getItem('filters_home'));
-    //console.log(filters_home);
-
-    // if (Array.isArray(filters_home) && filters_home.length > 0) {
-    //      var primerElemento = filters_home[0];
-    //      var columna = Object.keys(primerElemento)[0];
-    //      if (primerElemento && primerElemento.type && primerElemento.type.length > 0) {
-    //           var valorType = primerElemento.type[0];
-    //      }
-    // }
-    // document.getElementById('filter_' + columna).value = valorType;
-
-    // filters_shop.push([columna, valorType]);
-    // localStorage.setItem('filters_shop', JSON.stringify(filters_shop));
-    // console.log(filters_shop);
-
-
-    //Limpio el filters_shop cuando hago el salto del home al shop porque entiendo que
-    //si clickamos en un atributo del home, queremos tener los filtros "limpios"
-
-
-    localStorage.removeItem('filters_home');
-    ajaxPromise('POST', 'JSON', url, { filters_home })
-        .then(function (shop) {
-            console.log(shop);
-            $('#content_shop_houses').empty();
-            $('.date_house, .date_img').empty();
-            $('#details_shop').empty();
-            $('#details-shop').hide();
-            $('#content_shop_houses').show();
-            $('#filter_order').show();
-
-            if (shop === "error") {
-                $('<div></div>').appendTo('#content_shop_houses')
-                    .html('<h3>¡No se encuentran resultados con los filtros aplicados!</h3>');
-            } else {
-
-                for (let i = 0; i < shop.length; i++) {
-                    const house = shop[i];
-                    $('<div></div>').attr({ 'id': house.house_id, 'class': 'list_content_shop' }).appendTo('#content_shop_houses')
-                        .html(
-                            "<div class='list_product'>" +
-                            "<div class='img-container'>" +
-                            "<img src='" + house.image_path + "' alt='House Image'>" +
-                            "</div>" +
-                            "<div class='product-info'>" +
-                            "<div class='product-content'>" +
-                            "<table><tr><td rowspan='3'><img src='" + house.pet_image + "' width='100px'></td><td><h1><b>" + house.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €</b></h1></td></tr><tr></tr><tr></tr></table>" +
-                            "<br>" +
-                            "<table><tr><td><img src='view/img/icon/type_icon.png' width=30px></td><td><strong>" + house.type_names + "</strong></td><td><img src='view/img/icon/location.png' width=30px></td><td><strong>" + house.city_name + "</strong></td><td><img src='view/img/icon/operation.png' width=30px></td><td><strong>" + house.operation_names + "</strong></td></tr><tr><td><img src='view/img/icon/surface.png' width=40px></td><td><strong>" + house.surface + "</strong></td><td><img src='view/img/icon/rooms.png' width=30px></td><td><strong>" + house.num_rooms + "</strong></td><td><img src='view/img/icon/wcs.png' width=30px></td><td><strong>" + house.num_wcs + "</strong></td></tr></table>" +
-                            "<br>" +
-                            "<div class='buttons'>" +
-                            "<button id='" + house.house_id + "' class='details'>Details</button>" +
-                            "<div/>" +
-                            "</div>" +
-                            "</div>"
-                        );
-                }
-            }
-            mapBox_all(shop);
-        }).catch(function () {
-            console.error('Error al cargar las casas.');
-        });
-}
-
 //función que imprime las casas filtradas según "filters_shop"
 function print_filters_shop() {
-    //console.log('Hola print_filters_shop');
-    //return false;
     var pagina = JSON.parse(localStorage.getItem('pagina'));
     var filters_shop = JSON.parse(localStorage.getItem('filters_shop'));
-
     ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'filters_shop': filters_shop, 'pagina': pagina, op: 'filters_shop' })
-
         .then(function (shop) {
-            // console.log(shop);
-            // return false;
             if (localStorage.getItem('filters_shop')) {
                 highlight_filters_shop();
             }
-
             $('#content_shop_houses').empty();
             $('.date_house, .date_img').empty();
             $('#details_shop').empty();
             $('#details-shop').hide();
             $('#content_shop_houses').show();
             $('#filter_order').show();
-
             if ($.isEmptyObject(shop)) {
                 $('<div></div>').appendTo('#content_shop_houses')
-                    .css('text-align', 'center') // Centrar el texto
+                    .css('text-align', 'center')
                     .html('<h3>¡No se encuentran resultados con los filtros aplicados!</h3>');
-
             } else {
                 for (let i = 0; i < shop.length; i++) {
                     const house = shop[i];
-                    $('<div></div>').attr({ 'id': house.house_id, 'class': 'list_content_shop' }).appendTo('#content_shop_houses')
-                        .html(
-                            "<div class='list_product'>" +
-                            "<div class='img-container'>" +
-                            "<img src='" + house.image_path + "' alt='House Image'>" +
-                            "</div>" +
-                            "<div class='product-info'>" +
-                            "<div class='product-content'>" +
-                            "<table><tr><td rowspan='3'><img src='" + house.pet_image + "' width='100px'></td><td><h1><b>" + house.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €</b></h1></td></tr><tr></tr><tr></tr></table>" +
-                            "<br>" +
-                            "<table><tr><td><img src='view/img/icon/type_icon.png' width=30px></td><td><strong>" + house.type_names + "</strong></td><td><img src='view/img/icon/location.png' width=30px></td><td><strong>" + house.city_name + "</strong></td><td><img src='view/img/icon/operation.png' width=30px></td><td><strong>" + house.operation_names + "</strong></td></tr><tr><td><img src='view/img/icon/surface.png' width=40px></td><td><strong>" + house.surface + "</strong></td><td><img src='view/img/icon/rooms.png' width=30px></td><td><strong>" + house.num_rooms + "</strong></td><td><img src='view/img/icon/wcs.png' width=30px></td><td><strong>" + house.num_wcs + "</strong></td></tr></table>" +
-                            "<br>" +
-                            "<div class='buttons'>" +
-                            "<button id='" + house.house_id + "' class='details'>Details</button>" +
-                            "<div/>" +
-                            "</div>" +
-                            "</div>"
-                        );
+                    var house_id = house.house_id;
+                    var access_token = localStorage.getItem('access_token') || false;
+                    var ruta = "";
+                    if (access_token === false) {
+                        ruta = "view/img/dislike.png";
+                        appendHouseToPage(house, ruta);
+                    } else {
+                        like_reactive(house_id, access_token)
+                            .then(function (ruta_response) {
+                                ruta = ruta_response;
+                                appendHouseToPage(house, ruta);
+                            })
+                            .catch(function (error) {
+                                console.error(error);
+                            });
+                    }
                 }
                 mapBox_all(shop);
             }
-
-
         }).catch(function () {
             console.error('Error al cargar las casas.');
         });
@@ -788,87 +667,6 @@ function highlight_filters_shop() {
     }
 }
 
-// function print_order_by() {
-//     $('<div></div>').appendTo('.filter_order')
-//         .html('<select class="filter_order" id="filter_order">' +
-//             '<option selected value="">--ORDER BY--</option>' +
-//             '<option value="1">Price ASC</option>' +
-//             '<option value="2">Price DESC</option>' +
-//             '<option value="3">Rooms number ASC</option>' +
-//             '<option value="4">Rooms number DESC</option>' +
-//             '</select>' +
-//             '<br>' +
-//             '<button class="order_button" id="Button_order">Apply order by</button>'
-//         );
-// }
-
-// function filter_order() {
-//     $(document).on('change', '#filter_order', function () {
-//         localStorage.setItem('filter_order', this.value);
-//     });
-
-//     var filterOrderValue = localStorage.getItem('filter_order');
-//     if (filterOrderValue !== null && filterOrderValue !== undefined) {
-//         $('#filter_order').val(filterOrderValue);
-//     }
-
-//     $(document).on('click', '.order_button', function () {
-//         var selectedValue = localStorage.getItem('filter_order');
-//         if (selectedValue !== null && selectedValue !== undefined) {
-//             location.reload();
-//         } else {
-//             console.log("No se ha seleccionado ningún filtro order by.");
-//         }
-//     });
-// }
-
-// function print_ordered_shop() {
-//     var filter_order = JSON.parse(localStorage.getItem('filter_order'));
-//     var pagina = JSON.parse(localStorage.getItem('pagina'));
-//     // console.log(filter_order);
-//     // return false;
-
-//     ajaxPromise('POST', 'JSON', 'module/shop/ctrl/ctrl_shop.php?op=order_shop', { filter_order, pagina })
-//         .then(function (data) {
-//             // console.log(data);
-//             // return false;
-//             $('#content_shop_houses').empty();
-//             $('.date_house, .date_img').empty();
-//             $('#details_shop').empty().hide();
-//             $('#details-shop').hide();
-//             $('#content_shop_houses').show();
-
-//             if (data === "error") {
-//                 $('<div></div>').appendTo('#content_shop_houses')
-//                     .html('<h3>¡No se encuentran resultados con los filtros aplicados!</h3>');
-//             } else {
-//                 for (let i = 0; i < data.length; i++) {
-//                     const house = data[i];
-//                     $('<div></div>').attr({ 'id': house.house_id, 'class': 'list_content_shop' }).appendTo('#content_shop_houses')
-//                         .html(
-//                             "<div class='list_product'>" +
-//                             "<div class='img-container'>" +
-//                             "<img src='" + house.image_path + "' alt='House Image'>" +
-//                             "</div>" +
-//                             "<div class='product-info'>" +
-//                             "<div class='product-content'>" +
-//                             "<table><tr><td rowspan='3'><img src='" + house.pet_image + "' width='100px'></td><td><h1><b>" + house.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €</b></h1></td></tr><tr></tr><tr></tr></table>" +
-//                             "<br>" +
-//                             "<table><tr><td><img src='view/img/icon/type_icon.png' width=30px></td><td><strong>" + house.type_names + "</strong></td><td><img src='view/img/icon/location.png' width=30px></td><td><strong>" + house.city_name + "</strong></td><td><img src='view/img/icon/operation.png' width=30px></td><td><strong>" + house.operation_names + "</strong></td></tr><tr><td><img src='view/img/icon/surface.png' width=40px></td><td><strong>" + house.surface + "</strong></td><td><img src='view/img/icon/rooms.png' width=30px></td><td><strong>" + house.num_rooms + "</strong></td><td><img src='view/img/icon/wcs.png' width=30px></td><td><strong>" + house.num_wcs + "</strong></td></tr></table>" +
-//                             "<br>" +
-//                             "<div class='buttons'>" +
-//                             "<button id='" + house.house_id + "' class='details'>Details</button>" +
-//                             "<div/>" +
-//                             "</div>" +
-//                             "</div>"
-//                         );
-//                 }
-//             }
-//             mapBox_all(data);
-//         }).catch(function () {
-//             console.error('Error al cargar las casas.');
-//         });
-// }
 
 function mapBox_all(data) {
     // console.log(data);
@@ -1091,7 +889,7 @@ $(document).ready(function () {
         localStorage.setItem('pagina', 1);
     }
     print_filters();
-    clicks(); //click del "like" comentado, porque eso depende del módulo login(token)
+    clicks();
     filter_button();
     loadHouses();
     pagination();

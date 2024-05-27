@@ -46,11 +46,6 @@
      text-decoration: none;
 }
 
-#login_form a:hover {
-     text-decoration: underline;
-}
-
-
 .form-register {
      background-color: #e4dac4;
 }
@@ -118,12 +113,8 @@
 
 .text h3 a {
      color: #4caf50;
-     text-decoration: none;
 }
 
-.text h3 a:hover {
-     text-decoration: underline;
-}
 
 
 .toast-center {

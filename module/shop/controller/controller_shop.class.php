@@ -70,5 +70,18 @@ class controller_shop
         echo json_encode(common::load_model('shop_model', 'related_houses', [$house_id, $pet_id, $offset]));
     }
 
+    function like_reactive()
+    {
+        $access_token = $_POST['access_token'];
+        $house_id = $_POST['house_id'];
+        echo json_encode(common::load_model('shop_model', 'like_reactive', [$access_token, $house_id]));
+    }
+
+    function click_like()
+    {
+        $access_token = $_POST['access_token'];
+        $house_id = $_POST['house_id'];
+        echo json_encode(common::load_model('shop_model', 'click_like', [$access_token, $house_id]));
+    }
 }
 ?>
