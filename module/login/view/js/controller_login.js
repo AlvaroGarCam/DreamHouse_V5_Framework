@@ -20,25 +20,29 @@ function social_login(param) {
                     .then(function (data) {
                         // console.log(data);
                         // return false;
-                        if (!Array.isArray(data) || data.length < 3) {
-                            throw new Error('Invalid data format');
-                        }
-                        var access_token = data[1];
-                        var refresh_token = data[2];
-                        if (!access_token || !refresh_token) {
-                            throw new Error('Missing token');
-                        }
-                        localStorage.setItem("access_token", access_token);
-                        localStorage.setItem("refresh_token", refresh_token);
-                        toastr.options = {
-                            closeButton: true,
-                            positionClass: 'toast-center'
-                        };
-                        toastr.success("Loged succesfully");
-                        if (localStorage.getItem('redirect_like') == null) {
-                            setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
+                        if (data === 'error') {
+                            document.getElementById('error_username_log').innerHTML = "No se ha podido introducir al usuario en la base de datos";
                         } else {
-                            setTimeout('window.location.href = friendlyURL("?module=shop")', 1000);
+                            if (!Array.isArray(data) || data.length < 3) {
+                                throw new Error('Invalid data format');
+                            }
+                            var access_token = data[1];
+                            var refresh_token = data[2];
+                            if (!access_token || !refresh_token) {
+                                throw new Error('Missing token');
+                            }
+                            localStorage.setItem("access_token", access_token);
+                            localStorage.setItem("refresh_token", refresh_token);
+                            toastr.options = {
+                                closeButton: true,
+                                positionClass: 'toast-center'
+                            };
+                            toastr.success("Loged succesfully");
+                            if (localStorage.getItem('redirect_like') == null) {
+                                setTimeout('window.location.href = friendlyURL("?module=home")', 1000);
+                            } else {
+                                setTimeout('window.location.href = friendlyURL("?module=shop")', 1000);
+                            }
                         }
                     })
                     .catch(function () {
@@ -220,7 +224,7 @@ function send_recover_password() {
                 console.log("Respuesta del servidor:", response);
                 switch (response) {
                     case "user not found":
-                        $("#error_email_recover").html("The email doesn't exist");
+                        $("#error_email_recover").html("The email doesn't exist in our local DataBase");
                         break;
                     case "update error":
                         $("#error_email_recover").html("There was an error updating the token. Please try again.");

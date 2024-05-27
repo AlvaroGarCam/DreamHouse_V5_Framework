@@ -132,15 +132,20 @@ class login_bll
 			$_SESSION['tiempo'] = time();
 			return ['okkey_login', $access_token, $refresh_token];
 		} else {
-			$this->dao->insert_social_login($this->db, $username, $email, $avatar);
-			$access_token = middleware::create_token($username);
-			$refresh_token = middleware::create_refresh_token($username);
-			if (!$access_token || !$refresh_token) {
-				throw new RuntimeException('Failed to create token');
+			$result = $this->dao->insert_social_login($this->db, $username, $email, $avatar);
+
+			if ($result) {
+				$access_token = middleware::create_token($username);
+				$refresh_token = middleware::create_refresh_token($username);
+				if (!$access_token || !$refresh_token) {
+					throw new RuntimeException('Failed to create token');
+				}
+				$_SESSION['username'] = $username;
+				$_SESSION['tiempo'] = time();
+				return ['okkey_login', $access_token, $refresh_token];
+			} else {
+				return 'error';
 			}
-			$_SESSION['username'] = $username;
-			$_SESSION['tiempo'] = time();
-			return ['okkey_login', $access_token, $refresh_token];
 		}
 	}
 

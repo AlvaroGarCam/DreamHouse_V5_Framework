@@ -46,7 +46,7 @@ class ultramsg
      {
           switch ($message_bll['type']) {
                case 'login_failed';
-                    $message['body'] = "Mensaje desde el login_failed, here is your code: " . $message_bll['token'];
+                    $message['body'] = "Este es tu código de verificación para reactivar tu cuenta: " . $message_bll['token'] . ".Recuerda no compartilo con nadie!";
                     break;
                case 'recover_password';
                     $message['body'] = "Mensaje desde el recover_password, here is your code: " . $message_bll['token'];
