@@ -104,6 +104,7 @@ function appendHouseToPage(house, ruta) {
             "<div class='buttons'>" +
             "<button id='" + house.house_id + "' class='details'>Details</button>" +
             "<a id='" + house.house_id + "' class='like'><img src=" + ruta + " width='40px'> <span style='font-size: larger;'><strong>" + house.likes + "</strong></span></a>" +
+            "<a id='" + house.house_id + "' class='cart_button'><img src='view/img/cart_shop.png' width='60px'></a>" +
             "<div/>" +
             "</div>" +
             "</div>"
@@ -136,7 +137,7 @@ function clicks() {
         localStorage.setItem('details_offset', 0);
         loadDetails(id_house);
     });
-    // Controlar el clic en el botón "Like"
+    //click en el icono de like
     $(document).on("click", ".like", function () {
         var house_id = this.getAttribute('id');
         var access_token = localStorage.getItem('access_token') || false;
@@ -144,8 +145,8 @@ function clicks() {
             localStorage.removeItem('redirect_like');
             localStorage.setItem('redirect_like', house_id);
             toastr.options = {
-                closeButton: true, // Puedes configurar otras opciones según tus necesidades
-                positionClass: "toast-center" // Esto centra el toastr en la parte superior del centro
+                closeButton: true,
+                positionClass: "toast-center"
             };
             toastr.options.timeOut = 3000;
             toastr.success("You have to be logged in to 'like' or 'dislike'");
@@ -160,6 +161,30 @@ function clicks() {
                 }).catch(function () {
                     console.log('Error click_like');
                 });
+        }
+    });
+    //click al icono del carrito en el shop (list-filters_shop) o en el details
+    $(document).on("click", ".cart_button", function () {
+        var house_id = this.getAttribute('id');
+        var access_token = localStorage.getItem('access_token') || false;
+        if (access_token == false) {
+            localStorage.removeItem('redirect_like');
+            localStorage.setItem('redirect_like', house_id);
+            toastr.options = {
+                closeButton: true,
+                positionClass: "toast-center"
+            };
+            toastr.options.timeOut = 3000;
+            toastr.success("You have to be logged in to add this house to your cart.");
+            setTimeout(function () {
+                window.location.href = friendlyURL('?module=login');
+            }, 1000);
+        } else {
+            localStorage.removeItem('cart_house_id');
+            localStorage.setItem('cart_house_id', house_id);
+            setTimeout(function () {
+                window.location.href = friendlyURL('?module=cart');
+            }, 1000);
         }
     });
 }
@@ -248,6 +273,7 @@ function loadDetails(id_house) {
                     "<table class='details_table' text-align:center><tr><td rowspan='2'><img src='view/img/icon/type_icon.png' width=50px></td><td>Type of property</td><td rowspan='2'><img src='view/img/icon/location.png' width=50px></td><td>Location</td><td rowspan='2'><img src='view/img/icon/operation.png' width=50px></td><td>Operation</td></tr><tr><td><strong>" + data[0].type_names + "</strong></td><td><strong>" + data[0].city_name + "</strong></td><td><strong>" + data[0].operation_names + "</strong></td></tr><tr><td rowspan='2'><img src='view/img/icon/surface.png' width=50px></td><td>Surface</td><td rowspan='2'><img src='view/img/icon/rooms.png' width=50px></td><td>Nº rooms</td><td rowspan='2'><img src='view/img/icon/wcs.png' width=50px></td><td>Nº WCs</td></tr><tr><td><strong>" + data[0].surface + "</strong></td><td><strong>" + data[0].num_rooms + "</strong></td><td><strong>" + data[0].num_wcs + "</strong></td></tr></table>" +
                     "<div class='buttons'>" +
                     "<button id='backButton' onclick='location.reload(); window.scrollTo(0, 0); '>Back</button>" +
+                    "<a id='" + data[0].house_id + "' class='cart_button'><img src='view/img/cart_shop.png' width='80px'></a>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +

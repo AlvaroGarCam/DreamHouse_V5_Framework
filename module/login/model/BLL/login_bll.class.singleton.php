@@ -133,7 +133,6 @@ class login_bll
 			return ['okkey_login', $access_token, $refresh_token];
 		} else {
 			$result = $this->dao->insert_social_login($this->db, $username, $email, $avatar);
-
 			if ($result) {
 				$access_token = middleware::create_token($username);
 				$refresh_token = middleware::create_refresh_token($username);

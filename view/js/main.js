@@ -70,7 +70,7 @@ function load_menu() {
                     '<li><a href="http://localhost/DreamHouse_V5_Framework/home"><img src="view/img/LOGO1.png" width="90px"></a></li>' +
                     '<li><a href="' + friendlyURL('?module=home') + '" id="home_link"><h4>HOME</h4></a></li>' +
                     '<li><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></li>' +
-                    '<li>' +
+                    '<li><a href="' + friendlyURL('?module=cart') + '"><img src="view/img/cart_shop.png" width="100px"></a></a></li>' +
                     '<li style="width: 100px;"></li><li><img src="' + data[0].avatar + '" width="60px"><a id="loged_username">' + data[0].username + '</a></li>' +
                     '<li><span class="register_login_buttons">' +
                     '<a id="logout"><button class="log">Logout</button></a>' +

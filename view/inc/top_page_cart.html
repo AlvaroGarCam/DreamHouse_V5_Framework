@@ -5,7 +5,7 @@
      <meta charset="utf-8">
      <title>DREAMHOUSE</title>
      <link rel="icon" href="view/img/logo1.ico" type="image/x-icon">
-
+     <base href="http://localhost/DreamHouse_V5_Framework/">
      <!-- External CSS -->
      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -23,26 +23,24 @@
      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
      <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
      <script src='https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
-
+     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+     <!-- Add Firebase products that you want to use -->
+     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
 
 
      <!-- Local JS -->
      <script src="view\js\main.js"></script>
-     <!-- <script src="model/main.js"></script>
-     <script src="model/activity_user.js"></script>
+     <script src="view\js\activity_user.js"></script>
+     <script src="module\search\view\js\controller_search.js"></script>
+     <script src="module\cart\view\js\controller_cart.js"></script>
+     <!-- <script src="model/activity_user.js"></script>
      <script src="module/home/model/promises.js"></script>
      <script src="module/search/model/ctrl_search.js"></script>
      <script src="module\login\model\ctrl_login.js"></script>
      <script src="module\login\model\ctrl_register.js"></script>
      <script src="module/home/model/ctrl_home.js"></script>
      <script src="module/shop/model/ctrl_shop.js"></script> -->
-
-     <!-- Main JS -->
-     <script src="view\js\main.js"></script>
-     <script src="view\js\activity_user.js"></script>
-     <script src="module\search\view\js\controller_search.js"></script>
-     <script src="module\login\view\js\controller_login.js"></script>
-     <!-- <script src="<?php echo SITE_PATH ?>view/js/activity.js"></script> -->
 
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
      <meta name="description" content="" />
@@ -57,7 +55,7 @@
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
      <!-- CUSTOM STYLE CSS -->
      <link href="view/css/style.css" rel="stylesheet" />
-     <!-- <link href="module\login\view\css\style.css" rel="stylesheet" /> -->
+     <link href="module\login\view\css\style.css" rel="stylesheet" />
 
 
      <!-- GOOGLE FONT -->
