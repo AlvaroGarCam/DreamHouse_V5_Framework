@@ -50,5 +50,15 @@ class cart_model
     {
         return $this->bll->get_update_product_quantity_BLL($args);
     }
+
+    public function get_details_order($args)
+    {
+        return $this->bll->get_details_order_BLL($args);
+    }
+
+    public function get_purchase($args)
+    {
+        return $this->bll->get_purchase_BLL($args);
+    }
 }
 ?>

@@ -89,7 +89,7 @@ function charge_cart(access_token) {
 
                     let table = '<table id="cart_table">';
                     table += '<thead><tr><th>IMAGEN</th><th>PRODUCTO</th><th>CANTIDAD</th><th>PRECIO UNITARIO</th></tr></thead>'
-                    table += '<tr><td><img src="' + house.image + '" width="200px"></td><td>' + house.description + '</td><td><input type="text" value="1" readonly></td><td>' + house.price + ' €</td></tr>';
+                    table += '<trid="' + house.house_id + '"><td><img src="' + house.image + '" width="200px"></td><td>' + house.description + '</td><td><input type="text" value="1" readonly></td><td>' + house.price + ' €</td></trid=>';
                     table += '<tr id="' + product1.product_id + '"><td><img src="' + product1.image + '" width="200px"></td><td>' + product1.description + '</td><td><button class="minus-button" data-product="product1" data-product-id="' + product1.product_id + '">-</button><input type="text" value="' + quantities.product1 + '" readonly data-product="product1"><button class="plus-button" data-product="product1" data-product-id="' + product1.product_id + '">+</button></td><td>' + product1.price + ' €</td></tr>';
                     table += '<tr id="' + product2.product_id + '"><td><img src="' + product2.image + '" width="200px"></td><td>' + product2.description + '</td><td><button class="minus-button" data-product="product2" data-product-id="' + product2.product_id + '">-</button><input type="text" value="' + quantities.product2 + '" readonly data-product="product2"><button class="plus-button" data-product="product2" data-product-id="' + product2.product_id + '">+</button></td><td>' + product2.price + ' €</td></tr>';
                     table += '<tr id="' + product3.product_id + '"><td><img src="' + product3.image + '" width="200px"></td><td>' + product3.description + '</td><td><button class="minus-button" data-product="product3" data-product-id="' + product3.product_id + '">-</button><input type="text" value="' + quantities.product3 + '" readonly data-product="product3"><button class="plus-button" data-product="product3" data-product-id="' + product3.product_id + '">+</button></td><td>' + product3.price + ' €</td></tr>';
@@ -276,7 +276,8 @@ function charge_cart(access_token) {
                          event.preventDefault();
                          console.log('Purchase button clicked ' + $order_id);
                          $total_price = calculateTotal();
-                         purchase($order_id, $total_price);
+                         $house_id = house.house_id;
+                         purchase($order_id, $total_price, $house_id);
                     });
 
                     //evento click del botón de eliminar pedido
@@ -342,55 +343,199 @@ function delete_order(order_id) {
 }
 
 //Función que realiza la compra de un pedido introduciendo información de pago
-function purchase($order_id, $total_price) {
+function purchase($order_id, $total_price, $house_id) {
      // console.log('Purchasing order ' + $order_id);
      // console.log('Total price ' + $total_price); 
-     $('#cart_view').empty();
-     window.scrollTo(0, 0);
-     let paymentForm = `
-          <div id="payment_form">
-               <h2>Payment Details</h2>
-               <p>Order ID: ${$order_id}</p>
-               <p>Total Price: ${$total_price} €</p>
-               <p></p>
-               <form>
-                    <label for="card_name">Card Holder's Name</label>
-                    <input type="text" id="card_name" name="card_name" required>
-                    <label for="card_number">Credit Card Number</label>
-                    <input type="text" id="card_number" name="card_number" required>
-                    <label for="exp_month">Expiry Month</label>
-                    <input type="text" id="exp_month" name="exp_month" required>
-                    <label for="exp_year">Expiry Year</label>
-                    <input type="text" id="exp_year" name="exp_year" required>
-                    <label for="cvv">CVV</label>
-                    <input type="text" id="cvv" name="cvv" required>
-                    <input type="submit" value="Submit Payment">
-               </form>
-          </div>
-     `;
+     data = {
+          "order_id": $order_id,
+          "house_id": $house_id,
+          op: "details_order"
+     }
+     ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
+          .then(function (data) {
+               console.log(data);
+               if (data[0] === 'Order details loaded successfully') {
+                    console.log('Order details loaded successfully');
+                    window.scrollTo(0, 0);
+                    let orderDetails = data[1];
+                    let totalPrice = $total_price;
+                    let orderId = $order_id;
+                    generate_payment_form(orderDetails, totalPrice, orderId);
+               } else if (data[0] === 'Error loading order details') {
+                    console.log('Error loading order details');
+               }
+          })
+          .catch(function (error) {
+               console.log(error);
+          });
 
-     // Add payment form to view
-     $('#cart_view').append(paymentForm);
-
-     // Add form validation
      $("form").on("submit", function (event) {
           event.preventDefault();
-          // Add your form validation logic here
+          console.log('Payment form submitted');
+          if (validate_payment_form()) {
+               data = {
+                    "access_token": localStorage.getItem('access_token'),
+                    "order_id": $order_id,
+                    "house_id": $house_id,
+                    "total_price": $total_price,
+                    op: "purchase"
+               }
+               ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
+                    .then(function (data) {
+                         if (data[0] === 'Purchase completed successfully') {
+                              console.log('Order purchased successfully');
+                              swal("Congratulations!", "Your order has been successfully processed", "success");
+                              $('#cart_view').empty();
+                              setTimeout(function () {
+                                   location.reload();
+                              }, 5000);
+                         } else if (data[0] === 'Error completing purchase') {
+                              console.log('Error completing purchase');
+                         }
+                    })
+                    .catch(function (error) {
+                         console.log(error);
+                    });
+          }
+     });
+}
+
+function validate_payment_form() {
+     let valid = true;
+
+     // Validate card name
+     let cardName = document.getElementById('card_name').value;
+     if (cardName === '') {
+          document.getElementById('error_card_name').style.display = 'block';
+          valid = false;
+     } else {
+          document.getElementById('error_card_name').style.display = 'none';
+     }
+
+     // Validate card number
+     let cardNumber = document.getElementById('card_number').value;
+     if (!/^\d{16}$/.test(cardNumber)) {
+          document.getElementById('error_card_number').style.display = 'block';
+          valid = false;
+     } else {
+          document.getElementById('error_card_number').style.display = 'none';
+     }
+
+     // Validate expiry month
+     let expMonth = document.getElementById('exp_month').value;
+     if (!/^(0?[1-9]|1[0-2])$/.test(expMonth)) {
+          document.getElementById('error_exp_month').style.display = 'block';
+          valid = false;
+     } else {
+          document.getElementById('error_exp_month').style.display = 'none';
+     }
+
+     // Validate expiry year
+     let expYear = document.getElementById('exp_year').value;
+     if (!/^\d{4}$/.test(expYear)) {
+          document.getElementById('error_exp_year').style.display = 'block';
+          valid = false;
+     } else {
+          document.getElementById('error_exp_year').style.display = 'none';
+     }
+
+     // Validate CVV
+     let cvv = document.getElementById('cvv').value;
+     if (!/^\d{3}$/.test(cvv)) {
+          document.getElementById('error_cvv').style.display = 'block';
+          valid = false;
+     } else {
+          document.getElementById('error_cvv').style.display = 'none';
+     }
+
+     return valid;
+}
+
+function generate_payment_form(orderDetails, totalPrice, orderId) {
+     let invoiceAndPaymentForm = `
+          <div id="payment_form">
+               <h2>ORDER DETAILS</h2>
+               <table>
+                    <tr>
+                         <th colspan="4">Order Details</th>
+                    </tr>
+                    <tr>
+                         <th>Description</th>
+                         <th>Unit Price</th>
+                         <th>Quantity</th>
+                         <th>Subtotal</th>
+                    </tr>`;
+
+     orderDetails.forEach(item => {
+          let subtotal = (parseFloat(item.price) * parseInt(item.quantity)).toFixed(2);
+          invoiceAndPaymentForm += `
+                    <tr>
+                         <td>${item.description}</td>
+                         <td>${item.price} €</td>
+                         <td>${item.quantity}</td>
+                         <td>${subtotal} €</td>
+                    </tr>`;
      });
 
-     // let data = {
-     //      "order_id": $order_id,
-     //      "total_price": $total_price,
-     //      op: "purchase"
-     // }
-     // ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
-     //      .then(function (data) {
-     //           if (data[0] === 'Order purchased successfully') {
-     //                console.log('Order purchased successfully');
-     //           } else if (data[0] === 'Error purchasing order') {
-     //                console.log('Error purchasing order');
-     //           }
-     //      })
+     invoiceAndPaymentForm += `
+                    <tr>
+                         <td colspan="3">Total Price</td>
+                         <td>${totalPrice} €</td>
+                    </tr>
+               </table>
+               <h2>PAYMENT DETAILS</h2>
+               <table>
+                    <tr>
+                         <td colspan="2"><strong>Order ID</strong></td>
+                         <td colspan="2"><strong>${orderId}</strong></td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><strong>Total Price</strong></td>
+                         <td colspan="2"><strong>${totalPrice} €</strong></td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><label for="card_name">Card Holder's Name</label></td>
+                         <td colspan="2">
+                              <input type="text" id="card_name" name="card_name">
+                              <div id="error_card_name" style="color: red; display: none;">*Invalid name</div>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><label for="card_number">Credit Card Number</label></td>
+                         <td colspan="2">
+                              <input type="text" id="card_number" name="card_number">
+                              <div id="error_card_number" style="color: red; display: none;">*Invalid card number</div>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><label for="exp_month">Expiry Month</label></td>
+                         <td colspan="2">
+                              <input type="text" id="exp_month" name="exp_month">
+                              <div id="error_exp_month" style="color: red; display: none;">*Invalid month</div>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><label for="exp_year">Expiry Year</label></td>
+                         <td colspan="2">
+                              <input type="text" id="exp_year" name="exp_year">
+                              <div id="error_exp_year" style="color: red; display: none;">*Invalid year</div>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td colspan="2"><label for="cvv">CVV</label></td>
+                         <td colspan="2">
+                              <input type="text" id="cvv" name="cvv">
+                              <div id="error_cvv" style="color: red; display: none;">*Invalid CVV</div>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td colspan="4"><input type="submit" value="Submit Payment"></td>
+                    </tr>
+</table>
+</div>`;
+
+     $('#cart_view').empty();
+     $('#cart_view').append(invoiceAndPaymentForm);
 }
 
 

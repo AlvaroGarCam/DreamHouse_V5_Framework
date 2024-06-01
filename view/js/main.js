@@ -55,7 +55,7 @@ function load_menu() {
         // return false;
         ajaxPromise('POST', 'JSON', friendlyURL('?module=login'), { 'access_token': access_token, op: 'data_user' })
             .then(function (data) {
-                // console.log(data);
+                console.log(data);
                 // return false;
                 // if (data[0].type_user == "client") {
                 //      console.log("Client loged");
@@ -66,12 +66,19 @@ function load_menu() {
                 //      $('.opc_CRUD').show();
                 //      $('.opc_exceptions').show();
                 // }
+                if (data[1] == false) {
+                    console.log("Usuario sin pedido pendiente");
+                    orderStatus = '<span style="font-size:30px; color:white; font-weight:bold;">0</span>';
+                } else if (data[1] == true) {
+                    console.log("Usuario con pedido pendiente");
+                    orderStatus = '<span style="font-size:30px; color:white; font-weight:bold;">!</span>';
+                }
                 var menu_login = $(
                     '<li><a href="http://localhost/DreamHouse_V5_Framework/home"><img src="view/img/LOGO1.png" width="90px"></a></li>' +
                     '<li><a href="' + friendlyURL('?module=home') + '" id="home_link"><h4>HOME</h4></a></li>' +
                     '<li><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></li>' +
-                    '<li><a href="' + friendlyURL('?module=cart') + '"><img src="view/img/cart_shop.png" width="100px"></a></a></li>' +
-                    '<li style="width: 100px;"></li><li><img src="' + data[0].avatar + '" width="60px"><a id="loged_username">' + data[0].username + '</a></li>' +
+                    '<li><a href="' + friendlyURL('?module=cart') + '"><img src="view/img/cart_shop.png" width="100px">' + orderStatus + '</a></a></li>' +
+                    '<li style="width: 100px;"></li><li><img src="' + data[0][0].avatar + '" width="60px"><a id="loged_username">' + data[0][0].username + '</a></li>' +
                     '<li><span class="register_login_buttons">' +
                     '<a id="logout"><button class="log">Logout</button></a>' +
                     '</span></li>');
@@ -93,9 +100,7 @@ function load_menu() {
             '</li>'
         );
         menu_logout.appendTo('.nav.navbar-nav.navbar-right');
-
     }
-
 }
 
 

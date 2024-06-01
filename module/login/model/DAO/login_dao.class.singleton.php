@@ -129,6 +129,14 @@ class login_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
+    public function any_active_order($db, $username)
+    {
+        $sql = "SELECT * FROM `orders` WHERE username = '$username' AND is_active = 1";
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
     public function check_login_attempts($db, $username)
     {
         $sql = "SELECT * FROM user WHERE username = '$username'";

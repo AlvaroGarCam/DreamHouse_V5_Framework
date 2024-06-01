@@ -110,5 +110,36 @@ class cart_bll
 			return ['Error checking cart'];
 		}
 	}
+
+	public function get_details_order_BLL($args)
+	{
+		$order_id = $args[0];
+		$house_id = $args[1];
+		$products = $this->dao->get_order_products($this->db, $house_id, $order_id);
+		if ($products) {
+			return ['Order details loaded successfully', $products];
+		} else {
+			return ['Error loading order details'];
+		}
+	}
+	public function get_purchase_BLL($args)
+	{
+		$access_token = $args[0];
+		$username = middleware::decode_username($access_token);
+		$order_id = $args[1];
+		$house_id = $args[2];
+		$total_price = $args[3];
+		try {
+			$this->db->ejecutar('START TRANSACTION');
+			$this->dao->update_order($this->db, $order_id, $username);
+			$this->dao->update_products_stock($this->db, $order_id);
+			$this->dao->create_pruchase($this->db, $username, $house_id, $total_price, $order_id);
+			$this->db->ejecutar('COMMIT');
+			return ['Purchase completed successfully'];
+		} catch (Exception $e) {
+			$this->db->ejecutar('ROLLBACK');
+			return ['Error completing purchase', $e->getMessage()];
+		}
+	}
 }
 ?>

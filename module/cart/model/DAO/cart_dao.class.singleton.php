@@ -99,5 +99,34 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $stmt;
     }
+
+    public function update_order($db, $order_id, $username)
+    {
+        $sql = "UPDATE orders 
+                SET is_active = 0 
+                WHERE order_id = $order_id 
+                AND username = '$username'
+                AND is_active = 1";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
+
+    public function update_products_stock($db, $order_id)
+    {
+        $sql = "UPDATE products p
+            JOIN orders_products op ON p.product_id = op.product_id
+            SET p.stock = p.stock - op.quantity
+            WHERE op.order_id = $order_id";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
+
+    public function create_pruchase($db, $username, $house_id, $total_price, $order_id)
+    {
+        $sql = "INSERT INTO purchases (username, house_id, total_price, order_id,date) 
+                VALUES ('$username', $house_id, $total_price, $order_id, NOW())";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
 }
 ?>

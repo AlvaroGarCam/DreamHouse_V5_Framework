@@ -236,7 +236,13 @@ class login_bll
 		// return $args;
 		$decoded_token = middleware::decode_token($args);
 		// return $decoded_token['user'];
-		return $this->dao->select_data_user($this->db, $decoded_token['user']);
+		$data_user = $this->dao->select_data_user($this->db, $decoded_token['user']);
+		if (!empty($this->dao->any_active_order($this->db, $decoded_token['user']))) {
+			$order = true;
+		} else {
+			$order = false;
+		}
+		return [$data_user, $order];
 	}
 
 	public function get_control_activity_BLL()

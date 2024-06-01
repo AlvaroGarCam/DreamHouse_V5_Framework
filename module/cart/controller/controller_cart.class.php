@@ -63,5 +63,22 @@ class controller_cart
 		$quantity = $_POST['quantity'];
 		echo json_encode(common::load_model('cart_model', 'get_update_product_quantity', [$access_token, $order_id, $product_id, $quantity]));
 	}
+
+	function details_order()
+	{
+
+		$order_id = $_POST['order_id'];
+		$house_id = $_POST['house_id'];
+		echo json_encode(common::load_model('cart_model', 'get_details_order', [$order_id, $house_id]));
+	}
+
+	function purchase()
+	{
+		$access_token = $_POST['access_token'];
+		$order_id = $_POST['order_id'];
+		$house_id = $_POST['house_id'];
+		$total_price = $_POST['total_price'];
+		echo json_encode(common::load_model('cart_model', 'get_purchase', [$access_token, $order_id, $house_id, $total_price]));
+	}
 }
 ?>

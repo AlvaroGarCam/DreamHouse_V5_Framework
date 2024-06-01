@@ -182,9 +182,11 @@ function clicks() {
         } else {
             localStorage.removeItem('cart_house_id');
             localStorage.setItem('cart_house_id', house_id);
-            setTimeout(function () {
-                window.location.href = friendlyURL('?module=cart');
-            }, 1000);
+            if (window.location.href !== friendlyURL('?module=cart')) {
+                setTimeout(function () {
+                    window.location.href = friendlyURL('?module=cart');
+                }, 1000);
+            }
         }
     });
 }

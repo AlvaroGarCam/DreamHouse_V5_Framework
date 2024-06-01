@@ -28,4 +28,12 @@
           <name>update_product_quantity</name>
           <uri>update_product_quantity</uri>
      </function>
+     <function>
+          <name>details_order</name>
+          <uri>details_order</uri>
+     </function>
+     <function>
+          <name>purchase</name>
+          <uri>purchase</uri>
+     </function>
 </functions>
