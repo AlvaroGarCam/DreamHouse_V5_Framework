@@ -89,11 +89,11 @@ function charge_cart(access_token) {
 
                     let table = '<table id="cart_table">';
                     table += '<thead><tr><th>IMAGEN</th><th>PRODUCTO</th><th>CANTIDAD</th><th>PRECIO UNITARIO</th></tr></thead>'
-                    table += '<trid="' + house.house_id + '"><td><img src="' + house.image + '" width="200px"></td><td>' + house.description + '</td><td><input type="text" value="1" readonly></td><td>' + house.price + ' €</td></trid=>';
-                    table += '<tr id="' + product1.product_id + '"><td><img src="' + product1.image + '" width="200px"></td><td>' + product1.description + '</td><td><button class="minus-button" data-product="product1" data-product-id="' + product1.product_id + '">-</button><input type="text" value="' + quantities.product1 + '" readonly data-product="product1"><button class="plus-button" data-product="product1" data-product-id="' + product1.product_id + '">+</button></td><td>' + product1.price + ' €</td></tr>';
-                    table += '<tr id="' + product2.product_id + '"><td><img src="' + product2.image + '" width="200px"></td><td>' + product2.description + '</td><td><button class="minus-button" data-product="product2" data-product-id="' + product2.product_id + '">-</button><input type="text" value="' + quantities.product2 + '" readonly data-product="product2"><button class="plus-button" data-product="product2" data-product-id="' + product2.product_id + '">+</button></td><td>' + product2.price + ' €</td></tr>';
-                    table += '<tr id="' + product3.product_id + '"><td><img src="' + product3.image + '" width="200px"></td><td>' + product3.description + '</td><td><button class="minus-button" data-product="product3" data-product-id="' + product3.product_id + '">-</button><input type="text" value="' + quantities.product3 + '" readonly data-product="product3"><button class="plus-button" data-product="product3" data-product-id="' + product3.product_id + '">+</button></td><td>' + product3.price + ' €</td></tr>';
-                    table += '<tr><td></td><td></td><td>TOTAL</td><td id="total">' + calculateTotal() + ' €</td></tr>'
+                    table += '<trid="' + house.house_id + '"><td><img src="' + house.image + '" width="200px"></td><td>' + house.description + '</td><td><input type="text" value="1" readonly></td><td>' + house.price.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €</td></trid=>';
+                    table += '<tr id="' + product1.product_id + '"><td><img src="' + product1.image + '" width="200px"></td><td>' + product1.description + '</td><td><button class="minus-button" data-product="product1" data-product-id="' + product1.product_id + '">-</button><input type="text" value="' + quantities.product1 + '" readonly data-product="product1"><button class="plus-button" data-product="product1" data-product-id="' + product1.product_id + '">+</button></td><td>' + product1.price.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €</td></tr>';
+                    table += '<tr id="' + product2.product_id + '"><td><img src="' + product2.image + '" width="200px"></td><td>' + product2.description + '</td><td><button class="minus-button" data-product="product2" data-product-id="' + product2.product_id + '">-</button><input type="text" value="' + quantities.product2 + '" readonly data-product="product2"><button class="plus-button" data-product="product2" data-product-id="' + product2.product_id + '">+</button></td><td>' + product2.price.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €</td></tr>';
+                    table += '<tr id="' + product3.product_id + '"><td><img src="' + product3.image + '" width="200px"></td><td>' + product3.description + '</td><td><button class="minus-button" data-product="product3" data-product-id="' + product3.product_id + '">-</button><input type="text" value="' + quantities.product3 + '" readonly data-product="product3"><button class="plus-button" data-product="product3" data-product-id="' + product3.product_id + '">+</button></td><td>' + product3.price.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €</td></tr>';
+                    table += '<tr><td></td><td></td><td>TOTAL</td><td id="total">' + calculateTotal().toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €</td></tr>'
                     table += '</table>';
                     table += '</br></br><div class="button-container"><button id="purchase-button" class="unique-button">PURCHASE</button><button id="delete-button" class="unique-button">DELETE ORDER</button></div>';
                     $('#cart_view').append(table);
@@ -471,16 +471,16 @@ function generate_payment_form(orderDetails, totalPrice, orderId) {
           invoiceAndPaymentForm += `
                     <tr>
                          <td>${item.description}</td>
-                         <td>${item.price} €</td>
+                         <td>${item.price.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                          <td>${item.quantity}</td>
-                         <td>${subtotal} €</td>
+                         <td>${subtotal.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                     </tr>`;
      });
 
      invoiceAndPaymentForm += `
                     <tr>
                          <td colspan="3">Total Price</td>
-                         <td>${totalPrice} €</td>
+                         <td>${totalPrice.toString().toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                     </tr>
                </table>
                <h2>PAYMENT DETAILS</h2>
@@ -491,7 +491,7 @@ function generate_payment_form(orderDetails, totalPrice, orderId) {
                     </tr>
                     <tr>
                          <td colspan="2"><strong>Total Price</strong></td>
-                         <td colspan="2"><strong>${totalPrice} €</strong></td>
+                         <td colspan="2"><strong>${totalPrice.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</strong></td>
                     </tr>
                     <tr>
                          <td colspan="2"><label for="card_name">Card Holder's Name</label></td>
