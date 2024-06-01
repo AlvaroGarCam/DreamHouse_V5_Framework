@@ -118,9 +118,17 @@ function charge_cart(access_token) {
                                    .then(function (stock) {
                                         let numero_stock = Number(stock[0].stock);
                                         let incrementButton = $('.plus-button[data-product="' + product + '"]');
-                                        if (numero_stock <= quantities[product]) {
+                                        if (numero_stock == quantities[product]) {
                                              incrementButton.attr('disabled', 'disabled');
                                              incrementButton.css('background-color', 'gray');
+                                        } else if (numero_stock < quantities[product]) {
+                                             quantities[product] = numero_stock;
+                                             updateQuantity(product);
+                                             updateTotal();
+                                             incrementButton.attr('disabled', 'disabled');
+                                             incrementButton.css('background-color', 'gray');
+                                             let quantity = quantities[product];
+                                             update_cart(access_token, product_id, quantity, $order_id);
                                         }
                                    })
                                    .catch(function (error) {
