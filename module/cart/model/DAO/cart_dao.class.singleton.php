@@ -58,13 +58,46 @@ class cart_dao
     }
     public function get_order_products($db, $house_id, $order_id)
     {
-        $sql = "SELECT * FROM products 
-        WHERE house_id = $house_id OR product_id IN (SELECT product_id FROM orders_products WHERE order_id = $order_id)";
+        $sql = "SELECT products.*, orders_products.quantity 
+        FROM products
+        JOIN orders_products ON products.product_id = orders_products.product_id
+        WHERE orders_products.order_id = $order_id
+        UNION
+        select PRODUCTS.*,1 
+        FROM PRODUCTS
+        WHERE HOUSE_ID = $house_id;";
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
 
+    public function check_stock($db, $product_id)
+    {
+        $sql = "SELECT stock FROM products WHERE product_id = $product_id";
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 
+    public function delete_orders_products($db, $order_id)
+    {
+        $sql = "DELETE FROM orders_products WHERE order_id = $order_id";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
+    public function delete_order($db, $order_id)
+    {
+        $sql = "DELETE FROM orders WHERE order_id = $order_id";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
 
+    public function update_product_quantity($db, $order_id, $product_id, $quantity)
+    {
+        $sql = "UPDATE orders_products 
+                SET quantity = $quantity 
+                WHERE order_id = $order_id 
+                AND product_id = $product_id";
+        $stmt = $db->ejecutar($sql);
+        return $stmt;
+    }
 }
 ?>

@@ -43,5 +43,25 @@ class controller_cart
 		echo json_encode(common::load_model('cart_model', 'get_load_cart', [$access_token]));
 	}
 
+	function check_stock()
+	{
+		$product_id = $_POST['product_id'];
+		echo json_encode(common::load_model('cart_model', 'get_check_stock', [$product_id]));
+	}
+
+	function delete_order()
+	{
+		$order_id = $_POST['order_id'];
+		echo json_encode(common::load_model('cart_model', 'get_delete_order', [$order_id]));
+	}
+
+	function update_product_quantity()
+	{
+		$access_token = $_POST['access_token'];
+		$order_id = $_POST['order_id'];
+		$product_id = $_POST['product_id'];
+		$quantity = $_POST['quantity'];
+		echo json_encode(common::load_model('cart_model', 'get_update_product_quantity', [$access_token, $order_id, $product_id, $quantity]));
+	}
 }
 ?>

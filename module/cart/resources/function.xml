@@ -16,4 +16,16 @@
           <name>load_cart</name>
           <uri>load_cart</uri>
      </function>
+     <function>
+          <name>check_stock</name>
+          <uri>check_stock</uri>
+     </function>
+     <function>
+          <name>delete_order</name>
+          <uri>delete_order</uri>
+     </function>
+     <function>
+          <name>update_product_quantity</name>
+          <uri>update_product_quantity</uri>
+     </function>
 </functions>

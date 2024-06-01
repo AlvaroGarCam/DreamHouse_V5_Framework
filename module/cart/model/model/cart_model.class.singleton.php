@@ -36,5 +36,19 @@ class cart_model
         return $this->bll->get_load_cart_BLL($args);
     }
 
+    public function get_check_stock($args)
+    {
+        return $this->bll->get_check_stock_BLL($args);
+    }
+
+    public function get_delete_order($args)
+    {
+        return $this->bll->get_delete_order_BLL($args);
+    }
+
+    public function get_update_product_quantity($args)
+    {
+        return $this->bll->get_update_product_quantity_BLL($args);
+    }
 }
 ?>

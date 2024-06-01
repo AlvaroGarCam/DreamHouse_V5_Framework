@@ -277,6 +277,8 @@ function login() {
                     setTimeout(load_otp_form, 2000);
                 } else if (errorType == "okkey_login") {
                     console.log("Contraseña correcta!");
+                    localStorage.removeItem('filter_pet');
+                    localStorage.removeItem('filters_shop');
                     var access_token = result[1];
                     var refresh_token = result[2];
                     localStorage.setItem('access_token', access_token);

@@ -153,6 +153,8 @@ function logout() {
                 positionClass: 'toast-center'
             };
             toastr.success("Loged out succesfully. See you soon!");
+            localStorage.removeItem('filter_pet');
+            localStorage.removeItem('filters_shop');
             setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
         }).catch(function () {
             console.log("Something has occured, couldn't logout");

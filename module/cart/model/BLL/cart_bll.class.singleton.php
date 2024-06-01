@@ -66,10 +66,48 @@ class cart_bll
 		$order_id = $order[0]['order_id'];
 		$house_id = $order[0]['house_id'];
 		$products = $this->dao->get_order_products($this->db, $house_id, $order_id);
+		// return $products;
 		if ($products) {
-			return ['Cart loaded successfully', $products];
+			return ['Cart loaded successfully', $products, $order_id];
 		} else {
 			return ['Error loading cart', null];
+		}
+	}
+
+	public function get_check_stock_BLL($args)
+	{
+		return $this->dao->check_stock($this->db, $args[0]);
+	}
+
+	public function get_delete_order_BLL($args)
+	{
+		if ($this->dao->delete_orders_products($this->db, $args[0])) {
+			if ($this->dao->delete_order($this->db, $args[0])) {
+				return ['Order deleted successfully'];
+			} else {
+				return ['Error deleting order'];
+			}
+		} else {
+			return ['Error deleting order'];
+		}
+	}
+
+	public function get_update_product_quantity_BLL($args)
+	{
+		$access_token = $args[0];
+		$username = middleware::decode_username($access_token);
+		$order_id = $args[1];
+		$product_id = $args[2];
+		$quantity = $args[3];
+
+		if (!empty($this->dao->check_cart($this->db, $username))) {
+			if ($this->dao->update_product_quantity($this->db, $order_id, $product_id, $quantity)) {
+				return ['Product quantity updated successfully'];
+			} else {
+				return ['Error updating product quantity'];
+			}
+		} else {
+			return ['Error checking cart'];
 		}
 	}
 }
