@@ -24,5 +24,24 @@ class controller_cart
 		common::load_view('top_page_cart.html', VIEW_PATH_CART . 'cart.html');
 	}
 
+
+	function check_cart()
+	{
+		$access_token = $_POST['access_token'];
+		echo json_encode(common::load_model('cart_model', 'get_check_cart', [$access_token]));
+	}
+
+	function create_order()
+	{
+		$access_token = $_POST['access_token'];
+		$house_id = $_POST['house_id'];
+		echo json_encode(common::load_model('cart_model', 'get_create_order', [$access_token, $house_id]));
+	}
+	function load_cart()
+	{
+		$access_token = $_POST['access_token'];
+		echo json_encode(common::load_model('cart_model', 'get_load_cart', [$access_token]));
+	}
+
 }
 ?>

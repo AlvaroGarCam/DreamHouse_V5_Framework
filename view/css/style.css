@@ -858,3 +858,120 @@ input[type="radio"]:checked::before {
   margin: 0 auto;
   display: block;
 }
+
+
+
+
+#cart_table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  font-size: 1.2em;
+  font-family: Arial, sans-serif;
+}
+
+#cart_table td,
+#cart_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#cart_table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#cart_table tr:hover {
+  background-color: #ddd;
+}
+
+#cart_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.quantity-input {
+  width: 30px;
+  height: 20px;
+}
+
+.quantity-button {
+  width: 30px;
+  height: 30px;
+  font-size: 1.2em;
+}
+
+#cart_table button {
+  background-color: #4CAF50;
+  /* color de fondo */
+  border: none;
+  /* quitar bordes */
+  color: white;
+  /* color del texto */
+  padding: 5px 10px;
+  /* espacio alrededor del texto */
+  text-align: center;
+  /* alinear el texto al centro */
+  text-decoration: none;
+  /* quitar subrayado */
+  display: inline-block;
+  font-size: 16px;
+  /* tamaño del texto */
+  margin: 4px 2px;
+  /* espacio alrededor del botón */
+  cursor: pointer;
+  /* cambiar el cursor al pasar el mouse */
+  border-radius: 12px;
+  /* bordes redondeados */
+}
+
+/* Estilo para el campo de entrada */
+#cart_table input[type="text"] {
+  width: 30px;
+  /* ancho del campo de entrada */
+  text-align: center;
+  /* alinear el texto al centro */
+  border: 1px solid #ccc;
+  /* borde del campo de entrada */
+  border-radius: 4px;
+  /* bordes redondeados */
+}
+
+
+.shop-button {
+  background-color: #4CAF50;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 15px;
+}
+
+.shop-button:hover {
+  background-color: #45a049;
+}
+
+
+#cart_view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.message-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}

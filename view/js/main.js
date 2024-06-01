@@ -153,7 +153,6 @@ function logout() {
                 positionClass: 'toast-center'
             };
             toastr.success("Loged out succesfully. See you soon!");
-
             setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
         }).catch(function () {
             console.log("Something has occured, couldn't logout");

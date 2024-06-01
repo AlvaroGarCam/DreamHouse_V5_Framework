@@ -19,11 +19,22 @@ class cart_model
         return self::$_instance;
     }
 
-    // public function get_pets()
-    // {
-    //     // return "Home model get pets";
-    //     return $this->bll->get_pets_BLL();
-    // }
+
+
+    public function get_check_cart($args)
+    {
+        return $this->bll->get_check_cart_BLL($args);
+    }
+
+    public function get_create_order($args)
+    {
+        return $this->bll->get_create_order_BLL($args);
+    }
+
+    public function get_load_cart($args)
+    {
+        return $this->bll->get_load_cart_BLL($args);
+    }
 
 }
 ?>
