@@ -3,6 +3,7 @@ function cart_controller() {
      check_cart(access_token);
 }
 
+//Función que comprueba si el usuario tiene un carrito activo
 function check_cart(access_token) {
      let data = {
           "access_token": access_token,
@@ -37,6 +38,7 @@ function check_cart(access_token) {
           });
 }
 
+//Función que crea un nuevo pedido con la casa seleccionada
 function create_new_order(access_token, house_id) {
      let data = {
           "access_token": access_token,
@@ -59,7 +61,7 @@ function create_new_order(access_token, house_id) {
           });
 }
 
-
+//Función que carga el carrito con los productos y la casa seleccionada
 function charge_cart(access_token) {
      let data = {
           "access_token": access_token,
@@ -67,12 +69,9 @@ function charge_cart(access_token) {
      }
      ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
           .then(function (data) {
-               // console.log(data);
                $order_id = Number(data[2]);
-               // console.log($order_id);
                if (data[0] === 'Error getting house or products') {
                     console.log('Error getting house or products');
-                    // Handle error in getting house or products here
                } else if (data[0] === 'Cart loaded successfully') {
 
 
@@ -99,12 +98,17 @@ function charge_cart(access_token) {
                     table += '</br></br><div class="button-container"><button id="purchase-button" class="unique-button">PURCHASE</button><button id="delete-button" class="unique-button">DELETE ORDER</button></div>';
                     $('#cart_view').append(table);
 
-                    check_stock_first_load();
-
+                    // update inicial para cargar bien los botones de + y -
                     updateQuantity('product1');
                     updateQuantity('product2');
                     updateQuantity('product3');
 
+                    check_stock_first_load();
+
+                    //función que comprueba el stock de los productos al cargar la página
+                    //de manera que si la cantidad de algún producto supera o iguala al 
+                    //stock disponible, se deshabilita el botón de incrementar y se adapta
+                    //la cantidad al stock disponible
                     function check_stock_first_load() {
                          $('.plus-button').each(function () {
                               let product = $(this).data('product');
@@ -137,6 +141,31 @@ function charge_cart(access_token) {
                          });
                     }
 
+                    check_house_in_other_order($order_id);
+
+                    //Función que comprueba si la misma casa se encuentra en otro pedido 
+                    //pendiente que no sea el nuestro para avisarnos de que hay alguien 
+                    //más interesado en la casa
+                    function check_house_in_other_order(order_id) {
+                         let data = {
+                              "order_id": order_id,
+                              op: "check_house_in_other_order"
+                         }
+                         ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
+                              .then(function (orders) {
+                                   let otherOrders = orders.filter(order => order.order_id !== my_order_id);
+                                   if (otherOrders.length > 0) {
+                                        swal("Attention!", "This house is in another order. Hurry up!", "warning");
+                                   }
+                              })
+                              .catch(function (error) {
+                                   console.log(error);
+                              });
+                    }
+
+                    //Función que actualiza la cantidad de un producto en el carrito
+                    //cada vez que clickamos en los botones de + o -
+                    //para tener un control dinámico de la cantidad de productos y del stock
                     function update_cart(access_token, product_id, quantity, order_id) {
                          let data = {
                               "access_token": access_token,
@@ -154,6 +183,15 @@ function charge_cart(access_token) {
                               });
                     }
 
+                    //funcionalidad de los botones de + y - para incrementar o decrementar la cantidad
+                    //1º comprobamos el stock antes de incrementar la cantidad
+                    //2º si hay stock disponible, incrementamos la cantidad
+                    //3º actualizamos la cantidad en el input
+                    //4º actualizamos el total
+                    //5º actualizamos el carrito
+                    //6º si la cantidad iguala al stock, deshabilitamos el botón de incrementar
+                    //7º si la cantidad es mayor que 0, habilitamos el botón de decrementar
+                    //8º si la cantidad es 0, deshabilitamos el botón de decrementar
                     $('.plus-button').click(function (event) {
                          event.preventDefault();
                          let product = $(this).data('product');
@@ -193,7 +231,6 @@ function charge_cart(access_token) {
                                    console.log(error);
                               });
                     });
-
                     $('.minus-button').click(function (event) {
                          event.preventDefault();
                          let product = $(this).data('product');
@@ -211,10 +248,12 @@ function charge_cart(access_token) {
                     });
 
 
-
+                    //función que calcula el total de la compra sumando el precio de la casa y los productos 
                     function calculateTotal() {
                          return (Number(house.price) + Number(product1.price) * quantities.product1 + Number(product2.price) * quantities.product2 + Number(product3.price) * quantities.product3).toFixed(2);
                     }
+
+                    //función que actualiza la cantidad de un producto en el input
                     function updateQuantity(product) {
                          $('input[data-product="' + product + '"]').val(quantities[product]);
                          let decrementButton = $('.minus-button[data-product="' + product + '"]');
@@ -226,10 +265,13 @@ function charge_cart(access_token) {
                               decrementButton.css('background-color', 'gray');
                          }
                     }
+
+                    //función que actualiza el total de la compra en el input
                     function updateTotal() {
                          $('#total').text(calculateTotal() + ' €');
                     }
 
+                    //evento click del botón de compra
                     document.getElementById('purchase-button').addEventListener('click', function (event) {
                          event.preventDefault();
                          console.log('Purchase button clicked ' + $order_id);
@@ -237,6 +279,7 @@ function charge_cart(access_token) {
                          purchase($order_id, $total_price);
                     });
 
+                    //evento click del botón de eliminar pedido
                     document.getElementById('delete-button').addEventListener('click', function (event) {
                          event.preventDefault();
                          console.log('Delete button clicked ' + $order_id);
@@ -276,6 +319,7 @@ function charge_cart(access_token) {
           });
 }
 
+//Función que elimina un pedido con confirmación
 function delete_order(order_id) {
      // console.log('Deleting order ' + order_id);
      let data = {
@@ -297,7 +341,7 @@ function delete_order(order_id) {
           });
 }
 
-
+//Función que realiza la compra de un pedido introduciendo información de pago
 function purchase($order_id, $total_price) {
      // console.log('Purchasing order ' + $order_id);
      // console.log('Total price ' + $total_price); 
