@@ -28,8 +28,8 @@ function loadHouses() {
     if (redirect_like !== false) {
         setTimeout(function () {
             loadDetails(redirect_like)
+            localStorage.removeItem("redirect_like");
         }, 1500);
-        localStorage.removeItem("redirect_like");
     }
     if (filters_search !== false) {
         localStorage.removeItem('filters_shop');
@@ -174,7 +174,7 @@ function clicks() {
                 closeButton: true,
                 positionClass: "toast-center"
             };
-            toastr.options.timeOut = 3000;
+            toastr.options.timeOut = 2000;
             toastr.success("You have to be logged in to add this house to your cart.");
             setTimeout(function () {
                 window.location.href = friendlyURL('?module=login');
@@ -294,12 +294,22 @@ function loadDetails(id_house) {
                 like_reactive(data[0].house_id, access_token)
                     .then(function (ruta_response) {
                         likeButton.find('img').attr('src', ruta_response);
+                        // Aquí es donde debes actualizar el número de likes.
+                        // Suponiendo que tienes un elemento con la clase 'like-count' para mostrar el número de likes:
+                        var likeCountElement = $('.like-count');
+                        // Suponiendo que tienes una función 'getLikeCount' que devuelve la cantidad de likes para una casa:
+                        getLikeCount(data[0].house_id)
+                            .then(function (likeCount) {
+                                likeCountElement.text(likeCount);
+                            })
+                            .catch(function (error) {
+                                console.error(error);
+                            });
                     })
                     .catch(function (error) {
                         console.error(error);
                     });
             }
-
             mapBox_details(data);
 
         }).catch(function () {

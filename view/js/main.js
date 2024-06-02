@@ -55,7 +55,7 @@ function load_menu() {
         // return false;
         ajaxPromise('POST', 'JSON', friendlyURL('?module=login'), { 'access_token': access_token, op: 'data_user' })
             .then(function (data) {
-                console.log(data);
+                // console.log(data);
                 // return false;
                 // if (data[0].type_user == "client") {
                 //      console.log("Client loged");
@@ -160,6 +160,7 @@ function logout() {
             toastr.success("Loged out succesfully. See you soon!");
             localStorage.removeItem('filter_pet');
             localStorage.removeItem('filters_shop');
+            localStorage.removeItem('pagina');
             setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
         }).catch(function () {
             console.log("Something has occured, couldn't logout");

@@ -25,11 +25,20 @@ function check_cart(access_token) {
                     if (house_id !== null) {
                          console.log('House_id in local storage');
                          create_new_order(access_token, house_id);
-                         localStorage.removeItem('cart_house_id');
-                         charge_cart(access_token);
                     } else {
                          // console.log('No house_id in local storage');
-                         document.getElementById('cart_view').innerHTML = '<p class="message-text">You don´t have any order active at the moment, please go to Shop.</p><button class="shop-button"><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></button>';
+                         // document.getElementById('cart_view').innerHTML = '<p class="message-text">You don´t have any order active at the moment, please go to Shop.</p><button class="shop-button"><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></button>';
+                         swal({
+                              title: "Notification!",
+                              text: "You don´t have any order active at the moment, redirecting to Shop.",
+                              icon: "info",
+                              buttons: false,
+                              timer: 3000
+                         });
+                         $('#cart_view').empty();
+                         setTimeout(function () {
+                              window.location.href = friendlyURL('?module=shop');
+                         }, 3000);
                     }
                }
           })
@@ -49,6 +58,9 @@ function create_new_order(access_token, house_id) {
           .then(function (data) {
                if (data[0] === 'Order created successfully') {
                     console.log('Order created successfully');
+                    localStorage.removeItem('cart_house_id');
+                    // charge_cart(access_token);
+                    location.reload();
                     return true;
                } else if (data[0] === 'Error creating new order') {
                     console.log('Error creating new order');
@@ -141,27 +153,27 @@ function charge_cart(access_token) {
                          });
                     }
 
-                    check_house_in_other_order($order_id);
+                    // check_house_in_other_order($order_id);
 
-                    //Función que comprueba si la misma casa se encuentra en otro pedido 
-                    //pendiente que no sea el nuestro para avisarnos de que hay alguien 
-                    //más interesado en la casa
-                    function check_house_in_other_order(order_id) {
-                         let data = {
-                              "order_id": order_id,
-                              op: "check_house_in_other_order"
-                         }
-                         ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
-                              .then(function (orders) {
-                                   let otherOrders = orders.filter(order => order.order_id !== my_order_id);
-                                   if (otherOrders.length > 0) {
-                                        swal("Attention!", "This house is in another order. Hurry up!", "warning");
-                                   }
-                              })
-                              .catch(function (error) {
-                                   console.log(error);
-                              });
-                    }
+                    // //Función que comprueba si la misma casa se encuentra en otro pedido 
+                    // //pendiente que no sea el nuestro para avisarnos de que hay alguien 
+                    // //más interesado en la casa
+                    // function check_house_in_other_order(order_id) {
+                    //      let data = {
+                    //           "order_id": order_id,
+                    //           op: "check_house_in_other_order"
+                    //      }
+                    //      ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
+                    //           .then(function (orders) {
+                    //                let otherOrders = orders.filter(order => order.order_id !== my_order_id);
+                    //                if (otherOrders.length > 0) {
+                    //                     swal("Attention!", "This house is in another order. Hurry up!", "warning");
+                    //                }
+                    //           })
+                    //           .catch(function (error) {
+                    //                console.log(error);
+                    //           });
+                    // }
 
                     //Función que actualiza la cantidad de un producto en el carrito
                     //cada vez que clickamos en los botones de + o -
@@ -250,7 +262,8 @@ function charge_cart(access_token) {
 
                     //función que calcula el total de la compra sumando el precio de la casa y los productos 
                     function calculateTotal() {
-                         return (Number(house.price) + Number(product1.price) * quantities.product1 + Number(product2.price) * quantities.product2 + Number(product3.price) * quantities.product3).toFixed(2);
+                         let total = (Number(house.price) + Number(product1.price) * quantities.product1 + Number(product2.price) * quantities.product2 + Number(product3.price) * quantities.product3).toFixed(2);
+                         return total;
                     }
 
                     //función que actualiza la cantidad de un producto en el input
@@ -268,7 +281,7 @@ function charge_cart(access_token) {
 
                     //función que actualiza el total de la compra en el input
                     function updateTotal() {
-                         $('#total').text(calculateTotal() + ' €');
+                         $('#total').text(calculateTotal().toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ' €');
                     }
 
                     //evento click del botón de compra
@@ -353,7 +366,7 @@ function purchase($order_id, $total_price, $house_id) {
      }
      ajaxPromise('POST', 'JSON', friendlyURL("?module=cart"), data)
           .then(function (data) {
-               console.log(data);
+               // console.log(data);
                if (data[0] === 'Order details loaded successfully') {
                     console.log('Order details loaded successfully');
                     window.scrollTo(0, 0);
@@ -384,7 +397,12 @@ function purchase($order_id, $total_price, $house_id) {
                     .then(function (data) {
                          if (data[0] === 'Purchase completed successfully') {
                               console.log('Order purchased successfully');
-                              swal("Congratulations!", "Your order has been successfully processed", "success");
+                              swal({
+                                   title: "Congratulations!",
+                                   text: "Your order has been successfully processed",
+                                   icon: "success",
+                                   buttons: false
+                              });
                               $('#cart_view').empty();
                               setTimeout(function () {
                                    location.reload();
@@ -452,6 +470,7 @@ function validate_payment_form() {
 }
 
 function generate_payment_form(orderDetails, totalPrice, orderId) {
+     let total_price = totalPrice.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
      let invoiceAndPaymentForm = `
           <div id="payment_form">
                <h2>ORDER DETAILS</h2>
@@ -480,7 +499,7 @@ function generate_payment_form(orderDetails, totalPrice, orderId) {
      invoiceAndPaymentForm += `
                     <tr>
                          <td colspan="3">Total Price</td>
-                         <td>${totalPrice.toString().toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
+                         <td>${total_price} €</td>
                     </tr>
                </table>
                <h2>PAYMENT DETAILS</h2>
@@ -491,7 +510,7 @@ function generate_payment_form(orderDetails, totalPrice, orderId) {
                     </tr>
                     <tr>
                          <td colspan="2"><strong>Total Price</strong></td>
-                         <td colspan="2"><strong>${totalPrice.toString().replace(".", "'").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</strong></td>
+                         <td colspan="2"><strong>${total_price} €</strong></td>
                     </tr>
                     <tr>
                          <td colspan="2"><label for="card_name">Card Holder's Name</label></td>

@@ -84,7 +84,7 @@ $(document).ready(function () {
      control_user(); //sin intervalo temporal porque controlará en cada carga de página si el usuario es el que toca
      setInterval(function () { control_expires_access_token() }, 60000); //60s mejora de separar el control_user del control_expires
      setInterval(function () { control_activity() }, 60000); //60s= 60000
-     setInterval(function () { refresh_cookie() }, 60000); //60s
+     // setInterval(function () { refresh_cookie() }, 60000); //60s
 });
 
 

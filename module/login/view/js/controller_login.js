@@ -279,6 +279,7 @@ function login() {
                     console.log("Contraseña correcta!");
                     localStorage.removeItem('filter_pet');
                     localStorage.removeItem('filters_shop');
+                    localStorage.removeItem('pagina');
                     var access_token = result[1];
                     var refresh_token = result[2];
                     localStorage.setItem('access_token', access_token);
