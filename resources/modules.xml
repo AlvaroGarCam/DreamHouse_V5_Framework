@@ -17,6 +17,10 @@
           <uri>cart</uri>
      </module>
      <module>
+          <name>profile</name>
+          <uri>profile</uri>
+     </module>
+     <module>
           <name>login</name>
           <uri>login</uri>
           <uri>register</uri>
