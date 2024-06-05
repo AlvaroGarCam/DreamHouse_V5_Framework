@@ -113,5 +113,10 @@ class shop_bll
 		}
 	}
 
+	public function get_like_count_BLL($array)
+	{
+		$house_id = $array[0];
+		return $this->dao->get_like_count($this->db, $house_id);
+	}
 }
 ?>

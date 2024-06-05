@@ -78,7 +78,7 @@ function load_menu() {
                     '<li><a href="' + friendlyURL('?module=home') + '" id="home_link"><h4>HOME</h4></a></li>' +
                     '<li><a href="' + friendlyURL('?module=shop') + '"><h4>SHOP</h4></a></li>' +
                     '<li><a href="' + friendlyURL('?module=cart') + '"><img src="view/img/cart_shop.png" width="100px">' + orderStatus + '</a></a></li>' +
-                    '<li style="width: 100px;"></li><li><img src="' + data[0][0].avatar + '" width="60px"><a id="loged_username">' + data[0][0].username + '</a></li>' +
+                    '<li style="width: 80px;"></li><li><a href = "' + friendlyURL('?module=profile') + '" > <img src="' + data[0][0].avatar + '" width="60px"></a><a id="loged_username" href="' + friendlyURL('?module=profile') + '">' + data[0][0].username + '</a></li>' +
                     '<li><span class="register_login_buttons">' +
                     '<a id="logout"><button class="log">Logout</button></a>' +
                     '</span></li>');
@@ -139,9 +139,18 @@ function load_menu() {
 //================CLICK-LOGIUT================
 function click_logout() {
     $(document).on('click', '#logout', function () {
-        if (confirm("¿Are you sure you want to logout?")) {
-            logout();
-        }
+        swal({
+            title: "Are you sure?",
+            text: "You will be logged out.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willLogout) => {
+                if (willLogout) {
+                    logout();
+                }
+            });
     });
 }
 
@@ -153,14 +162,10 @@ function logout() {
         .then(function (data) {
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            toastr.options = {
-                closeButton: true,
-                positionClass: 'toast-center'
-            };
-            toastr.success("Loged out succesfully. See you soon!");
             localStorage.removeItem('filter_pet');
             localStorage.removeItem('filters_shop');
             localStorage.removeItem('pagina');
+            swal("Logged out!", "You have been logged out.", "success");
             setTimeout(' window.location.href = friendlyURL("?module=home"); ', 2000);
         }).catch(function () {
             console.log("Something has occured, couldn't logout");

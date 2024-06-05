@@ -83,5 +83,11 @@ class controller_shop
         $house_id = $_POST['house_id'];
         echo json_encode(common::load_model('shop_model', 'click_like', [$access_token, $house_id]));
     }
+
+    function get_like_count()
+    {
+        $house_id = $_POST['house_id'];
+        echo json_encode(common::load_model('shop_model', 'get_like_count', [$house_id]));
+    }
 }
 ?>

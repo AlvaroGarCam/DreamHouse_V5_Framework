@@ -64,4 +64,8 @@
         <name>like_reactive</name>
         <uri>like_reactive</uri>
     </function>
+    <function>
+        <name>get_like_count</name>
+        <uri>get_like_count</uri>
+    </function>
 </functions>

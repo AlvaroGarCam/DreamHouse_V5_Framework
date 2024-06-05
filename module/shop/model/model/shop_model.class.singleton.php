@@ -57,5 +57,10 @@ class shop_model
     {
         return $this->bll->click_like_BLL($array);
     }
+
+    public function get_like_count($array)
+    {
+        return $this->bll->get_like_count_BLL($array);
+    }
 }
 ?>

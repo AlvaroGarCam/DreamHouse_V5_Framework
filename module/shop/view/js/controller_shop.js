@@ -1,15 +1,16 @@
 function loadHouses() {
 
-    var filters_home = localStorage.getItem('filters_home') || false;
+    let filters_home = localStorage.getItem('filters_home') || false;
 
-    var filters_shop = localStorage.getItem('filters_shop') || false;
+    let filters_shop = localStorage.getItem('filters_shop') || false;
 
-    var details_visited_houses = localStorage.getItem('details_visited_houses') || false;
+    let details_visited_houses = localStorage.getItem('details_visited_houses') || false;
 
-    var filters_search = localStorage.getItem('filters_search') || false;
+    let filters_search = localStorage.getItem('filters_search') || false;
 
-    var redirect_like = localStorage.getItem('redirect_like') || false;
+    let redirect_like = localStorage.getItem('redirect_like') || false;
 
+    let redirect_profile_likes = localStorage.getItem('redirect_profile_likes') || false;
 
     $('#details-shop').hide();
     $('#content_shop_houses').hide();
@@ -27,9 +28,19 @@ function loadHouses() {
     }
     if (redirect_like !== false) {
         setTimeout(function () {
-            loadDetails(redirect_like)
+            $(document).ready(function () {
+                loadDetails(redirect_like);
+            });
             localStorage.removeItem("redirect_like");
         }, 1500);
+        // $(document).ready(function () {
+        //     List();
+        //     loadDetails(redirect_like);
+        // });
+
+        // $('#' + redirect_like + '.details').trigger('click');
+
+        // localStorage.removeItem("redirect_like");
     }
     if (filters_search !== false) {
         localStorage.removeItem('filters_shop');
@@ -40,7 +51,26 @@ function loadHouses() {
     if (filters_shop !== false) {
         print_filters_shop();
     }
-    if (details_visited_houses == false && filters_home == false && filters_search == false && filters_shop == false && redirect_like == false) {
+    if (redirect_profile_likes !== false) {
+        setTimeout(function () {
+            $(document).ready(function () {
+                loadDetails(redirect_profile_likes);
+            });
+            localStorage.removeItem("redirect_profile_likes");
+        }, 1500);
+        // $(document).ready(function () {
+        //     List();
+        //     loadDetails(redirect_profile_likes);
+        // });
+        // setTimeout(function () {
+        //     $(document).ready(function () {
+        //         $('#' + redirect_profile_likes + '.details').trigger('click');
+        //     });
+        // }, 2000);
+        // loadDetails(redirect_profile_likes);
+        // localStorage.removeItem("redirect_profile_likes");
+    }
+    if (details_visited_houses == false && filters_home == false && filters_search == false && filters_shop == false && redirect_like == false && redirect_profile_likes == false) {
         List();
     }
 }
@@ -191,7 +221,16 @@ function clicks() {
     });
 }
 
-//detalles de la vivienda cuando pulsamos el botón "Details"
+function getLikeCount(house_id) {
+    return ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'house_id': house_id, op: 'get_like_count' })
+        .then(function (data) {
+            return data[0];
+        })
+        .catch(function () {
+            console.error('Error al obtener el número de likes.');
+        });
+}
+
 function loadDetails(id_house) {
     var house_id = id_house;
 
@@ -204,35 +243,25 @@ function loadDetails(id_house) {
     $('#map_details').show();
 
     var button = $('<button>Show More Related Houses</button>');
-    // Recuperar visited_houses de localStorage
     var visited_houses = localStorage.getItem('visited_houses');
-    // Verificar si visited_houses existe y es válido
     if (visited_houses !== null) {
         try {
-            // Intentar analizar visited_houses como JSON
             visited_houses = JSON.parse(visited_houses);
         } catch (error) {
-            // En caso de error, inicializar visited_houses como un nuevo array vacío
             visited_houses = [];
         }
     } else {
-        // Si visited_houses no existe, inicializar visited_houses como un nuevo array vacío
         visited_houses = [];
     }
-    // Verificar si id_house no está presente en visited_houses y agregarlo
     if (!visited_houses.includes(id_house)) {
         visited_houses.push(id_house);
     }
-    // Almacenar visited_houses actualizado en localStorage
     localStorage.setItem('visited_houses', JSON.stringify(visited_houses));
-    // Guardar visited_houses actualizado en localStorage
-    localStorage.setItem('visited_houses', JSON.stringify(visited_houses));
-    var initialLikeButton = $('#' + house_id + '.like').clone(); // Clonar el botón "like" inicial
+    var initialLikeButton = $('#' + house_id + '.like').clone();
     ajaxPromise('POST', 'JSON', friendlyURL('?module=shop'), { 'house_id': house_id, op: 'details' })
         .then(function (data) {
             var imagePaths = data[0].image_paths;
             var imagePathsArray = imagePaths.split(',');
-            // return false;
             house_id = data[0].house_id;
             pet_id = data[0].pet_id;
             $('#content_shop_houses').empty();
@@ -246,7 +275,6 @@ function loadDetails(id_house) {
             $('#related_houses_button').empty();
             $('#related_houses_button').append(button);
 
-            // Recorre el array de rutas de imagen y crea elementos div con la clase y atributos necesarios
             for (let i = 0; i < imagePathsArray.length; i++) {
                 $('<div></div>').attr({ 'id': 'image_' + i, class: 'date_img' }).appendTo('#house_images')
                     .html(
@@ -256,7 +284,6 @@ function loadDetails(id_house) {
                     );
             }
 
-            // Inicializa el Glider con las imágenes recién agregadas
             new Glider(document.querySelector('#house_images'), {
                 slidesToShow: 1,
                 dots: '.carousel__indicator',
@@ -283,9 +310,8 @@ function loadDetails(id_house) {
                 );
 
             var likeButtonContainer = $('.buttons');
-            initialLikeButton.appendTo(likeButtonContainer); // Restaurar el botón "like" inicial
+            initialLikeButton.appendTo(likeButtonContainer);
 
-            // Actualizar la ruta de la imagen del botón "like" dinámicamente
             var likeButton = $('#' + data[0].house_id + '.like');
             var access_token = localStorage.getItem('access_token') || false;
             if (access_token === false) {
@@ -294,10 +320,7 @@ function loadDetails(id_house) {
                 like_reactive(data[0].house_id, access_token)
                     .then(function (ruta_response) {
                         likeButton.find('img').attr('src', ruta_response);
-                        // Aquí es donde debes actualizar el número de likes.
-                        // Suponiendo que tienes un elemento con la clase 'like-count' para mostrar el número de likes:
                         var likeCountElement = $('.like-count');
-                        // Suponiendo que tienes una función 'getLikeCount' que devuelve la cantidad de likes para una casa:
                         getLikeCount(data[0].house_id)
                             .then(function (likeCount) {
                                 likeCountElement.text(likeCount);

@@ -371,6 +371,16 @@ WHERE
         return $db->ejecutar($sql);
 
     }
+
+    public function get_like_count($db, $house_id)
+    {
+        $sql = "SELECT COUNT(*)
+            FROM likes
+            WHERE house_id='$house_id';";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 }
 
 

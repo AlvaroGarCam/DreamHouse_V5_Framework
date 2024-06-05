@@ -1,5 +1,161 @@
 <br><br><br><br><br><br><br><br><br><br>
+><br><br><br>
 
-
-
-holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa profile
+<form id="profile_view">
+     <div class="container">
+          <div class="row">
+               <div id="profile_menu" class="col-md-3 bg-primary" style="padding: 20px; margin-top: 20px;">
+               </div>
+               <div id="profile_content" class="col-md-8 col-md-offset-1 bg-light"
+                    style="padding: 20px; margin-top: 20px;">
+               </div>
+          </div>
+     </div>
+</form>
+<div class="modal fade" id="usernameModal" tabindex="-1" role="dialog" aria-labelledby="usernameModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="usernameModalLabel">Change Username</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <form>
+                         <div class="form-group">
+                              <label for="new-username" class="col-form-label">New Username:</label>
+                              <input type="text" class="form-control" id="new-username">
+                              <small id="username-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <label for="password" class="col-form-label">Password:</label>
+                              <input type="password" class="form-control" id="password">
+                              <small id="password-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <small id="error_message_modal" class="text-danger"></small>
+                         </div>
+                    </form>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="change_username_modal">Save changes</button>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Change Email</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <form>
+                         <div class="form-group">
+                              <label for="new-email" class="col-form-label">New Email:</label>
+                              <input type="email" class="form-control" id="new-email"
+                                   placeholder="Example: example@hotmail.com">
+                              <small id="email-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <label for="password" class="col-form-label">Password:</label>
+                              <input type="password" class="form-control" id="password-email">
+                              <small id="password-error-email" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <small id="error_message_modal_email" class="text-danger"></small>
+                         </div>
+                    </form>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="change_email_modal">Save changes</button>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="phoneModalLabel">Change Phone Number</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <form>
+                         <div class="form-group">
+                              <label for="new-phone" class="col-form-label">New Phone Number:</label>
+                              <input type="tel" class="form-control" id="new-phone" placeholder="Example: 666777888">
+                              <small id="phone-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <label for="password-phone" class="col-form-label">Password:</label>
+                              <input type="password" class="form-control" id="password-phone">
+                              <small id="password-error-phone" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <small id="error_message_modal_phone" class="text-danger"></small>
+                         </div>
+                    </form>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="change_phone_modal">Save changes</button>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Change Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <form>
+                         <div class="form-group">
+                              <label for="current-password" class="col-form-label">Current Password:</label>
+                              <input type="password" class="form-control" id="current-password"
+                                   placeholder="Enter current password">
+                              <small id="current-password-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <label for="new-password" class="col-form-label">New Password:</label>
+                              <input type="password" class="form-control" id="new-password"
+                                   placeholder="Enter new password">
+                              <small id="new-password-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <label for="confirm-password" class="col-form-label">Confirm Password:</label>
+                              <input type="password" class="form-control" id="confirm-password"
+                                   placeholder="Repeat new password">
+                              <small id="confirm-password-error" class="text-danger"></small>
+                         </div>
+                         <div class="form-group">
+                              <small id="error_message_modal_password" class="text-danger"></small>
+                         </div>
+                    </form>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="change_password_modal">Save changes</button>
+               </div>
+          </div>
+     </div>
+</div>
+<br><br><br>
+><br><br><br>

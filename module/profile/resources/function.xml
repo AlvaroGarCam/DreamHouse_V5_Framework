@@ -4,4 +4,32 @@
         <name>view</name>
         <uri>view</uri>
     </function>
+    <function>
+        <name>account_details</name>
+        <uri>account_details</uri>
+    </function>
+    <function>
+        <name>purchases_details</name>
+        <uri>purchases_details</uri>
+    </function>
+    <function>
+        <name>likes_details</name>
+        <uri>likes_details</uri>
+    </function>
+    <function>
+        <name>edit_username</name>
+        <uri>edit_username</uri>
+    </function>
+    <function>
+        <name>edit_email</name>
+        <uri>edit_email</uri>
+    </function>
+    <function>
+        <name>edit_phone_number</name>
+        <uri>edit_phone_number</uri>
+    </function>
+    <function>
+        <name>edit_password</name>
+        <uri>edit_password</uri>
+    </function>
 </functions>
