@@ -76,16 +76,19 @@ function charge_profile_menu() {
 function clicks_profile() {
     $('#account_view').click(function () {
         $('#profile_content').empty();
+        window.scrollTo(0, 0);
         account_details();
     });
 
     $('#purchases_view').click(function () {
         $('#profile_content').empty();
+        window.scrollTo(0, 0);
         purchases_details();
     });
 
     $('#likes_view').click(function () {
         $('#profile_content').empty();
+        window.scrollTo(0, 0);
         likes_details();
     });
 }
@@ -194,7 +197,29 @@ function clicks_edit_profile() {
 
     //Change avatar
     document.getElementById('change_avatar').addEventListener('click', function () {
-        // console.log('Clicked edit avatar');
+        $('#avatarModal').modal('show');
+    });
+    $('#avatar-file').on('change', function (e) {
+        e.preventDefault();
+        // var formData = new FormData();
+        // formData.append('file', this.files[0]); // Agrega el archivo seleccionado
+        // $.ajax({
+        //     url: 'upload.php',
+        //     type: 'POST',
+        //     data: formData,
+        //     contentType: false,
+        //     processData: false,
+        //     success: function (response) {
+        //         $('#avatar-drop-error').html('<p>' + response + '</p>');
+        //     },
+        //     error: function () {
+        //         $('#avatar-drop-error').html('<p>An error occurred while uploading the file.</p>');
+        //     }
+        // });
+    });
+
+    document.getElementById('change_avatar_modal').addEventListener('click', function () {
+        change_avatar();
     });
 
     //Change password
@@ -207,7 +232,7 @@ function clicks_edit_profile() {
     });
 }
 
-//EDIT USERNAME
+//EDIT USERNAME (PREGUNTAR A YOLANDA COMO LO HAGO)
 function validate_change_username() {
     var newUsername = document.getElementById('new-username').value;
     var password = document.getElementById('password').value;
@@ -445,6 +470,12 @@ function change_phone_number() {
             });
     }
 }
+
+//EDIT AVATAR
+function change_avatar() {
+    console.log('Clicked edit avatar');
+}
+
 
 //EDIT PASSWORD
 function validate_change_password() {

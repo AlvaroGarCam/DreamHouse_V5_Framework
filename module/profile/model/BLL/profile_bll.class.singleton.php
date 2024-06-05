@@ -68,7 +68,12 @@ class profile_bll
 				if (password_verify($password, $user[0]['password'])) {
 					try {
 						$this->db->ejecutar('START TRANSACTION');
-						$this->dao->edit_username($this->db, $username, $new_username);
+						$this->dao->disable_user($this->db, $username);
+						$this->dao->create_new_user($this->db, $user, $new_username);
+						$this->dao->register_change($this->db, $username, $new_username);
+						$this->dao->update_user_likes($this->db, $username, $new_username);
+						$this->dao->update_user_purchases($this->db, $username, $new_username);
+						$this->dao->update_user_orders($this->db, $username, $new_username);
 						$this->db->ejecutar('COMMIT');
 						return ['Username updated successfully'];
 					} catch (Exception $e) {

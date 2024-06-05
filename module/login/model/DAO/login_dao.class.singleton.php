@@ -34,7 +34,7 @@ class login_dao
     {
         $sql = "SELECT * 
         FROM user
-        WHERE username = '$username'";
+        WHERE username = '$username' and is_active = 1";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);

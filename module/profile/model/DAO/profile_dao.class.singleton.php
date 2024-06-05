@@ -63,15 +63,50 @@ class profile_dao
         return $db->listar($stmt);
     }
 
-    public function edit_username($db, $username, $new_username)
+    public function disable_user($db, $username)
+    {
+        $sql = "UPDATE user SET is_active = 0, email='' WHERE username = '$username'";
+        $db->ejecutar($sql);
+        return;
+    }
+
+    public function create_new_user($db, $user, $new_username)
+    {
+        $email = $user[0]['email'];
+        $phone_number = $user[0]['phone_number'];
+        $password = $user[0]['password'];
+        $avatar = $user[0]['avatar'];
+
+        $sql = "INSERT INTO user (username, email, phone_number, password, is_active,avatar,type_user) 
+        VALUES ('$new_username','$email', '$phone_number', '$password', 1,'$avatar','client')";
+        $db->ejecutar($sql);
+        return;
+    }
+
+    public function register_change($db, $username, $new_username)
+    {
+        $sql = "INSERT INTO username_changes (old_username, new_username, data) VALUES ('$username', '$new_username', NOW())";
+        $db->ejecutar($sql);
+        return;
+    }
+
+    public function update_user_likes($db, $username, $new_username)
     {
         $sql = "UPDATE likes SET username = '$new_username' WHERE username = '$username'";
         $db->ejecutar($sql);
-        $sql = "UPDATE purchases SET username = '$new_username' WHERE username = '$username'";
-        $db->ejecutar($sql);
+        return;
+    }
+
+    public function update_user_orders($db, $username, $new_username)
+    {
         $sql = "UPDATE orders SET username = '$new_username' WHERE username = '$username'";
         $db->ejecutar($sql);
-        $sql = "UPDATE user SET username = '$new_username' WHERE username = '$username'";
+        return;
+    }
+
+    public function update_user_purchases($db, $username, $new_username)
+    {
+        $sql = "UPDATE purchases SET username = '$new_username' WHERE username = '$username'";
         $db->ejecutar($sql);
         return;
     }
