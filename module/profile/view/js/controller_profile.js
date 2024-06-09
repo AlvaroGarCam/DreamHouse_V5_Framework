@@ -858,6 +858,7 @@ function likes_details() {
                                     <th scope="col">Product</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">View</th>
+                                    <th scope="col">Remove</th>
                                 </tr>
                             </thead>
                             <tbody id="table_body">
@@ -871,6 +872,7 @@ function likes_details() {
                             <td>${like.description}</td>
                             <td>${like.price.toString().replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                             <td><a id="${like.house_id}" class="check_like"><img src="view/img/lupa_profile.jpg" width="30" title='Check Product'></a></td>
+                            <td><a id="${like.house_id}" class="remove_like"><img src="view/img/red_cross.png" width="30" title='Remove Product'></a></td>
                         </tr>
                     `);
                     });
@@ -928,8 +930,74 @@ function check_like_details() {
         }, 2000);
     }
     );
+    $('body').on('click', '.remove_like', function () {
+        let house_id = this.id;
+        console.log('Clicked on house ID: ' + house_id);
+        swal({
+            title: "Removing",
+            text: "The product will be removed from your wishlist.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((confirm_delete) => {
+            if (confirm_delete) {
+                remove_like_profile(house_id);
+            }
+        });
+    }
+    );
 }
 
+//REMOVE LIKE PROFILE
+function remove_like_profile(house_id) {
+    let access_token = localStorage.getItem('access_token') || null;
+    if (access_token != null) {
+        let data = {
+            access_token: access_token,
+            house_id: house_id,
+            op: 'remove_like_profile'
+        };
+        ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+            .then(function (result) {
+                // console.log(result);
+                // return false;
+                if (result[0] == 'like_removed') {
+                    console.log('Like removed successfully');
+                    $('#profile_content').empty();
+                    window.scrollTo(0, 0);
+                    likes_details();
+                } else if (result[0] == 'error_removing_like') {
+                    swal({
+                        title: "Error",
+                        text: "An error has occurred while removing the product from your wishlist. Please try again later.",
+                        icon: "error",
+                    });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "An unexpected error has occurred. Please try again later.",
+                        icon: "error",
+                    }).then(() => {
+                        setTimeout(function () {
+                            logout();
+                        }, 2000);
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+    } else {
+        swal({
+            title: "Error",
+            text: "Sesion has expired. You will be redirected to the login page.",
+            icon: "error",
+        }).then(() => {
+            setTimeout(function () {
+                window.location.href = friendlyURL("?module=login");
+            }, 2000);
+        });
+    }
+}
 
 $(document).ready(function () {
     charge_profile_menu();

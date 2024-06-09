@@ -48,4 +48,8 @@
         <name>generate_qr</name>
         <uri>generate_qr</uri>
     </function>
+    <function>
+        <name>remove_like_profile</name>
+        <uri>remove_like_profile</uri>
+    </function>
 </functions>

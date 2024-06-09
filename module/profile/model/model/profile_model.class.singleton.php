@@ -56,4 +56,9 @@ class profile_model
     {
         return $this->bll->pdf_data_BLL($args);
     }
+
+    public function remove_like_profile($args)
+    {
+        return $this->bll->remove_like_profile_BLL($args);
+    }
 }

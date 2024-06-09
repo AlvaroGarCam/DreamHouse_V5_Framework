@@ -109,6 +109,13 @@ class controller_profile
         $pdf_url = $_POST['pdf_url'];
         echo json_encode(QR::createQr($pdf_url));
     }
+
+    function remove_like_profile()
+    {
+        $access_token = $_POST['access_token'];
+        $house_id = $_POST['house_id'];
+        echo json_encode(common::load_model('profile_model', 'remove_like_profile', [$access_token, $house_id]));
+    }
 }
 
 ?>

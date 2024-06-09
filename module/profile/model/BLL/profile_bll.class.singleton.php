@@ -193,4 +193,18 @@ class profile_bll
 			return ['error_getting_purchase'];
 		}
 	}
+
+	public function remove_like_profile_BLL($args)
+	{
+		$access_token = $args[0];
+		$username = middleware::decode_username($access_token);
+		$house_id = $args[1];
+		$result = $this->dao->remove_like_profile($this->db, $username, $house_id);
+
+		if ($result === 'error') {
+			return ['error_removing_like'];
+		} else {
+			return ['like_removed'];
+		}
+	}
 }

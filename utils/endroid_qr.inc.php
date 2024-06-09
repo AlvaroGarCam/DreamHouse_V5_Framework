@@ -12,12 +12,10 @@ class QR
      public static function createQR($pdf_url)
      {
           // return $pdf_url;
-          $qrCode = Builder::create()
-               ->writer(new PngWriter());
+          $qrCode = Builder::create()->writer(new PngWriter());
           $qrCode = $qrCode->writerOptions([]);
           $qrCode = $qrCode->data($pdf_url);
-          if (!$qrCode)
-               $qrCode = $qrCode->encoding(new Encoding('UTF-8'));
+          $qrCode = $qrCode->encoding(new Encoding('UTF-8'));
           $qrCode = $qrCode->size(300);
           $qrCode = $qrCode->margin(10);
           $qrCode = $qrCode->labelText('Scan the code');

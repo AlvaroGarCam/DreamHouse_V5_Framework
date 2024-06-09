@@ -167,6 +167,17 @@ class profile_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
+    public function remove_like_profile($db, $username, $house_id)
+    {
+        $sql = "DELETE FROM likes WHERE username = '$username' AND house_id = '$house_id'";
+        $result = $db->ejecutar($sql);
+        if ($result) {
+            return $result;
+        } else {
+            return 'error';
+        }
+    }
 }
 
 
