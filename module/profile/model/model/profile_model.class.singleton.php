@@ -51,4 +51,9 @@ class profile_model
     {
         return $this->bll->edit_password_BLL($args);
     }
+
+    public function pdf_data($args)
+    {
+        return $this->bll->pdf_data_BLL($args);
+    }
 }

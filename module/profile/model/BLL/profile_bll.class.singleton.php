@@ -1,5 +1,6 @@
 <?php
 
+
 class profile_bll
 {
 	private $dao;
@@ -168,6 +169,28 @@ class profile_bll
 			}
 		} else {
 			return ['error_getting_account_details'];
+		}
+	}
+
+	public function pdf_data_BLL($args)
+	{
+		$access_token = $args[0];
+		$username = middleware::decode_username($access_token);
+		$purchase_id = $args[1];
+		// return $purchase_id;
+		if (!empty($purchase = $this->dao->get_purchase($this->db, $username, $purchase_id))) {
+			// return $purchase[0]['order_id'];
+			if (!empty($products = $this->dao->get_products($this->db, $purchase[0]['order_id']))) {
+				if (!empty($house = $this->dao->get_house_purchase($this->db, $purchase[0]['house_id']))) {
+					return ['purchase_ok', $house, $purchase, $products];
+				} else {
+					return ['error_getting_house'];
+				}
+			} else {
+				return ['error_getting_products'];
+			}
+		} else {
+			return ['error_getting_purchase'];
 		}
 	}
 }

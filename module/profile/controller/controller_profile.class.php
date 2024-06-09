@@ -1,4 +1,6 @@
 <?php
+
+require 'utils/dompdf.inc.php';
 class controller_profile
 {
 
@@ -72,6 +74,33 @@ class controller_profile
         $new_password = $_POST['new_password'];
         $current_password = $_POST['current_password'];
         echo json_encode(common::load_model('profile_model', 'edit_password', [$access_token, $new_password, $current_password]));
+    }
+
+    // function upload_avatar()
+    // {
+    //     $avatar = $_FILES['avatar'];
+    //     $uploadDir = 'view\img\uploaded_files\avatar';
+    //     $filePath = $uploadDir . basename($avatar['name']);
+    //     if (move_uploaded_file($avatar['tmp_name'], $filePath)) {
+    //         echo json_encode('File uploaded successfully.');
+    //     } else {
+    //         echo json_encode('Failed to move the uploaded file.');
+    //     }
+    // }
+
+    function pdf_data()
+    {
+        $access_token = $_POST['access_token'];
+        $purchase_id = $_POST['purchase_id'];
+        echo json_encode(common::load_model('profile_model', 'pdf_data', [$access_token, $purchase_id]));
+    }
+
+    function generate_pdf()
+    {
+        $house = $_POST['house'];
+        $purchase = $_POST['purchase'];
+        $products = $_POST['products'];
+        echo json_encode(PDF::createDompdf($purchase, $products, $house));
     }
 }
 

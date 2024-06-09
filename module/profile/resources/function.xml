@@ -32,4 +32,16 @@
         <name>edit_password</name>
         <uri>edit_password</uri>
     </function>
+    <function>
+        <name>upload_avatar</name>
+        <uri>upload_avatar</uri>
+    </function>
+    <function>
+        <name>pdf_data</name>
+        <uri>pdf_data</uri>
+    </function>
+    <function>
+        <name>generate_pdf</name>
+        <uri>generate_pdf</uri>
+    </function>
 </functions>

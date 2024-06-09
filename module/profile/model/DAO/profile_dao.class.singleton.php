@@ -139,6 +139,34 @@ class profile_dao
         $db->ejecutar($sql);
         return;
     }
+
+    public function get_purchase($db, $username, $purchase_id)
+    {
+        $sql = "SELECT * FROM purchases WHERE purchase_id = '$purchase_id' AND username = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function get_products($db, $order_id)
+    {
+        $sql = "SELECT products.*, orders_products.quantity 
+        FROM orders_products 
+        INNER JOIN products
+        WHERE order_id = '$order_id'
+        AND products.product_id = orders_products.product_id;";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function get_house_purchase($db, $house_id)
+    {
+        $sql = "SELECT * FROM products WHERE house_id = '$house_id'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 }
 
 

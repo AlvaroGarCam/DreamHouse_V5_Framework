@@ -36,7 +36,7 @@ function charge_profile_menu() {
                                     </br>
                                     <li><a id="purchases_view">Purchase details</a></li>
                                     </br>
-                                    <li><a id="likes_view">Likes</a></li>
+                                    <li><a id="likes_view">Wishlist</a></li>
                                     </br>
                                     <li><a id="logout">Logout</a></li>
                                 </ul>
@@ -199,28 +199,28 @@ function clicks_edit_profile() {
     document.getElementById('change_avatar').addEventListener('click', function () {
         $('#avatarModal').modal('show');
     });
-    $('#avatar-file').on('change', function (e) {
-        e.preventDefault();
-        // var formData = new FormData();
-        // formData.append('file', this.files[0]); // Agrega el archivo seleccionado
-        // $.ajax({
-        //     url: 'upload.php',
-        //     type: 'POST',
-        //     data: formData,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (response) {
-        //         $('#avatar-drop-error').html('<p>' + response + '</p>');
-        //     },
-        //     error: function () {
-        //         $('#avatar-drop-error').html('<p>An error occurred while uploading the file.</p>');
-        //     }
-        // });
-    });
+    // $('#avatar-file').on('change', function (e) {
+    //     e.preventDefault();
+    //     var formData = new FormData();
+    //     formData.append('file', this.files[0]);
+    //     $.ajax({
+    //         url: 'friendlyURL("?module=profile&op=upload_avatar")',
+    //         type: 'POST',
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
+    //         success: function (response) {
+    //             $('#avatar-drop-error').html('<p>' + response + '</p>');
+    //         },
+    //         error: function () {
+    //             $('#avatar-drop-error').html('<p>An error occurred while uploading the file.</p>');
+    //         }
+    //     });
+    // });
 
-    document.getElementById('change_avatar_modal').addEventListener('click', function () {
-        change_avatar();
-    });
+    // document.getElementById('change_avatar_modal').addEventListener('click', function () {
+    //     change_avatar();
+    // });
 
     //Change password
     document.getElementById('change_password').addEventListener('click', function (event) {
@@ -232,7 +232,7 @@ function clicks_edit_profile() {
     });
 }
 
-//EDIT USERNAME (PREGUNTAR A YOLANDA COMO LO HAGO)
+//EDIT USERNAME 
 function validate_change_username() {
     var newUsername = document.getElementById('new-username').value;
     var password = document.getElementById('password').value;
@@ -472,9 +472,9 @@ function change_phone_number() {
 }
 
 //EDIT AVATAR
-function change_avatar() {
-    console.log('Clicked edit avatar');
-}
+// function change_avatar() {
+//     console.log('Clicked edit avatar');
+// }
 
 
 //EDIT PASSWORD
@@ -577,7 +577,7 @@ function purchases_details() {
         };
         ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
             .then(function (result) {
-                console.log(result);
+                // console.log(result);
                 if (result[0] == 'no_purchases_found') {
                     $('#profile_content').html(`
                         <div class="row">
@@ -598,7 +598,8 @@ function purchases_details() {
                                     <th scope="col">Order ID</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Date</th>
-                                    <th scope="col">View</th>
+                                    <th scope="col">PDF</th>
+                                    <th scope="col">QR</th>
                                 </tr>
                             </thead>
                             <tbody id="table_body">
@@ -612,7 +613,8 @@ function purchases_details() {
                             <td>${purchase.order_id}</td>
                             <td>${purchase.total_price.toString().replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                             <td>${purchase.date}</td>
-                            <td><a id="${purchase.purchase_id}" class="check_purchase"><img src="view/img/lupa_profile.jpg" width="20" title='Check Invoice'></a></td>
+                            <td><a id="${purchase.purchase_id}" class="check_purchase"><img src="view/img/download_icon.png" width="40" title='Download Invoice'></a></td>
+                            <td><a id="${purchase.purchase_id}" class="qr_purchase"><img src="view/img/qr_icon.png" width="40" title='Invoice QR'></a></td>
                         </tr>
                     `);
                     });
@@ -646,12 +648,96 @@ function purchases_details() {
 
 function check_purchase_details() {
     $('body').on('click', '.check_purchase', function () {
-        let purchaseId = this.id;
+        let purchase_id = this.id;
         // Aquí va tu código para manejar el clic
         // Aquí irá lo del PDF y el QR
-        console.log('Clicked on purchase ID: ' + purchaseId);
+        console.log('Clicked on purchase ID: ' + purchase_id);
+        generate_pdf(purchase_id);
+    });
+
+    $('body').on('click', '.qr_purchase', function () {
+        let purchase_id = this.id;
+        // Aquí va tu código para manejar el clic
+        // Aquí irá lo del PDF y el QR
+        console.log('Clicked on purchase ID: ' + purchase_id);
+        generate_QR(purchase_id);
     });
 }
+
+//GENERAR PDF
+function generate_pdf(purchase_id) {
+    let access_token = localStorage.getItem('access_token') || null;
+    if (access_token != null) {
+        let data = {
+            access_token: access_token,
+            purchase_id: purchase_id,
+            op: 'pdf_data'
+        };
+        ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+            .then(function (result) {
+                // console.log(result);
+                // return false;
+                if (result[0] == 'error_getting_products') {
+                    swal({
+                        title: "Error",
+                        text: "An error has occurred while getting the products. Please try again later.",
+                        icon: "error",
+                    });
+                } else if (result[0] == 'error_getting_purchase') {
+                    swal({
+                        title: "Error",
+                        text: "An error has occurred while getting the purchase. Please try again later.",
+                        icon: "error",
+                    });
+                } else if (result[0] == 'purchase_ok') {
+                    let house = result[1][0];
+                    let purchase = result[2][0];
+                    let products = result[3];
+                    data = {
+                        house: house,
+                        purchase: purchase,
+                        products: products,
+                        op: 'generate_pdf'
+                    };
+                    // console.log(data);
+                    // return false;
+                    ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+                        .then(function (result) {
+                            window.open(result.pdf_url, '_blank');
+                        }).catch(function (error) {
+                            console.log('Error:', error);
+                        });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "An unexpected error has occurred. Please try again later.",
+                        icon: "error",
+                    }).then(() => {
+                        setTimeout(function () {
+                            logout();
+                        }, 2000);
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+    } else {
+        swal({
+            title: "Error",
+            text: "Sesion has expired. You will be redirected to the login page.",
+            icon: "error",
+        }).then(() => {
+            setTimeout(function () {
+                window.location.href = friendlyURL("?module=login");
+            }, 2000);
+        });
+    }
+}
+
+//GENERAR QR
+function generate_QR(purchase_id) {
+}
+
 
 //SECCIÓN LIKES DEL PROFILE
 function likes_details() {
