@@ -73,6 +73,7 @@ function charge_profile_menu() {
     }
 }
 
+//CLICKS MENÚ PROFILE
 function clicks_profile() {
     $('#account_view').click(function () {
         $('#profile_content').empty();
@@ -169,6 +170,7 @@ function account_details() {
         });
 }
 
+//CLICKS USER PROFILE
 function clicks_edit_profile() {
     //Change username
     document.getElementById('change_username').addEventListener('click', function () {
@@ -613,12 +615,12 @@ function purchases_details() {
                             <td>${purchase.order_id}</td>
                             <td>${purchase.total_price.toString().replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".")} €</td>
                             <td>${purchase.date}</td>
-                            <td><a id="${purchase.purchase_id}" class="check_purchase"><img src="view/img/download_icon.png" width="40" title='Download Invoice'></a></td>
+                            <td><a id="${purchase.purchase_id}" class="pdf_purchase"><img src="view/img/download_icon.png" width="40" title='Download Invoice'></a></td>
                             <td><a id="${purchase.purchase_id}" class="qr_purchase"><img src="view/img/qr_icon.png" width="40" title='Invoice QR'></a></td>
                         </tr>
                     `);
                     });
-                    check_purchase_details()
+                    clicks_purchases();
                 } else {
                     swal({
                         title: "Error",
@@ -646,8 +648,9 @@ function purchases_details() {
     }
 }
 
-function check_purchase_details() {
-    $('body').on('click', '.check_purchase', function () {
+//CLICKS PURCHASES
+function clicks_purchases() {
+    $('body').on('click', '.pdf_purchase', function () {
         let purchase_id = this.id;
         // Aquí va tu código para manejar el clic
         // Aquí irá lo del PDF y el QR
@@ -825,8 +828,7 @@ function generate_QR(purchase_id) {
 
 }
 
-
-//SECCIÓN LIKES DEL PROFILE
+//SECCIÓN WISHLIST DEL PROFILE
 function likes_details() {
     let access_token = localStorage.getItem('access_token') || null;
     if (access_token != null) {
@@ -876,7 +878,7 @@ function likes_details() {
                         </tr>
                     `);
                     });
-                    check_like_details();
+                    clicks_wishlist();
                 } else if (result[0] == 'no_houses_found') {
                     swal({
                         title: "Error",
@@ -914,7 +916,8 @@ function likes_details() {
     }
 }
 
-function check_like_details() {
+//CLICKS WISHLIST
+function clicks_wishlist() {
     $('body').on('click', '.check_like', function () {
         let house_id = this.id;
         console.log('Clicked on house ID: ' + house_id);
