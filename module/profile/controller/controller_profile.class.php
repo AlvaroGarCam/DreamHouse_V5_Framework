@@ -1,6 +1,7 @@
 <?php
 
 require 'utils/dompdf.inc.php';
+require 'utils/endroid_qr.inc.php';
 class controller_profile
 {
 
@@ -101,6 +102,12 @@ class controller_profile
         $purchase = $_POST['purchase'];
         $products = $_POST['products'];
         echo json_encode(PDF::createDompdf($purchase, $products, $house));
+    }
+
+    function generate_qr()
+    {
+        $pdf_url = $_POST['pdf_url'];
+        echo json_encode(QR::createQr($pdf_url));
     }
 }
 

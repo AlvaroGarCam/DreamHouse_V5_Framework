@@ -736,6 +736,93 @@ function generate_pdf(purchase_id) {
 
 //GENERAR QR
 function generate_QR(purchase_id) {
+    let access_token = localStorage.getItem('access_token') || null;
+    if (access_token != null) {
+        let data = {
+            access_token: access_token,
+            purchase_id: purchase_id,
+            op: 'pdf_data'
+        };
+        ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+            .then(function (result) {
+                // console.log(result);
+                // return false;
+                if (result[0] == 'error_getting_products') {
+                    swal({
+                        title: "Error",
+                        text: "An error has occurred while getting the products. Please try again later.",
+                        icon: "error",
+                    });
+                } else if (result[0] == 'error_getting_purchase') {
+                    swal({
+                        title: "Error",
+                        text: "An error has occurred while getting the purchase. Please try again later.",
+                        icon: "error",
+                    });
+                } else if (result[0] == 'purchase_ok') {
+                    let house = result[1][0];
+                    let purchase = result[2][0];
+                    let products = result[3];
+                    data = {
+                        house: house,
+                        purchase: purchase,
+                        products: products,
+                        op: 'generate_pdf'
+                    };
+                    // console.log(data);
+                    // return false;
+                    ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+                        .then(function (result) {
+                            let pdf_url = result.pdf_url;
+                            let data = {
+                                pdf_url: pdf_url,
+                                op: 'generate_qr'
+                            };
+                            // console.log(data);
+                            // return false;
+                            ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+                                .then(function (result) {
+                                    console.log(result);
+                                    let url = result.replace("C:/xampp/htdocs", "http://localhost");
+                                    console.log(url);
+                                    swal({
+                                        title: "Success",
+                                        text: "QR code generated successfully.",
+                                        icon: url,
+                                    });
+                                }).catch(function (error) {
+                                    console.log('Error:', error);
+                                }
+                                );
+                        }).catch(function (error) {
+                            console.log('Error:', error);
+                        });
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "An unexpected error has occurred. Please try again later.",
+                        icon: "error",
+                    }).then(() => {
+                        setTimeout(function () {
+                            logout();
+                        }, 2000);
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+    } else {
+        swal({
+            title: "Error",
+            text: "Sesion has expired. You will be redirected to the login page.",
+            icon: "error",
+        }).then(() => {
+            setTimeout(function () {
+                window.location.href = friendlyURL("?module=login");
+            }, 2000);
+        });
+    }
+
 }
 
 

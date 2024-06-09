@@ -44,4 +44,8 @@
         <name>generate_pdf</name>
         <uri>generate_pdf</uri>
     </function>
+    <function>
+        <name>generate_qr</name>
+        <uri>generate_qr</uri>
+    </function>
 </functions>
