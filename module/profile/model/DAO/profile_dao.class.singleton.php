@@ -65,7 +65,7 @@ class profile_dao
 
     public function disable_user($db, $username)
     {
-        $sql = "UPDATE user SET is_active = 0, email='' WHERE username = '$username'";
+        $sql = "UPDATE user SET is_active = 0, email=null WHERE username = '$username'";
         $db->ejecutar($sql);
         return;
     }
@@ -76,9 +76,8 @@ class profile_dao
         $phone_number = $user[0]['phone_number'];
         $password = $user[0]['password'];
         $avatar = $user[0]['avatar'];
-
         $sql = "INSERT INTO user (username, email, phone_number, password, is_active,avatar,type_user) 
-        VALUES ('$new_username','$email', '$phone_number', '$password', 1,'$avatar','client')";
+    VALUES ('$new_username','$email', '$phone_number', '$password', 1,'$avatar','client')";
         $db->ejecutar($sql);
         return;
     }

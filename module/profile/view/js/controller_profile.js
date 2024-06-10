@@ -299,10 +299,10 @@ function change_username() {
                             document.getElementById('username-error').innerHTML = "*This username already exists."
                             break;
                         case 'error_getting_account_details':
-                            document.getElementById('error_message_modal').innerHTML = "*An error has occurred. Please try again later."
+                            document.getElementById('error_message_modal').innerHTML = "*An error has occurred getting the account data. Please try again later."
                             break;
                         default:
-                            document.getElementById('error_message_modal').innerHTML = "*An error has occurred. Please try again later."
+                            document.getElementById('error_message_modal').innerHTML = "*An unknown error has occurred. Please try again later."
                     }
                 }).catch(function (error) {
                     console.log(error);
