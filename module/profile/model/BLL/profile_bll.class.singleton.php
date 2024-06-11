@@ -128,6 +128,8 @@ class profile_bll
 		$new_phone_number = $args[1];
 		$password = $args[2];
 		if (!empty($user = $this->dao->get_account_details($this->db, $username))) {
+			// if ($user[0]['is_active'] == 0)
+			// 	return ['account_disabled'];
 			if (password_verify($password, $user[0]['password'])) {
 				try {
 					$this->db->ejecutar('START TRANSACTION');
@@ -154,6 +156,9 @@ class profile_bll
 		$hashed_pass = password_hash($new_password, PASSWORD_DEFAULT);
 		$current_password = $args[2];
 		if (!empty($user = $this->dao->get_account_details($this->db, $username))) {
+			// if ($user[0]['is_active'] == 0)
+			// 	return ['account_disabled'];
+
 			if (password_verify($current_password, $user[0]['password'])) {
 				try {
 					$this->db->ejecutar('START TRANSACTION');

@@ -147,7 +147,6 @@ function account_details() {
                                     <img id="preview" src="">
                                     <input type="file" id="fileInput" accept="image/*">
                                     <button id="uploadButton">Upload</button>
-                                    
                                 </div>
                             </div>
                             </br>
@@ -257,6 +256,7 @@ function clicks_edit_profile() {
                 console.log(result);
                 // return false;
                 if (Array.isArray(result) && result[0] === "Avatar subido correctamente") {
+                    localStorage.removeItem('avatar');
                     localStorage.setItem('avatar', result[1]);
                 }
             }
