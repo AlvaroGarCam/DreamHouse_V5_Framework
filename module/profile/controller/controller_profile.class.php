@@ -1,7 +1,7 @@
 <?php
 
-require 'utils/dompdf.inc.php';
-require 'utils/endroid_qr.inc.php';
+// require 'utils/dompdf.inc.php';
+// require 'utils/endroid_qr.inc.php';
 class controller_profile
 {
 
