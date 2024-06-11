@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2024 a las 12:51:55
+-- Tiempo de generación: 11-06-2024 a las 12:41:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -131,20 +131,20 @@ CREATE TABLE `house` (
 --
 
 INSERT INTO `house` (`house_id`, `ref_cat`, `surface`, `num_rooms`, `num_wcs`, `price`, `city_id`, `pet_id`, `lng`, `lat`, `likes`) VALUES
-(1, 'ABC-123', '200sqm', '3', '2', '200000', 1, 1, '-0.163754', '39.350387', 1),
-(2, 'DEF-456', '140sqm', '4', '2', '250000', 2, 2, '-0.19722', '38.495334', 0),
-(3, 'CBA-245', '88sqm', '2', '1', '150000', 3, 3, '-0.05', '40.031394', 0),
+(1, 'ABC-123', '200sqm', '3', '2', '200000', 1, 1, '-0.163754', '39.350387', 4),
+(2, 'DEF-456', '140sqm', '4', '2', '250000', 2, 2, '-0.19722', '38.495334', 1),
+(3, 'CBA-245', '88sqm', '2', '1', '150000', 3, 3, '-0.05', '40.031394', 1),
 (4, 'GTQ-846', '150sqm', '5', '3', '300000', 4, 4, '-3.824652', '40.644406', 0),
 (5, 'GLE-567', '105sqm', '3', '1', '180000', 5, 5, '2.180775', '41.279869', 0),
-(6, 'XYZ-789', '180sqm', '4', '3', '280000', 7, 2, '-3.598557', '37.177336', 0),
-(7, 'LMN-456', '120sqm', '3', '2', '220000', 6, 1, '-5.532825', '37.051456', 1),
+(6, 'XYZ-789', '180sqm', '4', '3', '280000', 7, 2, '-3.598557', '37.177336', 1),
+(7, 'LMN-456', '120sqm', '3', '2', '220000', 6, 1, '-5.532825', '37.051456', 2),
 (8, 'OQL-720', '200sqm', '5', '4', '350000', 1, 3, '-0.101304', '39.28331', 0),
 (9, 'MEN-489', '150sqm', '4', '3', '280000', 2, 4, '-0.294827', '38.521622', 0),
 (10, 'GHI-789', '180sqm', '4', '3', '320000', 3, 5, '-0.05', '39.97416', 0),
-(11, 'JKL-012', '220sqm', '6', '4', '420000', 4, 1, '-3.825383', '40.420265', 1),
+(11, 'JKL-012', '220sqm', '6', '4', '420000', 4, 1, '-3.825383', '40.420265', 2),
 (12, 'MNO-345', '130sqm', '3', '2', '250000', 5, 2, '2.178356', '41.316204', 0),
 (13, 'PQR-678', '180sqm', '4', '3', '320000', 1, 3, '-0.150987', '39.429409', 0),
-(14, 'STU-901', '160sqm', '4', '3', '290000', 2, 4, '-0.12673', '38.552803', 0),
+(14, 'STU-901', '160sqm', '4', '3', '290000', 2, 4, '-0.12673', '38.552803', 1),
 (15, 'VWX-234', '190sqm', '5', '4', '360000', 3, 5, '-0.05', '39.826494', 0),
 (16, 'YZA-567', '200sqm', '6', '4', '400000', 4, 1, '-3.760404', '40.68538', 1),
 (17, 'BCD-890', '140sqm', '3', '2', '260000', 5, 2, '2.161789', '41.189057', 0),
@@ -397,7 +397,13 @@ INSERT INTO `likes` (`house_id`, `username`) VALUES
 (7, 'Angela892984'),
 (1, 'Angela892984'),
 (11, 'Angela892984'),
-(16, 'Angela892984');
+(16, 'Angela892984'),
+(6, 'Zarpas'),
+(2, 'weelee2'),
+(1, 'weelee2'),
+(3, 'weelee2'),
+(1, 'alvgarcam@github'),
+(1, 'yomoganan');
 
 -- --------------------------------------------------------
 
@@ -425,6 +431,79 @@ INSERT INTO `operation` (`operation_id`, `operation_name`, `operation_image`) VA
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `house_id` int(11) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `username`, `house_id`, `is_active`) VALUES
+(108, 'weelee2', 1, 0),
+(109, 'weelee2', 3, 0),
+(110, 'weelee2', 3, 0),
+(112, 'weelee2', 1, 0),
+(113, 'Zarpas', 7, 0),
+(114, 'weelee2', 7, 0),
+(127, 'weelee2', 1, 0),
+(129, 'weelee2', 1, 0),
+(132, 'yomoganan', 3, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `orders_products`
+--
+
+CREATE TABLE `orders_products` (
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `orders_products`
+--
+
+INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`) VALUES
+(108, 1, 5),
+(108, 2, 5),
+(108, 3, 5),
+(109, 7, 4),
+(109, 8, 6),
+(109, 9, 6),
+(110, 7, 4),
+(110, 8, 3),
+(110, 9, 1),
+(112, 1, 5),
+(112, 2, 2),
+(112, 3, 8),
+(113, 1, 14),
+(113, 2, 5),
+(113, 3, 1),
+(114, 1, 4),
+(114, 2, 10),
+(114, 3, 1),
+(127, 1, 4),
+(127, 2, 2),
+(127, 3, 10),
+(129, 1, 0),
+(129, 2, 0),
+(129, 3, 0),
+(132, 7, 5),
+(132, 8, 4),
+(132, 9, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pet`
 --
 
@@ -444,6 +523,93 @@ INSERT INTO `pet` (`pet_id`, `pet_name`, `pet_image`) VALUES
 (3, 'Lizzards', 'view/img/pet_img/Lizzards.jpg'),
 (4, 'Parrots', 'view/img/pet_img/Parrots.jpg'),
 (5, 'Fishes', 'view/img/pet_img/Fishes.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `products`
+--
+
+CREATE TABLE `products` (
+  `product_id` int(11) NOT NULL,
+  `house_id` int(11) DEFAULT NULL,
+  `pet_id` int(11) NOT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `products`
+--
+
+INSERT INTO `products` (`product_id`, `house_id`, `pet_id`, `price`, `description`, `image`, `stock`) VALUES
+(1, NULL, 1, 8.99, 'Comida para gatos - 1Kg', 'view/img/product_imgs/cat_food.png', 68),
+(2, NULL, 1, 15.99, 'Juguete para gatos - Ratón de cuerda', 'view/img/product_imgs/cat_toy.png', 36),
+(3, NULL, 1, 25.99, 'Cama para gatos - Tamaño pequeño', 'view/img/product_imgs/cat_bed.png', 20),
+(4, NULL, 2, 10.99, 'Comida para perros - 10Kg', 'view/img/product_imgs/dog_food.png', 100),
+(5, NULL, 2, 20.99, 'Juguete para perros - Pelota resistente', 'view/img/product_imgs/dog_toy.png', 50),
+(6, NULL, 2, 30.99, 'Cama para perros - Tamaño mediano', 'view/img/product_imgs/dog_bed.png', 20),
+(7, NULL, 3, 6.99, 'Comida para lagartos - 1Kg', 'view/img/product_imgs/lizzard_food.png', 107),
+(8, NULL, 3, 11.99, 'Juguete para lagartos - Túnel', 'view/img/product_imgs/lizzard_toy.png', 67),
+(9, NULL, 3, 18.99, 'Terrrario para lagartos - Tamaño pequeño', 'view/img/product_imgs/lizzard_bed.png', 7),
+(10, NULL, 4, 7.99, 'Comida para aves - 350g', 'view/img/product_imgs/parrot_food.png', 150),
+(11, NULL, 4, 12.99, 'Juguete para aves - Campana', 'view/img/product_imgs/parrot_toy.png', 70),
+(12, NULL, 4, 20.99, 'Jaula para aves - Tamaño pequeño', 'view/img/product_imgs/parrot_bed.png', 15),
+(13, NULL, 5, 5.99, 'Comida para peces - 250g', 'view/img/product_imgs/fish_food.png', 200),
+(14, NULL, 5, 10.99, 'Decoración para acuario - Castillo', 'view/img/product_imgs/fish_toy.png', 40),
+(15, NULL, 5, 15.99, 'Filtro para acuario - Modelo D', 'view/img/product_imgs/fish_bed.png', 25),
+(16, 1, 1, 200000.00, 'ABC-123', 'view/img/house_img/house1/image1.jpg', 1),
+(17, 2, 2, 250000.00, 'DEF-456', 'view/img/house_img/house2/image1.jpg', 1),
+(18, 3, 3, 150000.00, 'CBA-245', 'view/img/house_img/house3/image1.jpg', 1),
+(19, 4, 4, 300000.00, 'GTQ-846', 'view/img/house_img/house4/image1.jpg', 1),
+(20, 5, 5, 180000.00, 'GLE-567', 'view/img/house_img/house5/image1.jpg', 1),
+(21, 6, 2, 280000.00, 'XYZ-789', 'view/img/house_img/house6/image1.jpg', 1),
+(22, 7, 1, 220000.00, 'LMN-456', 'view/img/house_img/house7/image1.jpg', 1),
+(23, 8, 3, 350000.00, 'OQL-720', 'view/img/house_img/house8/image1.jpg', 1),
+(24, 9, 4, 280000.00, 'MEN-489', 'view/img/house_img/house9/image1.jpg', 1),
+(25, 10, 5, 320000.00, 'GHI-789', 'view/img/house_img/house10/image1.jpg', 1),
+(26, 11, 1, 420000.00, 'JKL-012', 'view/img/house_img/house11/image1.jpg', 1),
+(27, 12, 2, 250000.00, 'MNO-345', 'view/img/house_img/house12/image1.jpg', 1),
+(28, 13, 3, 320000.00, 'PQR-678', 'view/img/house_img/house13/image1.jpg', 1),
+(29, 14, 4, 290000.00, 'STU-901', 'view/img/house_img/house14/image1.jpg', 1),
+(30, 15, 5, 360000.00, 'VWX-234', 'view/img/house_img/house15/image1.jpg', 1),
+(31, 16, 1, 400000.00, 'YZA-567', 'view/img/house_img/house16/image1.jpg', 1),
+(32, 17, 2, 260000.00, 'BCD-890', 'view/img/house_img/house17/image1.jpg', 1),
+(33, 18, 3, 380000.00, 'EFG-123', 'view/img/house_img/house18/image1.jpg', 1),
+(34, 19, 4, 300000.00, 'HIJ-456', 'view/img/house_img/house19/image1.jpg', 1),
+(35, 20, 5, 350000.00, 'KLM-789', 'view/img/house_img/house20/image1.jpg', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `purchases`
+--
+
+CREATE TABLE `purchases` (
+  `purchase_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `house_id` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `purchases`
+--
+
+INSERT INTO `purchases` (`purchase_id`, `order_id`, `house_id`, `username`, `total_price`, `date`) VALUES
+(1, 108, 1, 'weelee2', 200254.85, '2024-06-02 00:00:00'),
+(2, 109, 3, 'weelee2', 150213.84, '2024-06-02 00:00:00'),
+(3, 110, 3, 'weelee2', 150082.92, '2024-06-02 00:00:00'),
+(4, 112, 1, 'weelee2', 200284.85, '2024-06-02 01:48:46'),
+(5, 113, 7, 'Zarpas', 220231.80, '2024-06-02 01:56:53'),
+(6, 114, 7, 'weelee2', 220403.78, '2024-06-02 02:19:00'),
+(7, 127, 1, 'weelee2', 200327.84, '2024-06-03 21:03:15'),
+(8, 129, 1, 'weelee2', 200000.00, '2024-06-03 21:32:11'),
+(9, 132, 3, 'yomoganan', 150139.88, '2024-06-10 18:44:29');
 
 -- --------------------------------------------------------
 
@@ -521,9 +687,42 @@ INSERT INTO `user` (`id_user`, `username`, `password`, `email`, `type_user`, `av
 (45, 'user123', '$2y$12$C/YIQmyGlnwsx562CigeQuptVUPMcfQXiQy9IV2eKgX0bjm758hrC', 'user123@example.com', 'client', 'https://i.pravatar.cc/500?u=6a69ec475f1c9f5aa2c37fb382f9ae7b', NULL, 0, 0, NULL, NULL),
 (47, 'Velksar', '$2y$12$ewDhpSY/KIXQK3IR4v4VaOTU/34rWmzGBLPae10E77hhRYlJ3NHnO', 'alvarokjadjis@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3f219667eb5dc73fc4facf91a37739ab', NULL, 0, 0, NULL, NULL),
 (66, 'Angela892984', '$2y$12$qas4.RYF2rGIbTvFpcsRz.B2KxkWg82ED9c2djOPxpiOnoEsrJ3Sq', 'alvgarcam@alu.edu.gva.com', 'client', 'https://i.pravatar.cc/500?u=4abc56236ccdb0dd1e7a242265213eb6', '', 1, 1, '+34666777888', ''),
-(67, 'weelee', '$2y$10$l7Yrcbqf8UU8HcZFXOcG3.Ogt/AzPncvYDnET9CLk/SfD12C4XS4y', 'alvaro20cs@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=4ef9b96e90cc031cb116ff5c7b42543a', NULL, 1, 0, NULL, ''),
-(69, 'al.garridocampos@google', '', 'al.garridocampos@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocId7vL4zhNr2rINX3JBLRx9IIoAlQGr9gJrL3wZkSYh06_lgg=s96-c', '', 0, 0, NULL, NULL),
-(70, 'alvgarcam@github', '', 'alvgarcam@alu.edu.gva.es', 'client', 'https://avatars.githubusercontent.com/u/157162001?v=4', '', 0, 0, NULL, NULL);
+(67, 'weelee', '$2y$10$F10B54pJXecIRWbTrZS1Ked0dT9SusN7H3yVI.iW.BnHtfCbhWsde', '', 'client', 'https://i.pravatar.cc/500?u=4ef9b96e90cc031cb116ff5c7b42543a', NULL, 0, 0, '622666358', ''),
+(73, 'alvgarcam@github', '', 'alvgarcam@alu.edu.gva.es', 'client', 'https://avatars.githubusercontent.com/u/157162001?v=4', '', 0, 0, NULL, NULL),
+(74, 'al.garridocampos@google', '', 'al.garridocampos@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocId7vL4zhNr2rINX3JBLRx9IIoAlQGr9gJrL3wZkSYh06_lgg=s96-c', '', 0, 0, NULL, NULL),
+(75, 'Zarpas', '$2y$10$Ntj23DpXWtLmOY7abFb...RErTZdGgYYh92jP4/19cgmUcG0zBPKS', 'MTorres.Salvador@gmail.com', 'client', 'https://i.pravatar.cc/500?u=e456396ec54874479fb01160b5810d0b', NULL, 1, 0, NULL, NULL),
+(77, 'weelee123', '$2y$10$F10B54pJXecIRWbTrZS1Ked0dT9SusN7H3yVI.iW.BnHtfCbhWsde', NULL, 'client', 'https://i.pravatar.cc/500?u=4ef9b96e90cc031cb116ff5c7b42543a', NULL, 0, 1, '622666358', ''),
+(78, 'yomogan', '$2y$12$uZJkB7m.H56M6ecJl38jeuv4kYRjHIOsqRJ4UBh5zDTIl5O0G/9Ry', NULL, 'client', 'https://i.pravatar.cc/500?u=9154526c03ad3e327b28e3f1f7582e3a', '', 0, 0, '789456123', ''),
+(79, 'yomogana', '$2y$12$uZJkB7m.H56M6ecJl38jeuv4kYRjHIOsqRJ4UBh5zDTIl5O0G/9Ry', NULL, 'client', 'https://i.pravatar.cc/500?u=9154526c03ad3e327b28e3f1f7582e3a', NULL, 0, 0, '789456123', NULL),
+(80, 'yomoganan', '$2y$12$uZJkB7m.H56M6ecJl38jeuv4kYRjHIOsqRJ4UBh5zDTIl5O0G/9Ry', 'yomoganan@hotmail.com', 'client', 'https://i.pravatar.cc/500?u=9154526c03ad3e327b28e3f1f7582e3a', NULL, 1, 0, '789456123', NULL),
+(81, 'yomoganan445', '$2y$10$F10B54pJXecIRWbTrZS1Ked0dT9SusN7H3yVI.iW.BnHtfCbhWsde', NULL, 'client', 'https://i.pravatar.cc/500?u=4ef9b96e90cc031cb116ff5c7b42543a', NULL, 0, 0, '622666358', NULL),
+(82, 'Weelee20', '$2y$10$F10B54pJXecIRWbTrZS1Ked0dT9SusN7H3yVI.iW.BnHtfCbhWsde', NULL, 'client', 'view/img/uploaded_files/avatar/Weelee20_2024-06-11_03-06-37_team1.png', NULL, 0, 0, '622666358', NULL),
+(83, 'weelee2', '$2y$10$F10B54pJXecIRWbTrZS1Ked0dT9SusN7H3yVI.iW.BnHtfCbhWsde', 'Alvaro20cs@hotmail.com', 'client', 'view/img/uploaded_files/avatar/weelee2_2024-06-11_12-04-11_team2.jpg', NULL, 1, 0, '622666358', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `username_changes`
+--
+
+CREATE TABLE `username_changes` (
+  `change_id` int(11) NOT NULL,
+  `old_username` varchar(255) DEFAULT NULL,
+  `new_username` varchar(255) DEFAULT NULL,
+  `data` datetime(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `username_changes`
+--
+
+INSERT INTO `username_changes` (`change_id`, `old_username`, `new_username`, `data`) VALUES
+(1, 'weelee', 'weelee123', '2024-06-05 21:18:58.000000'),
+(2, 'yomogan', 'yomogana', '2024-06-10 19:28:20.000000'),
+(3, 'yomogana', 'yomoganan', '2024-06-10 19:30:58.000000'),
+(4, 'weelee123', 'yomoganan445', '2024-06-10 21:10:29.000000'),
+(5, 'yomoganan445', 'Weelee20', '2024-06-10 21:14:28.000000'),
+(6, 'Weelee20', 'weelee2', '2024-06-11 03:08:20.000000');
 
 --
 -- Índices para tablas volcadas
@@ -604,10 +803,35 @@ ALTER TABLE `operation`
   ADD PRIMARY KEY (`operation_id`);
 
 --
+-- Indices de la tabla `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indices de la tabla `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD PRIMARY KEY (`order_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Indices de la tabla `pet`
 --
 ALTER TABLE `pet`
   ADD PRIMARY KEY (`pet_id`);
+
+--
+-- Indices de la tabla `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`);
+
+--
+-- Indices de la tabla `purchases`
+--
+ALTER TABLE `purchases`
+  ADD PRIMARY KEY (`purchase_id`);
 
 --
 -- Indices de la tabla `service`
@@ -628,6 +852,12 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`),
   ADD UNIQUE KEY `username_UNIQUE` (`username`),
   ADD UNIQUE KEY `email_UNIQUE` (`email`);
+
+--
+-- Indices de la tabla `username_changes`
+--
+ALTER TABLE `username_changes`
+  ADD PRIMARY KEY (`change_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -670,10 +900,28 @@ ALTER TABLE `operation`
   MODIFY `operation_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+
+--
 -- AUTO_INCREMENT de la tabla `pet`
 --
 ALTER TABLE `pet`
   MODIFY `pet_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT de la tabla `purchases`
+--
+ALTER TABLE `purchases`
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `service`
@@ -691,7 +939,13 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+
+--
+-- AUTO_INCREMENT de la tabla `username_changes`
+--
+ALTER TABLE `username_changes`
+  MODIFY `change_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
@@ -716,6 +970,13 @@ ALTER TABLE `house_category`
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`house_id`) REFERENCES `house` (`house_id`),
   ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
+
+--
+-- Filtros para la tabla `orders_products`
+--
+ALTER TABLE `orders_products`
+  ADD CONSTRAINT `orders_products_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
+  ADD CONSTRAINT `orders_products_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
