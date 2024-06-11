@@ -61,4 +61,10 @@ class profile_model
     {
         return $this->bll->remove_like_profile_BLL($args);
     }
+
+    public function update_avatar($args)
+    {
+        return $this->bll->update_avatar_BLL($args);
+    }
+
 }

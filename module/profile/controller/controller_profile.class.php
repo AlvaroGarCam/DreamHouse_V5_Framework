@@ -77,17 +77,37 @@ class controller_profile
         echo json_encode(common::load_model('profile_model', 'edit_password', [$access_token, $new_password, $current_password]));
     }
 
-    // function upload_avatar()
-    // {
-    //     $avatar = $_FILES['avatar'];
-    //     $uploadDir = 'view\img\uploaded_files\avatar';
-    //     $filePath = $uploadDir . basename($avatar['name']);
-    //     if (move_uploaded_file($avatar['tmp_name'], $filePath)) {
-    //         echo json_encode('File uploaded successfully.');
-    //     } else {
-    //         echo json_encode('Failed to move the uploaded file.');
-    //     }
-    // }
+
+    function upload_avatar()
+    {
+
+        if (isset($_FILES['avatar']) && isset($_POST['access_token'])) {
+
+            $file = $_FILES['avatar'];
+
+            $access_token = $_POST['access_token'];
+            $username = middleware::decode_username($access_token);
+
+            $file_name = $username . '_' . date('Y-m-d_H-i-s') . '_' . $file['name'];
+            $file_path = SITE_ROOT . 'view/img/uploaded_files/avatar/' . $file_name;
+
+            if (move_uploaded_file($file['tmp_name'], $file_path)) {
+                echo json_encode(["Avatar subido correctamente", $file_path]);
+            } else {
+                echo json_encode('Error al subir el archivo');
+            }
+        } else {
+            echo json_encode('No se recibió ningún archivo o token de acceso.');
+        }
+    }
+
+    function update_avatar()
+    {
+
+        $access_token = $_POST['access_token'];
+        $avatar = $_POST['relative_path'];
+        echo json_encode(common::load_model('profile_model', 'update_avatar', [$access_token, $avatar]));
+    }
 
     function pdf_data()
     {

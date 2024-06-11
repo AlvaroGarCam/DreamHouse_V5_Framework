@@ -207,4 +207,20 @@ class profile_bll
 			return ['like_removed'];
 		}
 	}
+
+	public function update_avatar_BLL($args)
+	{
+		$access_token = $args[0];
+		$avatar = $args[1];
+		$username = middleware::decode_username($access_token);
+		if (!empty($this->dao->get_account_details($this->db, $username))) {
+			if (!empty($this->dao->update_avatar($this->db, $username, $avatar))) {
+				return ['avatar_updated'];
+			} else {
+				return ['error_updating_avatar'];
+			}
+		} else {
+			return ['error_getting_user'];
+		}
+	}
 }

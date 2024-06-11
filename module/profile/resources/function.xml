@@ -37,6 +37,10 @@
         <uri>upload_avatar</uri>
     </function>
     <function>
+        <name>update_avatar</name>
+        <uri>update_avatar</uri>
+    </function>
+    <function>
         <name>pdf_data</name>
         <uri>pdf_data</uri>
     </function>

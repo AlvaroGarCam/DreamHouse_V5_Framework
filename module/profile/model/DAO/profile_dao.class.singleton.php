@@ -183,6 +183,13 @@ class profile_dao
             return 'error';
         }
     }
+
+    public function update_avatar($db, $username, $avatar)
+    {
+        $sql = "UPDATE user SET avatar = '$avatar' WHERE username = '$username'";
+        $result = $db->ejecutar($sql);
+        return $result;
+    }
 }
 
 

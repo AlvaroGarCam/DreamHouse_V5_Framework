@@ -143,8 +143,11 @@ function account_details() {
                             <div class="form-group flex-container">
                                 <label for="avatar">Avatar: </label>
                                 <div class="centered-items">
-                                    <img src="${account.avatar}" class="img-responsive center-block" alt="Avatar">
-                                    <img id="change_avatar" src="view/img/icon_edit.png" width="25" height="auto" title='Edit avatar'>
+                                    <img id="currentAvatar" src="${account.avatar}" class="img-responsive center-block" alt="Avatar">
+                                    <img id="preview" src="">
+                                    <input type="file" id="fileInput" accept="image/*">
+                                    <button id="uploadButton">Upload</button>
+                                    
                                 </div>
                             </div>
                             </br>
@@ -197,32 +200,120 @@ function clicks_edit_profile() {
         change_phone_number();
     });
 
-    //Change avatar
-    document.getElementById('change_avatar').addEventListener('click', function () {
-        $('#avatarModal').modal('show');
-    });
-    // $('#avatar-file').on('change', function (e) {
-    //     e.preventDefault();
-    //     var formData = new FormData();
-    //     formData.append('file', this.files[0]);
-    //     $.ajax({
-    //         url: 'friendlyURL("?module=profile&op=upload_avatar")',
-    //         type: 'POST',
-    //         data: formData,
-    //         contentType: false,
-    //         processData: false,
-    //         success: function (response) {
-    //             $('#avatar-drop-error').html('<p>' + response + '</p>');
-    //         },
-    //         error: function () {
-    //             $('#avatar-drop-error').html('<p>An error occurred while uploading the file.</p>');
-    //         }
-    //     });
-    // });
+    //Upload avatar
 
-    // document.getElementById('change_avatar_modal').addEventListener('click', function () {
-    //     change_avatar();
-    // });
+    $('#fileInput').on('change', function () {
+        // Obtén el archivo seleccionado
+        var file = this.files[0];
+
+        // Comprueba el tamaño del archivo
+        var maxSize = 10 * 1024 * 1024; // 10 MB
+        if (file.size > maxSize) {
+            alert('El archivo es demasiado grande. El tamaño máximo permitido es de 10 MB.');
+            this.value = ''; // Borra la selección del archivo
+            return;
+        }
+
+        // Comprueba el formato del archivo
+        var validFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!validFormats.includes(file.type)) {
+            alert('Formato de archivo no válido. Los formatos permitidos son JPG, PNG, JPEG y WEBP.');
+            this.value = ''; // Borra la selección del archivo
+            return;
+        }
+
+        var formData = new FormData();
+        // Si el archivo pasa las validaciones, imprime su nombre
+        var filename = $(this).val().split('\\').pop();
+        console.log('Archivo seleccionado: ' + filename);
+
+        // Crea un FileReader para leer el archivo
+        var reader = new FileReader();
+
+        // Cuando el archivo se ha leído, muestra la previsualización de la imagen
+        reader.onload = function (e) {
+            $('#currentAvatar').css('display', 'none'); // Oculta el avatar actual
+            $('#preview').attr('src', e.target.result).css('display', 'block'); // Muestra la previsualización
+        }
+
+        // Lee el archivo como URL de datos
+        reader.readAsDataURL(file);
+
+        //quiero pasarle al ajax tanto la op, como el access token como la imagen
+        formData.append('op', 'upload_avatar');
+        formData.append('access_token', localStorage.getItem('access_token'));
+        formData.append('avatar', file);
+
+
+        // Envía una solicitud AJAX para subir el archivo
+        $.ajax({
+            url: friendlyURL("?module=profile"),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                // return false;
+                if (Array.isArray(result) && result[0] === "Avatar subido correctamente") {
+                    localStorage.setItem('avatar', result[1]);
+                }
+            }
+        });
+    });
+
+    $('#uploadButton').on('click', function (event) {
+        event.preventDefault();
+        let avatar = localStorage.getItem('avatar');
+        // console.log(relative_path);
+        // return false;
+        if (avatar != null) {
+            let site_root = 'C:/xampp/htdocs/DREAMHOUSE_V5_FRAMEWORK/';
+            let relative_path = avatar.replace(site_root, '');
+            data = {
+                op: 'update_avatar',
+                access_token: localStorage.getItem('access_token'),
+                relative_path: relative_path
+            };
+            // console.log(data);
+            // return false;
+            ajaxPromise('POST', 'JSON', friendlyURL("?module=profile"), data)
+                .then(function (result) {
+                    // console.log(result);
+                    // return false;
+                    if (result[0] === 'error_updating_avatar') {
+                        swal({
+                            title: "Error",
+                            text: "An error has occurred while updating the avatar. Please try again later.",
+                            icon: "error",
+                        });
+                    } else if (result[0] === 'avatar_updated') {
+                        swal({
+                            title: "Success",
+                            text: "Avatar updated successfully.",
+                            icon: "success",
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else if (result[0] === 'error_getting_user') {
+                        swal({
+                            title: "Error",
+                            text: "An error has occurred while getting the user. Please try again later.",
+                            icon: "error",
+                        });
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            swal({
+                title: "Error",
+                text: "You must select an image to upload.",
+                icon: "error",
+            });
+        }
+    });
 
     //Change password
     document.getElementById('change_password').addEventListener('click', function (event) {
@@ -472,12 +563,6 @@ function change_phone_number() {
             });
     }
 }
-
-//EDIT AVATAR
-// function change_avatar() {
-//     console.log('Clicked edit avatar');
-// }
-
 
 //EDIT PASSWORD
 function validate_change_password() {
@@ -1003,5 +1088,6 @@ function remove_like_profile(house_id) {
 }
 
 $(document).ready(function () {
+    localStorage.removeItem('avatar');
     charge_profile_menu();
 });
