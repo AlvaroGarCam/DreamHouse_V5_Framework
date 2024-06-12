@@ -25,9 +25,24 @@ nuestro marketplace del resto, las mascotas.
 En esta primera vista podremos navegar a través de las diferentes categorías gracias a las cuales clasificamos las viviendas de las que disponemos,
 cada una de las mencionadas categorías dispone de un carousel para que sea más fácil e intuitivo navegar entre ellas:
 
--Mascotas (Perros, gatos, etc.)
--Tipo (pisos, chalets, etc.)
--Operación (alquiler, venta, etc.)
--Categoría (piscina, jardín, etc.)
--Ciudad (Valencia, Castellón, etc.)
--Servicios (Recogida de basuras, portero, etc.)
+ - Mascotas (perros, gatos, etc.)
+ - Tipo (pisos, chalets, etc.)
+ - Operación (alquiler, venta, etc.)
+ - Categoría (piscina, jardín, etc.)
+ - Ciudad (Valencia, Castellón, etc.)
+ - Servicios (recogida de basuras, portero, etc.)
+
+   Cabe mencionar que si hacemos click en cualquiera de los elementos de los diferentes carousels, seremos redireccionados al módulo "Shop" aplicando
+   el correspondiente filtrado de viviendas que hayamos seleccionado, y aparecerá reflejado en los filtros dinámicos que explicaremos en profundidad
+   más adelante.
+
+## ☰ MENÚ
+
+![Home2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/7977695a-d69b-45ac-8b55-2dc6bc5ceeac)
+
+El menú de navegación del que dispondremos en nuestra web será este, tiene varios apartados interesantes a mencionar:
+
+  - Iconos identificativos de nuestra web: hacer click en cualquiera de ellos nos redirigirá al "Home".
+  - Apartado "Search" para hacer un filtrado preliminar de las viviendas en las que estamos más interesados: este filtrado es dinámico, una vez elegimos el tipo de vivienda que deseamos, solo mostrará las combinaciones de      vivienda "Tipo-Mascota" disponibles, y después tenemos un campo "City" de autocompletado, es decir, si la combinación "Perro-piso" solo está disponible en Castellón, al escribir "c" en este campo, nos sugerirá
+    automáticamente la opción "Castellón", se actualiza con cada "key-up" que realicemos. Y, finalmente, cuando le demos al botón de buscar de la lupa, nos redirigirá al "Shop" con los filtros aplicados correctamente.
+  - 
