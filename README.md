@@ -8,9 +8,9 @@ más frecuencia queremos darle a nuestros "amiguitos" una mejor vida y mejores c
 
 ## 🛠️ Tecnologías empleadas:
 
-| PHP  | JWT  | MySQL| JQuery |
-| ---- | ---- | ---- | ---- |
-| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" width="50" height="50"> | <img src="https://jwt.io/img/pic_logo.svg" width="50" height="50"> | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" width="50" height="50"> | <img src="https://play-lh.googleusercontent.com/qqAm-pu8n8RXPww5P8F-mr7K_1YMDRc1Osvk91uEg-TgMcfUvZlxjyZJzrkfWeIN4GM=w480-h960" width="50" height="50"> |
+| PHP  | JWT  | MySQL| JQuery | HTML5 | CSS3 |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+| <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" width="50" height="50"> | <img src="https://jwt.io/img/pic_logo.svg" width="50" height="50"> | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" width="50" height="50"> | <img src="https://play-lh.googleusercontent.com/qqAm-pu8n8RXPww5P8F-mr7K_1YMDRc1Osvk91uEg-TgMcfUvZlxjyZJzrkfWeIN4GM=w480-h960" width="50" height="50"> | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="50" height="50"> | <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" width="50" height="50"> |
 
 ## 🏠 HOME
 
