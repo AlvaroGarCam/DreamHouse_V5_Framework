@@ -208,7 +208,11 @@ function clicks_edit_profile() {
         // Comprueba el tamaño del archivo
         var maxSize = 10 * 1024 * 1024; // 10 MB
         if (file.size > maxSize) {
-            alert('El archivo es demasiado grande. El tamaño máximo permitido es de 10 MB.');
+            swal({
+                title: "Error",
+                text: "The file is too large. The maximum size is 10MB.",
+                icon: "error",
+            });
             this.value = ''; // Borra la selección del archivo
             return;
         }
@@ -216,7 +220,11 @@ function clicks_edit_profile() {
         // Comprueba el formato del archivo
         var validFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
         if (!validFormats.includes(file.type)) {
-            alert('Formato de archivo no válido. Los formatos permitidos son JPG, PNG, JPEG y WEBP.');
+            swal({
+                title: "Error",
+                text: "The file format is not valid. Only JPG, JPEG, PNG and WEBP formats are allowed.",
+                icon: "error",
+            });
             this.value = ''; // Borra la selección del archivo
             return;
         }
