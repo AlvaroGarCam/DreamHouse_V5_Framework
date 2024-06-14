@@ -137,3 +137,8 @@ Y, por último, tenemos el apartado "Whislist" donde nuestro usuario puede guard
 ![Profile5](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/48c9f78a-798a-4b9d-9981-76a986cbb81b)
 
 
+PD: Si has llegado hasta aquí, quisiera agradecerte tu tiempo y atención! 🙏 
+Espero con muchas ganas seguir aprendiendo y desarrollando aplicaciones web mejores y más ambiciosas. 💪
+Este no ha sido sino el primero de muchos proyectos que espero poder compartir con mucha gente. 🤗
+
+
