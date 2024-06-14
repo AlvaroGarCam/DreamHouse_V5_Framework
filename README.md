@@ -29,9 +29,9 @@ cada una de las mencionadas categorías dispone de un carousel para que sea más
  - Ciudad (Valencia, Castellón, etc.)
  - Servicios (recogida de basuras, portero, etc.)
 
-   Cabe mencionar que si hacemos click en cualquiera de los elementos de los diferentes carousels, seremos redireccionados al módulo "Shop" aplicando
-   el correspondiente filtrado de viviendas que hayamos seleccionado, y aparecerá reflejado en los filtros dinámicos que explicaremos en profundidad
-   más adelante.
+Cabe mencionar que si hacemos click en cualquiera de los elementos de los diferentes carousels, seremos redireccionados al módulo "Shop" aplicando
+el correspondiente filtrado de viviendas que hayamos seleccionado, y aparecerá reflejado en los filtros dinámicos que explicaremos en profundidad
+más adelante.
 
 ## ☰ MENÚ
 
@@ -72,3 +72,68 @@ Nuestra forma de mostrar las viviendas se basa en dar la información más impor
   - Botón de "Like" para que nuestro usuario pueda valorar las viviendas.
   - Botón "Cart" para poder añadir a un carrito de compra nuestra vivienda y productos relacionados que explicaremos más adelante.
   - Mapa donde indicaremos la ubicación exacta de cada una de las viviendas mostradas.
+  - Sistema de paginación dinámico.
+
+![Shop4](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/cf438e01-d66c-41da-b5ef-71e67359376f)
+
+  - Dentro del "Details" tenemos la opción de mostrar viviendas relacionadas con la que tenemos cargada en este momento.
+![Shop5](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/d23576c0-adad-4146-8176-2b9b2df89b1e)
+
+## 👤 Auth
+
+La puerta de entrada a nuestra aplicación web por parte del usuario siempre será el registro. Disponemos de diversas vistas que mostrarán al usuario donde puede registrarse, autenticarse, recordar la contraseña, en caso de haberla olvidado, e incluso existe la posibilidad de loguearse mediante una cuenta de Google o GitHub.
+
+![Auth2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/ccdccf46-45e3-4e3a-8339-b9e187870307)
+
+  - Una vez nos registremos cumplimentando los datos correctamente, la aplicación nos mandará un enlace de verificación al correo que hayamos introducido mediante Resend.
+  - Si necesitamos recurrir a la recuperación de contraseña, deberemos introducir el correo electrónico usado para el registro y la aplicación nos mandará también un enlace de verificación para poder cambiar la contraseña.
+  - Si realizamos 3 intento de inicio de sesión fallidos, nuestra cuenta se deshabilitará y nos llegará un mensaje al WhatsApp con un código de reactivación OTP.
+  - Uso de tokens JWT (access y refresh) para identificar al usuario conectado.
+  - Inicio de credenciales de sesión correctamente validadas.
+  - Control de actividad del usuario para optimizar la seguridad.
+    
+## 🛒 Cart
+
+![Cart1](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/7aefdede-b6f3-4964-8019-52658da59d7e)
+
+Gracias a este módulo el usuario puede incluir cualquiera de las viviendas publicadas, junto con artículos relacionados con el tipo de mascota que esta puede albergar, en su carrito personal. Consta de varias partes.
+
+  - Control y cálculo dinámico del total de la compra y del stock.
+  - Indicador en la sección del menú donde el usuario puede ver si tiene algún pedido en proceso de tramitar o no.
+  - Una vez verificamos los artículos deseados, accederemos a una nueva vista donde podremos ver un resumen de la compra e introducir los datos de pago.
+
+    ![Cart2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/4ef5e397-bcbc-4e09-aee5-da1f46f72a44)
+
+
+## 📇 PROFILE
+
+Este módulo permite al usuario realizar varias acciones de gran valor para su experiencia utilizando nuestra aplicación web.
+Consta de un panel de navegación lateral para navegar entre las secciones del módulos y una vista principal de cada uno de ellos.
+
+![Profile1](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/974d66b7-dd11-4282-8734-8e8b2820c929)
+
+En esta primera vista, "Account Details", podemos observar como le damos al usuario la posibilidad de cambiar todo tipo de datos de su cuenta:
+
+  - Nombre de usuario.
+  - Contraseña.
+  - Correo electrónico.
+  - Número de teléfono.
+  - Foto de perfil.
+
+![Profile2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/54a6e307-90a6-423a-8023-f4ac2cd475f4)
+
+En esta segunda vista, "Purchase Details", tendremos la posibilidad de visualizar o descargar todas las facturas correspondientes a las compras realizadas.
+
+Podemos visualizar y descargar el PDF:
+
+![Profile3](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/8433afe4-f5e0-4e14-81a6-2bac072f1bae)
+
+O bien, acceder desde nuestro teléfono móvil gracias a este código QR:
+
+![Profile4](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/c13f00c4-f889-4690-9302-b8396e48d630)
+
+Y, por último, tenemos el apartado "Whislist" donde nuestro usuario puede guardar las viviendas a las que ha dado "like". Esta sección tiene como finalidad que el usuario pueda acceder más fácilmente a sus viviendas favoritas o quitarlas de esta lista si así lo desea.
+
+![Profile5](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/48c9f78a-798a-4b9d-9981-76a986cbb81b)
+
+
