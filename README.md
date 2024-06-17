@@ -2,10 +2,7 @@
 
 ## Descripción general
 
-DreamHouse es mi primer proyecto académico, una plataforma web donde los usuarios pueden buscar, comprar o alquilar viviendas, entre otros.
-El valor añadido que posee este proyecto se fundamenta en ofrecer viviendas adaptadas para albergar animales domésticos. Cada vez con 
-más frecuencia queremos darles a nuestros "amiguitos" una mejor vida y mejores condiciones en nuestro hogar, y esta web busca satisfacer
-dicha necesidad.
+DreamHouse es mi primer proyecto académico, una plataforma web donde los usuarios pueden buscar, comprar o alquilar viviendas, entre otros. El valor añadido que posee este proyecto se fundamenta en ofrecer viviendas adaptadas para albergar animales domésticos. Cada vez con más frecuencia queremos darles a nuestros "amiguitos" una mejor vida y mejores condiciones en nuestro hogar, y esta web busca satisfacer dicha necesidad.
 
 ## 🛠️ Tecnologías empleadas:
 
