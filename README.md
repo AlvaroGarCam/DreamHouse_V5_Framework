@@ -132,7 +132,9 @@ Finalmente, disponemos del apartado "Wishlist", donde nuestro usuario puede guar
 
 
 PD: Si has llegado hasta aquí, ¡quisiera agradecerte tu tiempo y atención! 🙏 
+
 Tengo muchas ganas de seguir aprendiendo y desarrollando aplicaciones web mejores y más ambiciosas. 💪
+
 Este no ha sido sino el primero de muchos proyectos que espero compartir con más gente. 🤗
 
 
