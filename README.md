@@ -14,8 +14,7 @@ DreamHouse es mi primer proyecto académico, una plataforma web donde los usuari
 
 ![Home1](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/8ecf1076-bb01-4297-9ca3-4c6fb11152ef)
 
-La página de inicio es la cara visible de nuestra web y da la bienvenida al usuario. Aquí se puede apreciar a primera vista la principal característica que diferencia
-nuestro Marketplace del resto: las mascotas.
+La página de inicio es la cara visible de nuestra web y da la bienvenida al usuario. Aquí se puede apreciar a primera vista la principal característica que diferencia a nuestro Marketplace del resto: las mascotas.
 
 En esta primera visualización, podemos navegar a través de las diferentes categorías, donde se clasifican las viviendas de las que disponemos.
 Cada categoría se presenta en un carousel para que la navegación sea más fácil e intuitiva:
@@ -27,14 +26,13 @@ Cada categoría se presenta en un carousel para que la navegación sea más fác
  - Ciudad (Valencia, Castellón, etc.)
  - Servicios (recogida de basura, portero, etc.)
 
-Cabe mencionar que, al hacer clic en cualquiera de los elementos de los diferentes carousels, seremos redireccionados al módulo "Shop" aplicando
-el correspondiente filtrado de viviendas que hayamos seleccionado. Este proceso aparecerá reflejado en los filtros dinámicos que explicaremos más adelante en profundidad.
+Cabe mencionar que, al hacer clic en cualquiera de los elementos de los diferentes carousels, seremos redireccionados al módulo "Shop" aplicando el correspondiente filtrado de viviendas que hayamos seleccionado. Este proceso aparecerá reflejado en los filtros dinámicos que explicaremos más adelante en profundidad.
 
 ## ☰ MENÚ
 
 ![Home2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/7977695a-d69b-45ac-8b55-2dc6bc5ceeac)
 
-El menú de navegación del que disponemos en nuestra web, con diversos apartados dignos de mención, es el siguiente:
+El menú de navegación del que dispone la web, con diversos apartados dignos de mención, es el siguiente:
 
   - Iconos identificativos de nuestra web: hacer clic en cualquiera de ellos nos redirigirá al "Home".
   - Un apartado "Search" para realizar un filtrado preliminar de las viviendas en las que estamos más interesados. Este filtrado es dinámico, es decir, una vez elegimos el tipo de vivienda que deseamos, solo mostrará las combinaciones de vivienda "Tipo-Mascota" disponibles. Asimismo, disponemos de un campo "City" de autocompletado, es decir, si la combinación "Perro-piso" solo está disponible en Castellón, al escribir "c" en este campo, nos sugerirá automáticamente la opción "Castellón", y el campo se actualiza con cada nueva letra que introduzcamos o borremos. Finalmente, cuando le demos al botón de buscar en la lupa, nos redirigirá al "Shop" con los filtros aplicados correctamente.
@@ -72,6 +70,7 @@ Las viviendas se muestran en una tarjeta informativa donde aparecen los datos m�
 ![Shop4](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/cf438e01-d66c-41da-b5ef-71e67359376f)
 
   - En la vista "Details" tenemos la opción de mostrar sugerencias relacionadas con la vivienda que tenemos cargada en este momento.
+
 ![Shop5](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/d23576c0-adad-4146-8176-2b9b2df89b1e)
 
 ## 👤 Auth
@@ -94,7 +93,7 @@ La puerta de entrada a nuestra aplicación web por parte del usuario es el regis
 Este módulo permite al usuario incluir cualquiera de las viviendas publicadas en su carrito personal, junto con artículos relacionados con el tipo de mascota que esta puede albergar. Dispone de varias partes:
 
   - Control y cálculo dinámico del total de la compra y del stock.
-  - Indicador en la sección del menú donde el usuario puede ver si tiene algún pedido o no en proceso de tramitación.
+  - Indicador en la sección del menú donde el usuario puede ver si tiene algún pedido, o no, en proceso de tramitación.
   - Una vez verificamos los artículos deseados, accedemos a una nueva vista donde se puede ver un resumen de la compra e introducir los datos de pago.
 
     ![Cart2](https://github.com/AlvaroGarCam/DreamHouse_V5_Framework/assets/157162001/4ef5e397-bcbc-4e09-aee5-da1f46f72a44)
